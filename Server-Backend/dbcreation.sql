@@ -12,7 +12,7 @@ CREATE TABLE Reseaux(
    BandePasssante FLOAT,
    ForceSignal INTEGER,
    IdReseau INTEGER
-  )
+  );
 
 ALTER TABLE Mesures ADD CONSTRAINT fk_MesureReseaux FOREIGN KEY (idReseau) REFERENCES reseaux(idReseau)
     
