@@ -1,15 +1,15 @@
 CREATE TABLE Reseaux(
-    IdReseau INTEGER PRIMARY KEY, 
+    IdReseau INTEGER PRIMARY KEY AUTO_INCREMENT, 
     SSID VARCHAR(32),
     Type VARCHAR(50)
  );
  
  CREATE TABLE Mesures(
-   IdMesure INTEGER PRIMARY KEY,
+   IdMesure INTEGER PRIMARY KEY AUTO_INCREMENT,
    Latitude FLOAT,
    Longitude FLOAT,
    DateMesure DATE,
-   BandePasssante FLOAT,
+   BandePassante FLOAT,
    ForceSignal INTEGER,
    IdReseau INTEGER
   );
