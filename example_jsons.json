@@ -1,0 +1,93 @@
+// Speedtest client -> serveur
+{
+	"longitude" : X,
+	"latitude" : Y,
+	"id_reseau" : 1,
+	"forceSignal" : 5
+}
+
+// Réponse speedtest serveur->client
+{
+	// <vide> (ack de la réception de requête)
+}
+
+// Chargement de la carte client->serveur
+{
+	"parametres" : 
+	{		// (si les paramètres d'affichage sont enregistrés sur le téléphone)
+		"wifi" : true,
+		"3G/4G" : false,
+		"bande_passante_minimale" : 6.5,
+		"rayon_recherche" : 4
+	},
+	"longitudeActuelle" : X, 
+	"latitudeActuelle" : Y		// pour le rayon de recherche
+}
+
+// Réponse chargement de la carte serveur->client
+{
+	"reseaux_wifi": 
+	[
+		{
+			"id_reseau" : 2
+			"ssid" : "gare part-dieu",
+			"zones" : 
+			[		// les zones ne sont enregistrées que pour les réseaux wifi
+				{			// TODO : décider l'enregistrement des zones en BD ou recalcul à chaque participation d'un client ?
+					"nom_zone" : "zone1", // Info à récupérer depuis une API google en fonction du centre de la zone ?
+					"mesures" : 
+					[
+						{
+							"id_mesure" : 1,
+							"longitude" : X,
+							"latitude" : Y,
+							"bande_passante_derniere_mesure" : 7.5,
+						},
+						//etc
+					]
+				}
+			]	
+		}
+	],
+	"3G/4G" : 
+	[
+		{
+			"id_mesure" : 1,
+			"longitude" : X,
+			"latitude" : Y,
+			"bande_passante_derniere_mesure" : 7.5,
+		},
+		//etc
+	]
+}
+
+// Demande de détails d'une mesure client->serveur
+{
+	"id_mesure" : 6
+}
+
+// Réponse détails serveur->client
+{
+	"id_mesure" : 6,
+	"longitude" : X,
+	"latitude" : Y,
+	"localisation_mesure" : "gare part-dieu",	// Info à récupérer depuis une API google
+	"bande_passante_derniere_mesure" : 7.5,
+	"date_derniere_mesure" : "01/10/2018",
+	"reseau" :
+	{
+		"id_reseau" : 5,
+		"ssid" : "gare part-dieu"
+	},
+	"historique_mesures_precedentes" :
+	[
+		{
+			"id_mesure" : 4,
+			"longitude" : X,  //TODO : déterminer une constante rayon telle que deux mesures dans un rayon semblables soient considérées comme équivalentes géographiquement
+			"latitude" : Y,
+			"bande_passante_mesure" : 5.5,
+		},
+		//etc
+	]
+}
+//TODO : déterminer si la modification des paramètres est locale au téléphone ou enregistrée sur le serveur.
