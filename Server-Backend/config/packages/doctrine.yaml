@@ -7,11 +7,6 @@ parameters:
 
 doctrine:
     dbal:
-        dbname: connectme
-        host: localhost
-        port: 3306
-        user: connectme
-        password: jIFHIUFheihezh42
         # configure these for your database server
         driver: 'pdo_mysql'
         server_version: '5.7'
