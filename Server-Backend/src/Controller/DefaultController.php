@@ -35,7 +35,7 @@ class DefaultController extends Controller
      * Retourne les différents réseaux et mesures correspondantes au format JSON.
      * TODO ajouter les filtres utilisateur
      * @return Response JSON la réponse backend
-     * @throws \Exception cas d'erreurs variables
+     * @throws \Exception 
      */
     public function getAllNetworksAndMeasures()
     {
@@ -44,11 +44,11 @@ class DefaultController extends Controller
         $rsm->addRootEntityFromClassMetadata(Reseaux::class, 'r');
         //$rsm->addJoinedEntityFromClassMetadata(Mesures::class, 'm', 'r', 'mesures');
         //TODO erreur ORM lorsqu'une jointure est faite => vérifier le mapping ? 
-
+        
         $selectClause = $rsm ->generateSelectClause();
         $queryString = 'SELECT '.$selectClause.' from reseaux r '; //.'INNER JOIN mesures m on r.idreseau = m.idreseau';
         $query = $em->createNativeQuery($queryString, $rsm);
-        $networks = $query->getResult();s
+        $networks = $query->getResult();
         $jsonNetworks = ($this->serializer)->serialize($networks, 'json');
         $response = new Response($jsonNetworks);
         $response->headers->set('Content-Type', 'application/json');
