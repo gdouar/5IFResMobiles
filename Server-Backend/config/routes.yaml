@@ -2,5 +2,5 @@
 # Files in the routes/ subdirectory configure the routes for your dependencies.
 
 index:
-    path: /
-    defaults: { _controller: App\Controller\DefaultController::index }
+    path: /getAllNetworksAndMeasures
+    defaults: { _controller: App\Controller\DefaultController::getAllNetworksAndMeasures }
