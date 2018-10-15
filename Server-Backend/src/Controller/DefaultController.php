@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\Entity\Mesures;
+use App\Entity\Reseaux;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Class DefaultController
@@ -23,10 +25,17 @@ class DefaultController extends Controller
      */
     public function index()
     {
-        $number = random_int(0, 10);
+        $id = 1;
+        //$number = random_int(0, 10);
+        $reseau = $this->getDoctrine()
+        ->getRepository(Reseaux::class)
+        ->find($id);
 
+        if (!$reseau) {
+            throw 'No reseau found for id '.$id;
+        }
         return new Response(
-            '<html><body>test: ' . $number . '</body></html>'
+            '<html><body>test: ' . $id . '</body></html>'
         );
     }
 }
