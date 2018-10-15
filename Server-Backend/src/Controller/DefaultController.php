@@ -24,7 +24,7 @@ class DefaultController extends Controller
     public function index()
     {
         $number = random_int(0, 10);
-
+        
         return new Response(
             '<html><body>test: ' . $number . '</body></html>'
         );
