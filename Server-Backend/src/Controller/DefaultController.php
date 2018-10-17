@@ -15,7 +15,6 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * Class DefaultController
- *
  * Contrôleur central
  * @package App\Controller
  */
@@ -44,7 +43,7 @@ class DefaultController extends Controller
         $rsm->addRootEntityFromClassMetadata(Reseaux::class, 'r');
         //$rsm->addJoinedEntityFromClassMetadata(Mesures::class, 'm', 'r', 'mesures');
         //TODO erreur ORM lorsqu'une jointure est faite => vérifier le mapping ? 
-        
+
         $selectClause = $rsm ->generateSelectClause();
         $queryString = 'SELECT '.$selectClause.' from reseaux r '; //.'INNER JOIN mesures m on r.idreseau = m.idreseau';
         $query = $em->createNativeQuery($queryString, $rsm);
