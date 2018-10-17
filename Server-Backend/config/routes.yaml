@@ -3,9 +3,9 @@
 
 reseaux:
     path: /getAllNetworks
-    defaults: { _controller: App\Controller\DefaultController::getAllNetworks }
+    defaults: { _controller: App\Controller\ReseauxController::getAllReseaux }
 
 mesures:
     path: /getAllMeasures
-    defaults: { _controller: App\Controller\DefaultController::getAllMeasures }
+    defaults: { _controller: App\Controller\MesuresController::getAllMesures }
 
