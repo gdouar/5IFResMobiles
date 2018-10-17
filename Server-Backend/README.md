@@ -36,3 +36,8 @@ Lucas :
 
 ##  Développement 
 Le framework utilisé côté backend est Symfony version 4. La documentation se trouve [ici](https://symfony.com/doc/current/index.html#gsc.tab=0)
+
+## Doc
+### Points d'API (pour l'instant)
+* /getAllNetworks (nécessite les paramètres _ssid_ et _type_)
+* /getAllMeasures (nécessite les paramètres _reseau_, _bande_passante_, _force_, _lat_ et _lon_)
