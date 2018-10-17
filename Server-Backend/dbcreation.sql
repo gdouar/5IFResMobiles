@@ -14,5 +14,6 @@ CREATE TABLE Reseaux(
    IdReseau INTEGER
   );
 
-ALTER TABLE Mesures ADD CONSTRAINT fk_MesureReseaux FOREIGN KEY (idReseau) REFERENCES reseaux(idReseau)
-    
+ALTER TABLE `Mesures` ADD INDEX(`IdReseau`);
+
+ALTER TABLE `Mesures` ADD CONSTRAINT `fk_MesureReseaux` FOREIGN KEY (`IdReseau`) REFERENCES `Reseaux`(`IdReseau`) ON DELETE CASCADE ON UPDATE CASCADE;

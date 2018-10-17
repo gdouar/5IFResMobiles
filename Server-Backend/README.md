@@ -20,6 +20,11 @@
 - Exécuter le SQL du fichier Server-Backend\dbcreation.sql. En fonction des paramètres par défaut de MySQL, la clé étrangère pourra ne pas être bien générée, vous pouvez alors la créer à la main depuis l'onglet Structure.
 - Alimenter la base de données via le dataset de test (fichier SQL du sous-répertoire dataset5ifMobile\result.sql à exécuter dans phpmyadmin en ayant la bonne base de sélectionnée)
 - Créer un autre compte utilisateur servant à l'application pour accéder à la base. Bien cocher la case "Accorder tous les privilèges à un nom passe-partout (utilisateur\_%)." et tous les privilèges possibles lors de la création de cet utilisateur.
+
+Julien :
+- Renseigner correctement les informations de connexion à la base de données dans le fichier .env (si celui-ci n'existe pas, le créer sur le modèle de .env.dist)
+
+Lucas :
 - Dans le fichier .env à la racine du backend : commenter la ligne commençant par DATABASE_URL
 - Dans le fichier "config/packages/doctrine.yaml" : 
   - vérifier que la version de la base de données est la bonne (on peut la voir à droite dans l'écran d'accueil de phpmyadmin). Si vous utilisez mariaDB (lol) il faut préfixer le numéro de version par `mariadb-`
