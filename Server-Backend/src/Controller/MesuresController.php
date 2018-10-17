@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Mesures;
+
+use App\Service\MesuresService;
+use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,6 +41,7 @@ class MesuresController extends BaseController
 
     public function getAllMesures()
     {
-        return $this->getObjects(Mesures::class);
+        $service = new MesuresService($this->getDoctrine());
+         return $this->getObjects($service);
     }
 }

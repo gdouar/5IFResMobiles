@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Reseaux;
+use App\Service\ReseauxService;
+use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,6 +36,7 @@ class ReseauxController extends BaseController
 
     public function getAllReseaux()
     {
-        return $this->getObjects(Reseaux::class);
+        $service = new ReseauxService($this->getDoctrine());
+         return $this->getObjects($service);
     }
 }

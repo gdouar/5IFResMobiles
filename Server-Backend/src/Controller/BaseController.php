@@ -9,16 +9,18 @@
 namespace App\Controller;
 
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use App\Controller\DataService;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class BaseController extends Controller
 {
-    private $serializer;
+    protected $serializer;
 
     function __construct()
     {
@@ -27,10 +29,10 @@ class BaseController extends Controller
         $this->serializer = new Serializer($normalizers, $encoders);
     }
 
-    protected function getObjects(string $type) {
-        $mesures      = $this->getDoctrine()->getRepository($type)->findAll();
-        $jsonNetworks = ($this->serializer)->serialize($mesures, 'json');
-        $response     = new Response($jsonNetworks);
+    protected function getObjects($service) {
+        $collection      = $service->getAllData();
+        $jsonCollection = ($this->serializer)->serialize($collection, 'json');
+        $response     = new Response($jsonCollection); 
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
