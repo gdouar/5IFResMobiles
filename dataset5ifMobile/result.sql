@@ -1,8 +1,8 @@
-DELETE FROM Mesures;
-DELETE FROM Reseaux;
-INSERT INTO Reseaux (IdReseau, SSID, Type) VALUES (1,'Part-dieu', 'wifi'),(2,'Eduroam', 'wifi'),(3,'INSA INVITE', 'wifi');
+DELETE FROM mesures;
+DELETE FROM reseaux;
+INSERT INTO reseaux (IdReseau, SSID, Type) VALUES (1,'Part-dieu', 'wifi'),(2,'Eduroam', 'wifi'),(3,'INSA INVITE', 'wifi');
 
-INSERT INTO Mesures (Latitude, Longitude, DateMesure, BandePassante, ForceSignal, idReseau) VALUES(45.784302148516,4.87777037692712, '2018-12-30',6.178588199233634,1,3),
+INSERT INTO mesures (Latitude, Longitude, DateMesure, BandePassante, ForceSignal, idReseau) VALUES(45.784302148516,4.87777037692712, '2018-12-30',6.178588199233634,1,3),
 (45.76121347824277,4.85527506138943, '2018-05-20',9.167272708062402,4,1),
 (45.76238501480683,4.856800324102368, '2018-04-27',10.957977684479198,4,1),
 (45.76242834096553,4.855562573669749, '2018-08-29',16.11054149941396,1,1),

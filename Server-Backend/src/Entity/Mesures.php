@@ -7,13 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Mesures
  *
- * @ORM\Table(name="Mesures", indexes={@ORM\Index(name="IdReseau", columns={"IdReseau"})})
+ * @ORM\Table(name="mesures", indexes={@ORM\Index(name="IdReseau", columns={"IdReseau"})})
  * @ORM\Entity
  */
 class Mesures
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="IdMesure", type="integer", nullable=false)
      * @ORM\Id
@@ -22,42 +22,42 @@ class Mesures
     private $idmesure;
 
     /**
-     * @var float
+     * @var float|null
      *
      * @ORM\Column(name="Latitude", type="float", precision=10, scale=0, nullable=true)
      */
     private $latitude;
 
     /**
-     * @var float
+     * @var float|null
      *
      * @ORM\Column(name="Longitude", type="float", precision=10, scale=0, nullable=true)
      */
     private $longitude;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      *
      * @ORM\Column(name="DateMesure", type="date", nullable=true)
      */
     private $datemesure;
 
     /**
-     * @var float
+     * @var float|null
      *
-     * @ORM\Column(name="BandePasssante", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="BandePassante", type="float", precision=10, scale=0, nullable=true)
      */
-    private $bandepasssante;
+    private $bandepassante;
 
     /**
-     * @var integer
+     * @var int|null
      *
      * @ORM\Column(name="ForceSignal", type="integer", nullable=true)
      */
     private $forcesignal;
 
     /**
-     * @var \Reseaux
+     * @var Reseaux
      *
      * @ORM\ManyToOne(targetEntity="Reseaux")
      * @ORM\JoinColumns({
@@ -77,105 +77,104 @@ class Mesures
     /**
      * @param int $idmesure
      */
-    public function setIdmesure(int $idmesure)
+    public function setIdmesure(int $idmesure): void
     {
         $this->idmesure = $idmesure;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getLatitude(): float
+    public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
     /**
-     * @param float $latitude
+     * @param float|null $latitude
      */
-    public function setLatitude(float $latitude)
+    public function setLatitude(?float $latitude): void
     {
         $this->latitude = $latitude;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getLongitude(): float
+    public function getLongitude(): ?float
     {
         return $this->longitude;
     }
 
     /**
-     * @param float $longitude
+     * @param float|null $longitude
      */
-    public function setLongitude(float $longitude)
+    public function setLongitude(?float $longitude): void
     {
         $this->longitude = $longitude;
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    public function getDatemesure(): \DateTime
+    public function getDatemesure(): ?\DateTime
     {
         return $this->datemesure;
     }
 
     /**
-     * @param \DateTime $datemesure
+     * @param \DateTime|null $datemesure
      */
-    public function setDatemesure(\DateTime $datemesure)
+    public function setDatemesure(?\DateTime $datemesure): void
     {
         $this->datemesure = $datemesure;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getBandepasssante(): float
+    public function getBandepassante(): ?float
     {
-        return $this->bandepasssante;
+        return $this->bandepassante;
     }
 
     /**
-     * @param float $bandepasssante
+     * @param float|null $bandepassante
      */
-    public function setBandepasssante(float $bandepasssante)
+    public function setBandepassante(?float $bandepassante): void
     {
-        $this->bandepasssante = $bandepasssante;
+        $this->bandepassante = $bandepassante;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getForcesignal(): int
+    public function getForcesignal(): ?int
     {
         return $this->forcesignal;
     }
 
     /**
-     * @param int $forcesignal
+     * @param int|null $forcesignal
      */
-    public function setForcesignal(int $forcesignal)
+    public function setForcesignal(?int $forcesignal): void
     {
         $this->forcesignal = $forcesignal;
     }
 
     /**
-     * @return \Reseaux
+     * @return Reseaux
      */
-    public function getIdreseau(): \Reseaux
+    public function getIdreseau(): Reseaux
     {
         return $this->idreseau;
     }
 
     /**
-     * @param \Reseaux $idreseau
+     * @param Reseaux $idreseau
      */
-    public function setIdreseau(\Reseaux $idreseau)
+    public function setIdreseau(Reseaux $idreseau): void
     {
         $this->idreseau = $idreseau;
     }
 }
-

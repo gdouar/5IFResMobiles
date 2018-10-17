@@ -7,13 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Reseaux
  *
- * @ORM\Table(name="Reseaux")
+ * @ORM\Table(name="reseaux")
  * @ORM\Entity
  */
 class Reseaux
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="IdReseau", type="integer", nullable=false)
      * @ORM\Id
@@ -22,14 +22,14 @@ class Reseaux
     private $idreseau;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="SSID", type="string", length=32, nullable=true)
      */
     private $ssid;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="Type", type="string", length=50, nullable=true)
      */
@@ -46,41 +46,40 @@ class Reseaux
     /**
      * @param int $idreseau
      */
-    public function setIdreseau(int $idreseau)
+    public function setIdreseau(int $idreseau): void
     {
         $this->idreseau = $idreseau;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getSsid(): string
+    public function getSsid(): ?string
     {
         return $this->ssid;
     }
 
     /**
-     * @param string $ssid
+     * @param null|string $ssid
      */
-    public function setSsid(string $ssid)
+    public function setSsid(?string $ssid): void
     {
         $this->ssid = $ssid;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
 
     /**
-     * @param string $type
+     * @param null|string $type
      */
-    public function setType(string $type)
+    public function setType(?string $type): void
     {
         $this->type = $type;
     }
 }
-

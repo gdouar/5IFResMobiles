@@ -4,29 +4,28 @@ namespace App\Controller;
 
 use App\Entity\Mesures;
 use App\Entity\Reseaux;
-use Doctrine\ORM\Query\ResultSetMapping;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class DefaultController
+ *
  * Contrôleur central
  * @package App\Controller
  */
 class DefaultController extends Controller
 {
-    //TODO refactor 
+    //TODO refactor
     private $serializer;
 
     function __construct()
     {
-        $encoders = array(new XmlEncoder(), new JsonEncoder());
-        $normalizers = array(new ObjectNormalizer());
+        $encoders         = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers      = [new ObjectNormalizer()];
         $this->serializer = new Serializer($normalizers, $encoders);
     }
 
@@ -34,22 +33,22 @@ class DefaultController extends Controller
      * Retourne les différents réseaux et mesures correspondantes au format JSON.
      * TODO ajouter les filtres utilisateur
      * @return Response JSON la réponse backend
-     * @throws \Exception 
+     * @throws \Exception
      */
-    public function getAllNetworksAndMeasures()
+    public function getAllNetworks()
     {
-        $em = $this->getDoctrine()->getManager();
-        $rsm = new ResultSetMappingBuilder($em);  
-        $rsm->addRootEntityFromClassMetadata(Reseaux::class, 'r');
-        //$rsm->addJoinedEntityFromClassMetadata(Mesures::class, 'm', 'r', 'mesures');
-        //TODO erreur ORM lorsqu'une jointure est faite => vérifier le mapping ? 
+        return $this->getObjects(Reseaux::class);
+    }
 
-        $selectClause = $rsm ->generateSelectClause();
-        $queryString = 'SELECT '.$selectClause.' from reseaux r '; //.'INNER JOIN mesures m on r.idreseau = m.idreseau';
-        $query = $em->createNativeQuery($queryString, $rsm);
-        $networks = $query->getResult();
-        $jsonNetworks = ($this->serializer)->serialize($networks, 'json');
-        $response = new Response($jsonNetworks);
+    public function getAllMeasures()
+    {
+        return $this->getObjects(Mesures::class);
+    }
+
+    private function getObjects(string $type) {
+        $mesures      = $this->getDoctrine()->getRepository($type)->findAll();
+        $jsonNetworks = ($this->serializer)->serialize($mesures, 'json');
+        $response     = new Response($jsonNetworks);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
