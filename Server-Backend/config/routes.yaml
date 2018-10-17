@@ -1,11 +1,18 @@
 # This file is the entry point to configure your own HTTP routes.
 # Files in the routes/ subdirectory configure the routes for your dependencies.
 
-reseaux:
+getall_reseaux:
     path: /getAllNetworks
     defaults: { _controller: App\Controller\ReseauxController::getAllReseaux }
 
-mesures:
+getall_mesures:
     path: /getAllMeasures
     defaults: { _controller: App\Controller\MesuresController::getAllMesures }
 
+create_reseaux:
+    path: /createNetwork
+    defaults: { _controller: App\Controller\ReseauxController::createReseaux }
+
+create_mesures:
+    path: /createMeasure
+    defaults: { _controller: App\Controller\ReseauxController::createMesures }

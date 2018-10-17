@@ -39,5 +39,7 @@ Le framework utilisé côté backend est Symfony version 4. La documentation se 
 
 ## Doc
 ### Points d'API (pour l'instant)
-* /getAllNetworks (nécessite les paramètres _ssid_ et _type_)
-* /getAllMeasures (nécessite les paramètres _reseau_, _bande_passante_, _force_, _lat_ et _lon_)
+* /createNetwork (nécessite les paramètres _ssid_ et _type_)
+* /createMeasure (nécessite les paramètres _reseau_, _bande_passante_, _force_, _lat_ et _lon_)
+* /getAllNetworks
+* /getAllMeasures
