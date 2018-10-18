@@ -6,15 +6,15 @@
 	"forceSignal" : 5
 }
 
-// Réponse speedtest serveur->client
+// Rï¿½ponse speedtest serveur->client
 {
-	// <vide> (ack de la réception de requête)
+	// <vide> (ack de la rï¿½ception de requï¿½te)
 }
 
 // Chargement de la carte client->serveur
 {
 	"parametres" : 
-	{		// (si les paramètres d'affichage sont enregistrés sur le téléphone)
+	{		// (si les paramï¿½tres d'affichage sont enregistrï¿½s sur le tï¿½lï¿½phone)
 		"wifi" : true,
 		"mobile" : false,
 		"bande_passante_minimale" : 6.5,
@@ -24,7 +24,7 @@
 	"latitudeActuelle" : Y		// pour le rayon de recherche
 }
 
-// Réponse chargement de la carte serveur->client
+// Rï¿½ponse chargement de la carte serveur->client
 {
 	"reseaux_wifi": 
 	[
@@ -32,9 +32,9 @@
 			"id_reseau" : 2
 			"ssid" : "gare part-dieu",
 			"zones" : 
-			[		// les zones ne sont enregistrées que pour les réseaux wifi
-				{			// TODO : décider l'enregistrement des zones en BD ou recalcul à chaque participation d'un client ?
-					"nom_zone" : "zone1", // Info à récupérer depuis une API google en fonction du centre de la zone ?
+			[		// les zones ne sont enregistrï¿½es que pour les rï¿½seaux wifi
+				{			// TODO : dï¿½cider l'enregistrement des zones en BD ou recalcul ï¿½ chaque participation d'un client ?
+					"nom_zone" : "zone1", // Info ï¿½ rï¿½cupï¿½rer depuis une API google en fonction du centre de la zone ?
 					"mesures" : 
 					[
 						{
@@ -52,26 +52,28 @@
 	"3G/4G" : 
 	[
 		{
-			"id_mesure" : 1,
+			"idmesure" : 1,
 			"longitude" : X,
 			"latitude" : Y,
-			"bande_passante_derniere_mesure" : 7.5,
+			"datemesure": X,
+			"bandepassante" : 7.5,
+			"forceSignal" : 4
 		},
 		//etc
 	]
 }
 
-// Demande de détails d'une mesure client->serveur
+// Demande de dï¿½tails d'une mesure client->serveur
 {
 	"id_mesure" : 6
 }
 
-// Réponse détails serveur->client
+// Rï¿½ponse dï¿½tails serveur->client
 {
 	"id_mesure" : 6,
 	"longitude" : X,
 	"latitude" : Y,
-	"localisation_mesure" : "gare part-dieu",	// Info à récupérer depuis une API google
+	"localisation_mesure" : "gare part-dieu",	// Info ï¿½ rï¿½cupï¿½rer depuis une API google
 	"bande_passante_derniere_mesure" : 7.5,
 	"date_derniere_mesure" : "01/10/2018",
 	"reseau" :
@@ -83,11 +85,11 @@
 	[
 		{
 			"id_mesure" : 4,
-			"longitude" : X,  //TODO : déterminer une constante rayon telle que deux mesures dans un rayon semblables soient considérées comme équivalentes géographiquement
+			"longitude" : X,  //TODO : dï¿½terminer une constante rayon telle que deux mesures dans un rayon semblables soient considï¿½rï¿½es comme ï¿½quivalentes gï¿½ographiquement
 			"latitude" : Y,
 			"bande_passante_mesure" : 5.5,
 		},
 		//etc
 	]
 }
-//TODO : déterminer si la modification des paramètres est locale au téléphone ou enregistrée sur le serveur.
+//TODO : dï¿½terminer si la modification des paramï¿½tres est locale au tï¿½lï¿½phone ou enregistrï¿½e sur le serveur.
