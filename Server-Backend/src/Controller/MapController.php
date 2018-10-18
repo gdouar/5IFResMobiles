@@ -41,14 +41,15 @@ class MapController extends BaseController
                 }
                 if($this->checkObjectAttribute($parameters, "bande_passante_minimale")){
                     $mesuresService->addBandwidthFilter($parameters->bande_passante_minimale);
-                    $allMeasures = $mesuresService->executeFilteredRequest();
                 }
+                $allMeasures = $mesuresService->executeFilteredRequest();
                 //TODO filtres des mesures
                 if($this->checkObjectAttribute($parameters, "rayon_recherche") && $parameters->rayon_recherche != 0){
                     if($this->checkObjectAttribute($requestBody, "longitudeActuelle") && $this->checkObjectAttribute($requestBody, "latitudeActuelle")){
                         $longitude = $requestBody->longitudeActuelle;
                         $latitude = $requestBody->latitudeActuelle;
                         $rayonRecherche = $parameters->rayon_recherche;
+                        $allMeasures = $this->geoFilter($allMeasures, $rayonRecherche, $latitude, $longitude);
                     } else throw new BadRequestHttpException('ERREUR : filtre de rayon de recherche demandé sans avoir toutes les coordonnées actuelles', null, 400);
                 }
             }
@@ -56,11 +57,26 @@ class MapController extends BaseController
         } else {
             throw new BadRequestHttpException('ERREUR : paramètres non fournis', null, 400);
         }
+
       //  $response = new Response( "{test: 'test'}");
         //TODO prendre en compte les filtres utilisateur
         //TODO clustering des mesures en fonction des réseaux
         return $this->getObjects($allNetworks);
     }
 
+    // Filtre géographique "rayon"
+    // Eventuellement l'intégrer plus tard aux requêtes si possible ?
+    private function geoFilter($mesuresArray, $nbKm, $currentLat, $currentLng){
+        return array_filter($mesuresArray, function($mesure) use($nbKm, $currentLat, $currentLng) {
+                return (6371 * acos (
+                      cos ( deg2rad($currentLat) )
+                      * cos( deg2rad( $mesure->getLatitude()))
+                      * cos( deg2rad( $mesure->getLongitude()) - deg2rad($currentLng) )
+                      + sin ( deg2rad($currentLat))
+                      * sin( deg2rad( $mesure->getLatitude()))
+                    )
+                  ) < $nbKm;
+        });  
+      } 
 
 }
