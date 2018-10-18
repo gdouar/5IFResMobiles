@@ -37,6 +37,6 @@ class ReseauxController extends BaseController
     public function getAllReseaux()
     {
         $service = new ReseauxService($this->getDoctrine());
-         return $this->getObjects($service);
+         return $this->getObjects($service->getAllData());
     }
 }

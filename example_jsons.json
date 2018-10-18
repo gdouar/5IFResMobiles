@@ -16,7 +16,7 @@
 	"parametres" : 
 	{		// (si les paramètres d'affichage sont enregistrés sur le téléphone)
 		"wifi" : true,
-		"3G/4G" : false,
+		"mobile" : false,
 		"bande_passante_minimale" : 6.5,
 		"rayon_recherche" : 4
 	},

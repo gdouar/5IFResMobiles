@@ -29,8 +29,7 @@ class BaseController extends Controller
         $this->serializer = new Serializer($normalizers, $encoders);
     }
 
-    protected function getObjects($service) {
-        $collection      = $service->getAllData();
+    protected function getObjects($collection) {
         $jsonCollection = ($this->serializer)->serialize($collection, 'json');
         $response     = new Response($jsonCollection); 
         $response->headers->set('Content-Type', 'application/json');

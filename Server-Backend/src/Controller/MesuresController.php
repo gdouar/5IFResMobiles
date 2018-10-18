@@ -42,6 +42,6 @@ class MesuresController extends BaseController
     public function getAllMesures()
     {
         $service = new MesuresService($this->getDoctrine());
-         return $this->getObjects($service);
+         return $this->getObjects($service->getAllData());
     }
 }
