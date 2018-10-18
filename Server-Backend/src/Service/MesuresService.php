@@ -10,7 +10,7 @@ class MesuresService extends DataService
 {
     function __construct($doctrine)
     {
-        parent::__construct($doctrine);
+        parent::__construct($doctrine, Mesures::class);
     }
 
     public function getAllData(){
