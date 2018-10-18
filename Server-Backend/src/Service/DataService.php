@@ -27,4 +27,9 @@ class DataService extends EntityRepository
         }
         return $this->queryBuilder;
     }
+
+        //exécution requête filtrée
+    public function executeFilteredRequest(){
+        return $this->getQueryBuilder()->getQuery()->execute();
+    }
 }

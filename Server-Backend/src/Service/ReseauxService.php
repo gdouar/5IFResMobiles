@@ -20,11 +20,6 @@ class ReseauxService extends DataService
        return $this->getQueryBuilder()->addCriteria(Criteria::create()->andWhere(Criteria::expr()->in('T.type', $typeFilters)));
     }
 
-    //exécution requête filtrée
-    public function executeFilteredRequest(){
-        return $this->getQueryBuilder()->getQuery()->execute();
-    }
-
     // Requête sans filtre
     public function getAllData(){
         return  $this->doctrine->getRepository(Reseaux::class)->findAll();

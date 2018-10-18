@@ -35,4 +35,8 @@ class BaseController extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+
+    protected function checkObjectAttribute($object, $fieldName){
+        return (property_exists($object, $fieldName)) && ($object->$fieldName !== null);
+    }
 }
