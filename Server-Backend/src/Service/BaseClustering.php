@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-class ClusteringService
+class BaseClustering
 {
     protected $measuresMatrix;
     public function __construct($matrix){
