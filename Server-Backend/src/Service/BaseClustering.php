@@ -5,8 +5,9 @@ namespace App\Service;
 class BaseClustering
 {
     protected $measuresMatrix;
+
     public function __construct($matrix){
-        $this->measuresMatrix = matrix;
+        $this->measuresMatrix = $matrix;
     }
 
 }

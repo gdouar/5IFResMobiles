@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use Phpml\Clustering\DBSCAN;
-use App\Service\BaseClustering;
 
 class DBScanClustering extends BaseClustering
 {
@@ -14,11 +13,12 @@ class DBScanClustering extends BaseClustering
     {
         parent::__construct($matrix);
         $this->minPoints = $minPoints;
-        $this->epsilon = $epsilon;
+        $this->epsilon   = $epsilon;
     }
 
-    protected function cluster(){
-        $dbscan = new DBSCAN($epsilon, $minPoints);
-        return $dbscan->cluster($matrix);
+    protected function cluster()
+    {
+        $dbscan = new DBSCAN($this->epsilon, $this->minPoints);
+        return $dbscan->cluster($this->measuresMatrix);
     }
 }
