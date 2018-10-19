@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
+use App\Util\GeoUtil;
 use App\Entity\Mesures;
 use App\Entity\Reseaux;
-use App\Repository\MesuresRepository;
 use App\Service\MesuresService;
 use App\Service\ReseauxService;
-use App\Util\GeoUtil;
+use App\Repository\MesuresRepository;
+use App\Repository\ReseauxRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -26,9 +27,10 @@ class MapController extends BaseController
      */
     public function getMap(Request $request)
     {
-        $mesuresRepo = $this->getDoctrine()->getRepository(Mesures::class);
+        $em = $this->getDoctrine()->getManager();
+        $mesuresRepo = new MesuresRepository($em); //$this->getDoctrine()->getRepository(Mesures::class);
         $allMeasures    = [];
-        $networkRepo = $this->getDoctrine()->getRepository(Reseaux::class);
+        $networkRepo = new ReseauxRepository($em);
         $requestBody    = json_decode($request->getContent());
         // 1. Filtrage résultats
         if ($this->checkObjectAttribute($requestBody, "parametres")) {
