@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Util\GeoUtil;
 use App\Entity\Mesures;
 use App\Service\MesuresService;
 use App\Service\ReseauxService;
@@ -97,14 +98,8 @@ class MapController extends BaseController
     // Eventuellement l'intégrer plus tard aux requêtes si possible ?
     private function geoFilter($mesuresArray, $nbKm, $currentLat, $currentLng){
         return array_filter($mesuresArray, function($mesure) use($nbKm, $currentLat, $currentLng) {
-                return (6371 * acos (
-                      cos ( deg2rad($currentLat) )
-                      * cos( deg2rad( $mesure->getLatitude()))
-                      * cos( deg2rad( $mesure->getLongitude()) - deg2rad($currentLng) )
-                      + sin ( deg2rad($currentLat))
-                      * sin( deg2rad( $mesure->getLatitude()))
-                    )
-                  ) < $nbKm;
+                return GeoUtil::getDist( $currentLat, $currentLng, 
+                    $mesure->getLatitude(), $mesure->getLongitude(),$nbKm); 
         });  
       } 
 
