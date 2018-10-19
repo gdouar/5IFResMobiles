@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Mesures;
-use App\Service\MesuresService;
+use App\Repository\MesuresRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -39,7 +39,8 @@ class MesuresController extends BaseController
 
     public function getAllMesures()
     {
-        $service = new MesuresService($this->getDoctrine());
-        return $this->getObjects($service->getAllData());
+        /** @var MesuresRepository $repo */
+        $repo = $this->getDoctrine()->getRepository(Mesures::class);
+        return $this->getObjects($repo->getAllData());
     }
 }

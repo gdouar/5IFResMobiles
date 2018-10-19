@@ -33,9 +33,4 @@ class MesuresRepository extends DataRepository
             )
         );
     }
-
-    public function getAllData()
-    {
-        return $this->getEntityManager()->getRepository($this->getClassName())->findAll();
-    }
 }
