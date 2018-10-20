@@ -29,7 +29,7 @@ class MapController extends BaseController
     public function getMap(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $mesuresRepo = new MesuresRepository($em); //$this->getDoctrine()->getRepository(Mesures::class);
+        $mesuresRepo = new MesuresRepository($em);
         $allMeasures    = [];
         $networkRepo = new ReseauxRepository($em);
         $requestBody    = json_decode($request->getContent());
@@ -81,7 +81,6 @@ class MapController extends BaseController
         $finalArray = [];
         foreach ($allNetworks as $network) {
             $networkMesures = [];
-            //TODO clustering des mesures en fonction des réseaux
             foreach ($allMesures as $measure) {
                 if ($measure->getIdReseau()->getIdReseau() == $network->getIdReseau()) {
                     array_push($networkMesures, (object)[
