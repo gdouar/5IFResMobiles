@@ -201,8 +201,8 @@ testData = [
             }
         ]
 if len(sys.argv) >= 2:
-    print(sys.argv[1])
-    print(type(sys.argv[1]))
+    #print(sys.argv[1])
+    #print(type(sys.argv[1]))
     #data=json.loads(str(sys.argv[1]))
     data=testData
     X = np.empty(shape=((len(data)), 3))
@@ -212,7 +212,15 @@ if len(sys.argv) >= 2:
         X[idx][2] = mesure["bandepassante"]
     clustering = DBSCAN(eps=0.5, min_samples=2).fit(X)
     result = clustering.labels_
-    print(X)
-    print(result)
+    clusters2mesures = {}
+    for idx, cluster in enumerate(result):
+        strCluster = "zone" + str(cluster)
+        if not(strCluster in clusters2mesures):
+            clusters2mesures[strCluster] = []
+        clusters2mesures[strCluster].append(data[idx])
+    #print(X)
+    print(clusters2mesures)
+    #print(len(X))
+    #print(result)
 else:
     raise Exception('Aucun input JSON détecté')
