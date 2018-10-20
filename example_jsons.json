@@ -32,10 +32,8 @@
 			"id_reseau" : 2
 			"ssid" : "gare part-dieu",
 			"zones" : 
-			[		// les zones ne sont enregistr�es que pour les r�seaux wifi
-				{			// TODO : d�cider l'enregistrement des zones en BD ou recalcul � chaque participation d'un client ?
-					"nom_zone" : "zone1", // Info � r�cup�rer depuis une API google en fonction du centre de la zone ?
-					"mesures" : 
+			{		// les zones ne sont enregistr�es que pour les r�seaux wifi
+				"zone1":			// TODO : d�cider l'enregistrement des zones en BD ou recalcul � chaque participation d'un client ?
 					[
 						{
 							"id_mesure" : 1,
@@ -46,7 +44,6 @@
 						//etc
 					]
 				}
-			]	
 		}
 	],
 	"3G/4G" : 

@@ -7,6 +7,7 @@ use App\Entity\Mesures;
 use App\Entity\Reseaux;
 use App\Service\MesuresService;
 use App\Service\ReseauxService;
+use App\Service\DBScanClustering;
 use App\Repository\MesuresRepository;
 use App\Repository\ReseauxRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,10 +94,11 @@ class MapController extends BaseController
                     ]);
                 }
             }
+            $clusterer = new DBScanClustering($networkMesures);
             array_push($finalArray, (object)[
                 "id_reseau" => $network->getIdReseau(),
                 "ssid"      => $network->getSsid(),
-                "mesures"   => $networkMesures,
+                "zones"   => $clusterer->cluster(),
             ]);
         }
         return $finalArray;

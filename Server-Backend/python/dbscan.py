@@ -4,8 +4,6 @@ import sys
 import numpy as np
 from sklearn.cluster import DBSCAN
 from sklearn import metrics
-print("argv")
-print((sys.argv))
 testData = [
             {
                 "idmesure": 1356,
@@ -219,7 +217,7 @@ if len(sys.argv) >= 2:
             clusters2mesures[strCluster] = []
         clusters2mesures[strCluster].append(data[idx])
     #print(X)
-    print(clusters2mesures)
+    print(json.dumps(clusters2mesures))
     #print(len(X))
     #print(result)
 else:

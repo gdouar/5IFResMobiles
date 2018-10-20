@@ -2,23 +2,20 @@
 
 namespace App\Service;
 
-use Phpml\Clustering\DBSCAN;
-
 class DBScanClustering extends BaseClustering
 {
-    private $minPoints;
-    private $epsilon;
-
-    function __construct($matrix, $minPoints, $epsilon)
+    function __construct($matrix)
     {
         parent::__construct($matrix);
-        $this->minPoints = $minPoints;
-        $this->epsilon   = $epsilon;
     }
 
-    protected function cluster()
+    /**
+     * Clustering DBScan
+     */
+    public function cluster()
     {
-        $dbscan = new DBSCAN($this->epsilon, $this->minPoints);
-        return $dbscan->cluster($this->measuresMatrix);
+        $output = shell_exec("python ../python/dbscan.py \"[]\"");
+        $result = json_decode($output);
+        return  $result;
     }
 }
