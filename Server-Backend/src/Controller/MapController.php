@@ -2,14 +2,14 @@
 
 namespace App\Controller;
 
-use App\Util\GeoUtil;
 use App\Entity\Mesures;
 use App\Entity\Reseaux;
-use App\Service\MesuresService;
-use App\Service\ReseauxService;
-use App\Service\DBScanClustering;
 use App\Repository\MesuresRepository;
 use App\Repository\ReseauxRepository;
+use App\Service\DBScanClustering;
+use App\Service\MesuresService;
+use App\Service\ReseauxService;
+use App\Util\GeoUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -24,15 +24,14 @@ class MapController extends BaseController
      * Collecte les paramètres d'affichage et renvoie la carte
      * @param Request $request
      * @return Response
-     * @throws \Doctrine\ORM\Query\QueryException
      */
     public function getMap(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $mesuresRepo = new MesuresRepository($em);
-        $allMeasures    = [];
-        $networkRepo = new ReseauxRepository($em);
-        $requestBody    = json_decode($request->getContent());
+        $em          = $this->getDoctrine()->getManager();
+        $mesuresRepo = $em->getRepository(Mesures::class);
+        $allMeasures = [];
+        $networkRepo = $em->getRepository(Reseaux::class);
+        $requestBody = json_decode($request->getContent());
         // 1. Filtrage résultats
         if ($this->checkObjectAttribute($requestBody, "parametres")) {
             $parameters  = $requestBody->parametres;
@@ -97,7 +96,7 @@ class MapController extends BaseController
             array_push($finalArray, (object)[
                 "id_reseau" => $network->getIdReseau(),
                 "ssid"      => $network->getSsid(),
-                "zones"   => $clusterer->cluster(),
+                "zones"     => $clusterer->cluster(),
             ]);
         }
         return $finalArray;
@@ -109,7 +108,7 @@ class MapController extends BaseController
     {
         return array_filter($mesuresArray, function ($mesure) use ($nbKm, $currentLat, $currentLng) {
             return GeoUtil::getDist($currentLat, $currentLng,
-                                    $mesure->getLatitude(), $mesure->getLongitude(), $nbKm);
+                $mesure->getLatitude(), $mesure->getLongitude(), $nbKm);
         });
     }
 
