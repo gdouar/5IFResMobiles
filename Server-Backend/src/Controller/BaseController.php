@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Controller\DataService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;

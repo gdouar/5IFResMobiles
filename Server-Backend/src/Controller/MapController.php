@@ -4,11 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Mesures;
 use App\Entity\Reseaux;
-use App\Repository\MesuresRepository;
-use App\Repository\ReseauxRepository;
 use App\Service\DBScanClustering;
-use App\Service\MesuresService;
-use App\Service\ReseauxService;
 use App\Util\GeoUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
