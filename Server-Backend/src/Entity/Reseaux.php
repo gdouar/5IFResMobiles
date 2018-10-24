@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * Reseaux
@@ -34,6 +36,16 @@ class Reseaux
      * @ORM\Column(name="Type", type="string", length=50, nullable=true)
      */
     private $type;
+
+    /**
+     * @OneToMany(targetEntity="Mesures", mappedBy="reseau")
+     */
+    private $mesures;
+
+    public function __construct()
+    {
+        $this->mesures = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -81,5 +93,13 @@ class Reseaux
     public function setType(?string $type): void
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMesures()
+    {
+        return $this->mesures;
     }
 }

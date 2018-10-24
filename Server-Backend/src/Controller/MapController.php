@@ -82,27 +82,29 @@ class MapController extends BaseController
         /** @var Reseaux $network */
         foreach ($allNetworks as $network) {
             $networkMesures = [];
+
             /** @var Mesures $measure */
             foreach ($allMesures as $measure) {
-                if ($measure->getIdReseau()->getIdReseau() == $network->getIdReseau()) {
-                    array_push($networkMesures, (object)[
+                if ($measure->getReseau() === $network) {
+                    $networkMesures[] = (object)[
                         "idmesure"      => $measure->getIdMesure(),
                         "latitude"      => $measure->getLatitude(),
                         "longitude"     => $measure->getLongitude(),
                         "datemesure"    => $measure->getDateMesure(),
                         "bandepassante" => $measure->getBandePassante(),
                         "forcesignal"   => $measure->getForceSignal(),
-                    ]);
+                    ];
                 }
             }
 
-            $clusterer = new DBScanClustering($networkMesures);
-            array_push($finalArray, (object)[
+            $clusterer    = new DBScanClustering($networkMesures);
+            $finalArray[] = (object)[
                 "id_reseau" => $network->getIdReseau(),
                 "ssid"      => $network->getSsid(),
                 "zones"     => $clusterer->cluster(),
-            ]);
+            ];
         }
+
         return $finalArray;
     }
 
@@ -115,6 +117,4 @@ class MapController extends BaseController
             return GeoUtil::isInRange($currentLat, $currentLng, $mesure->getLatitude(), $mesure->getLongitude(), $nbKm);
         });
     }
-
-
 }

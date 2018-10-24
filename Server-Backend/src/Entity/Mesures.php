@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * Mesures
@@ -59,12 +61,10 @@ class Mesures
     /**
      * @var Reseaux
      *
-     * @ORM\ManyToOne(targetEntity="Reseaux")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="IdReseau", referencedColumnName="IdReseau")
-     * })
+     * @ManyToOne(targetEntity="Reseaux", inversedBy="mesures")
+     * @JoinColumn(name="IdReseau", referencedColumnName="IdReseau")
      */
-    private $idreseau;
+    private $reseau;
 
     /**
      * @return int
@@ -165,16 +165,16 @@ class Mesures
     /**
      * @return Reseaux
      */
-    public function getIdreseau(): Reseaux
+    public function getReseau(): Reseaux
     {
-        return $this->idreseau;
+        return $this->reseau;
     }
 
     /**
-     * @param Reseaux $idreseau
+     * @param Reseaux $reseau
      */
-    public function setIdreseau(Reseaux $idreseau): void
+    public function setReseau(Reseaux $reseau): void
     {
-        $this->idreseau = $idreseau;
+        $this->reseau = $reseau;
     }
 }
