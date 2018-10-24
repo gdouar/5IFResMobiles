@@ -17,3 +17,7 @@ CREATE TABLE reseaux(
 ALTER TABLE `mesures` ADD INDEX(`IdReseau`);
 
 ALTER TABLE `mesures` ADD CONSTRAINT `fk_MesureReseaux` FOREIGN KEY (`IdReseau`) REFERENCES `reseaux`(`IdReseau`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `mesures` CHANGE `Latitude` `Latitude` DOUBLE NULL DEFAULT NULL;
+
+ALTER TABLE `mesures` CHANGE `Longitude` `Longitude` DOUBLE NULL DEFAULT NULL;
