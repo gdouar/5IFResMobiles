@@ -18,7 +18,7 @@ class DBScanClustering extends BaseClustering
         $encodedMatrix = str_replace ( "\"" , "\\\"" , $encodedMatrix);
         // pirouette pour faire tout passer en ligne de commande
         
-        $command = "python ../python/dbscan.py " . $encodedMatrix;
+        $command = "python3 ../python/dbscan.py " . $encodedMatrix;
         $output = shell_exec($command);
         $result = json_decode($output);
         return $result;
