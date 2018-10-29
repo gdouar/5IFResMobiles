@@ -4,7 +4,8 @@ import sys
 import numpy as np
 from sklearn.cluster import DBSCAN
 from sklearn import metrics
-DBSCAN_EPS = 0.5
+from sklearn.preprocessing import MinMaxScaler
+DBSCAN_EPS = 0.4
 DBSCAN_MINPOINTS = 2
 
 if len(sys.argv) >= 2:
@@ -14,17 +15,23 @@ if len(sys.argv) >= 2:
         strData += " " + str(sys.argv[i])
         i = i+1
     data=json.loads(strData)
+    #data=testData
     if len(data) > 0:
         X = np.empty(shape=((len(data)), 3))
         for idx, mesure in enumerate(data):
             X[idx][0] = mesure["latitude"]
             X[idx][1] = mesure["longitude"]
             X[idx][2] = mesure["bandepassante"]
+        scaler = MinMaxScaler()
+        scaler.fit(X)
+        #print(X)
+        #print(scaler.transform(X))
+        X = scaler.transform(X)
         clustering = DBSCAN(eps=DBSCAN_EPS, min_samples=DBSCAN_MINPOINTS).fit(X)
         result = clustering.labels_
         clusters2mesures = {}
         for idx, cluster in enumerate(result):
-            strCluster = "zone" + str(cluster)
+            strCluster = "zone" + str(cluster) 
             if not(strCluster in clusters2mesures):
                 clusters2mesures[strCluster] = []
             clusters2mesures[strCluster].append(data[idx])

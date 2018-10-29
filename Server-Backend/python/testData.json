@@ -1,194 +1,159 @@
 [
-        {
-            "idmesure": 1356,
-            "latitude": 45.7845,
-            "longitude": 4.88172,
-            "datemesure": {
-                "date": "2018-07-28 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 14.8603,
-            "forcesignal": 4
+
+    {
+        "idmesure": 1389,
+        "latitude": 45.7845344543457,
+        "longitude": 4.881256580352783,
+        "datemesure": {
+            "date": "2018-03-10 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1389,
-            "latitude": 45.7845,
-            "longitude": 4.88126,
-            "datemesure": {
-                "date": "2018-03-10 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 16.538,
-            "forcesignal": 2
+        "bandepassante": 16.538,
+        "forcesignal": 2
+    },
+    {
+        "idmesure": 1424,
+        "latitude": 45.78456115722656,
+        "longitude": 4.882565975189209,
+        "datemesure": {
+            "date": "2018-11-16 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1424,
-            "latitude": 45.7846,
-            "longitude": 4.88257,
-            "datemesure": {
-                "date": "2018-11-16 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 16.655,
-            "forcesignal": 1
+        "bandepassante": 16.655,
+        "forcesignal": 1
+    },
+    {
+        "idmesure": 1430,
+        "latitude": 45.784034729003906,
+        "longitude": 4.88258695602417,
+        "datemesure": {
+            "date": "2018-12-22 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1430,
-            "latitude": 45.784,
-            "longitude": 4.88259,
-            "datemesure": {
-                "date": "2018-12-22 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 15.6713,
-            "forcesignal": 4
+        "bandepassante": 15.6713,
+        "forcesignal": 4
+    },
+    {
+        "idmesure": 1456,
+        "latitude": 45.78402328491211,
+        "longitude": 4.87957763671875,
+        "datemesure": {
+            "date": "2019-01-22 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1456,
-            "latitude": 45.784,
-            "longitude": 4.87958,
-            "datemesure": {
-                "date": "2019-01-22 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 17.8081,
-            "forcesignal": 3
+        "bandepassante": 17.8081,
+        "forcesignal": 3
+    },
+    {
+        "idmesure": 1466,
+        "latitude": 45.78413391113281,
+        "longitude": 4.8813557624816895,
+        "datemesure": {
+            "date": "2018-09-19 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1466,
-            "latitude": 45.7841,
-            "longitude": 4.88136,
-            "datemesure": {
-                "date": "2018-09-19 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 16.9704,
-            "forcesignal": 3
+        "bandepassante": 16.9704,
+        "forcesignal": 3
+    },
+    {
+        "idmesure": 1523,
+        "latitude": 45.78413009643555,
+        "longitude": 4.883982181549072,
+        "datemesure": {
+            "date": "2018-08-10 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1523,
-            "latitude": 45.7841,
-            "longitude": 4.88398,
-            "datemesure": {
-                "date": "2018-08-10 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 16.228,
-            "forcesignal": 4
+        "bandepassante": 16.228,
+        "forcesignal": 4
+    },
+    {
+        "idmesure": 1565,
+        "latitude": 45.78457260131836,
+        "longitude": 4.878837585449219,
+        "datemesure": {
+            "date": "2018-07-05 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1560,
-            "latitude": 45.7842,
-            "longitude": 4.88222,
-            "datemesure": {
-                "date": "2018-11-23 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 14.4484,
-            "forcesignal": 4
+        "bandepassante": 17.6812,
+        "forcesignal": 5
+    },
+    {
+        "idmesure": 1588,
+        "latitude": 45.78453826904297,
+        "longitude": 4.883470058441162,
+        "datemesure": {
+            "date": "2018-07-22 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1565,
-            "latitude": 45.7846,
-            "longitude": 4.87884,
-            "datemesure": {
-                "date": "2018-07-05 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 17.6812,
-            "forcesignal": 5
+        "bandepassante": 16.5594,
+        "forcesignal": 1
+    },
+    {
+        "idmesure": 1698,
+        "latitude": 45.7845,
+        "longitude": 4.88022,
+        "datemesure": {
+            "date": "2019-01-12 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1588,
-            "latitude": 45.7845,
-            "longitude": 4.88347,
-            "datemesure": {
-                "date": "2018-07-22 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 16.5594,
-            "forcesignal": 1
+        "bandepassante": 14.2321,
+        "forcesignal": 3
+    },
+    {
+        "idmesure": 1723,
+        "latitude": 45.784446716308594,
+        "longitude": 4.879588603973389,
+        "datemesure": {
+            "date": "2018-08-06 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1698,
-            "latitude": 45.7845,
-            "longitude": 4.88022,
-            "datemesure": {
-                "date": "2019-01-12 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 14.2321,
-            "forcesignal": 3
+        "bandepassante": 15.8611,
+        "forcesignal": 1
+    },
+    {
+        "idmesure": 1733,
+        "latitude": 45.78460693359375,
+        "longitude": 4.882785797119141,
+        "datemesure": {
+            "date": "2019-01-27 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1704,
-            "latitude": 45.7846,
-            "longitude": 4.88273,
-            "datemesure": {
-                "date": "2018-11-16 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 14.9785,
-            "forcesignal": 5
+        "bandepassante": 17.6451,
+        "forcesignal": 5
+    },
+    {
+        "idmesure": 1745,
+        "latitude": 45.78449249267578,
+        "longitude": 4.879396438598633,
+        "datemesure": {
+            "date": "2018-03-07 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1723,
-            "latitude": 45.7844,
-            "longitude": 4.87959,
-            "datemesure": {
-                "date": "2018-08-06 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 15.8611,
-            "forcesignal": 1
+        "bandepassante": 16.3687,
+        "forcesignal": 4
+    },
+    {
+        "idmesure": 1769,
+        "latitude": 45.784339904785156,
+        "longitude": 4.880285263061523,
+        "datemesure": {
+            "date": "2018-10-02 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Berlin"
         },
-        {
-            "idmesure": 1733,
-            "latitude": 45.7846,
-            "longitude": 4.88279,
-            "datemesure": {
-                "date": "2019-01-27 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 17.6451,
-            "forcesignal": 5
-        },
-        {
-            "idmesure": 1745,
-            "latitude": 45.7845,
-            "longitude": 4.8794,
-            "datemesure": {
-                "date": "2018-03-07 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 16.3687,
-            "forcesignal": 4
-        },
-        {
-            "idmesure": 1769,
-            "latitude": 45.7843,
-            "longitude": 4.88029,
-            "datemesure": {
-                "date": "2018-10-02 00:00:00.000000",
-                "timezone_type": 3,
-                "timezone": "Europe/Berlin"
-            },
-            "bandepassante": 16.2056,
-            "forcesignal": 4
-        }
-    ]
+        "bandepassante": 16.2056,
+        "forcesignal": 4
+    }
+]""
