@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Service;
+use App\Util\CommandsUtil;
 
 class DBScanClustering extends BaseClustering
 {
@@ -18,7 +19,7 @@ class DBScanClustering extends BaseClustering
         $encodedMatrix = str_replace("\"", "\\\"", $encodedMatrix);
         // pirouette pour faire tout passer en ligne de commande
 
-        $command = "python3 " . __DIR__ . "/../../python/dbscan.py " . $encodedMatrix;
+        $command = CommandsUtil::getPythonShellCommand() . " " . __DIR__ . "/../../python/dbscan.py " . $encodedMatrix;
         $output  = shell_exec($command);
         $result  = json_decode($output);
         return $result;
