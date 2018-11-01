@@ -12,8 +12,14 @@ DBSCAN_EPS = 0.4
 DBSCAN_MINPOINTS = 2
 try:
     if len(sys.argv) >= 2:
-        with open(sys.argv[1], "r") as data:
-            data = data.read()
+        with open(sys.argv[1], "r+") as fileObj:
+            splittedLines = fileObj.read().splitlines(True)
+            data = splittedLines[0]
+            fileObj.truncate(0)
+            fileObj.flush()
+            fileObj.close()
+            if(len(splittedLines) > 1):                 # réécriture queue messages JSON
+                fileObj.writelines(splittedLines[1:])
             if data != "":
                 data = json.loads(data)
                 #data=testData

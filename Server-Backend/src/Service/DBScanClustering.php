@@ -22,22 +22,18 @@ class DBScanClustering extends BaseClustering
         $dataFile = "data.json";
         $fullPathDataFile = $pythonDir . $dataFile;
         if(!file_exists($fullPathDataFile)){
-            $fp = fopen($fullPathDataFile , "w");
+            $fp = fopen($fullPathDataFile , "a");
         }
         else {
-            $fp = fopen($fullPathDataFile, "r+");
+            $fp = fopen($fullPathDataFile, "a");
         }
         if (flock($fp, LOCK_EX )) { // acquière un verrou exclusif
-            ftruncate($fp, 0);     // effacement du contenu
-            fwrite($fp, $encodedMatrix);
+            fwrite($fp, $encodedMatrix."\r\n" );
             fflush($fp);            // libère le contenu avant d'enlever le verrou
             flock($fp, LOCK_UN);    // Enlève le verrou
-            
-            //TODO corriger bug de synchro ici, éventuellement utiliser des mutex ? => difficile car pas supportées sous Windows >:(
+            fclose($fp);
             $command = CommandsUtil::getPythonShellCommand() . " " . $pythonDir . "dbscan.py " . $fullPathDataFile;
             $output  = shell_exec($command); 
-            
-            fclose($fp);
         } else {
             echo "Impossible de verrouiller le fichier dump !";
         }
