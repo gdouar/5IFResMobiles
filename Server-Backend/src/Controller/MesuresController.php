@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Mesures;
+use App\Entity\Reseaux;
 use App\Repository\MesuresRepository;
+use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class MesuresController
@@ -21,7 +24,41 @@ class MesuresController extends BaseController
         $entityManager = $this->getDoctrine()->getManager();
 
         $mesure = new Mesures();
-        $mesure->setIdreseau($request->get('reseau'));
+
+        $reseaux = $entityManager->getRepository(Reseaux::class)->findBy(
+            [
+                'ssid'      => $request->get('ssid'),
+                'type'      => $request->get('type'),
+                'iprouteur' => $request->getClientIp(),
+            ]
+        );
+
+        /** @var Reseaux $reseau */
+        $reseau = empty($reseaux)
+            // Le réseau n'existe pas, on le crée via une requête POST au controller des réseaux
+            ? $entityManager->getRepository(Reseaux::class)->find( // On récupère le réseau nouvellement créé
+                json_decode( // On décode la réponse JSON
+                    (new Client())->post( // Requête de création
+                        $this->generateUrl( // Génération de l'URL par le routeur Symfo
+                            'create_reseaux',
+                            [],
+                            UrlGeneratorInterface::ABSOLUTE_URL
+                        ),
+                        [ // Paramètres de création
+                            'json' => [
+                                'ssid' => $request->get('ssid'),
+                                'type' => $request->get('type'),
+                                'iprouteur' => $request->getClientIp(),
+                            ],
+                        ]
+                    )->getBody(),
+                    true // On décode dans un tableau et pas un objet
+                )['id'] // On récupère l'id dans le corp de la réponse
+            )
+            // Le réseau existe, on l'utilise tel quel
+            : $reseaux[0];
+
+        $mesure->setReseau($reseau);
         $mesure->setBandepassante($request->get('bande_passante'));
         $mesure->setDatemesure(new \DateTime());
         $mesure->setForcesignal($request->get('force'));
@@ -34,7 +71,7 @@ class MesuresController extends BaseController
         // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
 
-        return new Response(json_encode(['status' => 'OK']));
+        return new Response(json_encode(['id' => $mesure->getIdmesure()]));
     }
 
     public function getAllMesures()

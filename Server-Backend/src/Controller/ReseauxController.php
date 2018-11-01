@@ -23,6 +23,7 @@ class ReseauxController extends BaseController
         $reseau = new Reseaux();
         $reseau->setSsid($request->get('ssid'));
         $reseau->setType($request->get('type'));
+        $reseau->setIprouteur($request->get('iprouteur'));
 
         // tell Doctrine you want to (eventually) save the Network (no queries yet)
         $entityManager->persist($reseau);
@@ -30,7 +31,7 @@ class ReseauxController extends BaseController
         // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
 
-        return new Response(json_encode(['status' => 'OK']));
+        return new Response(json_encode(['id' => $reseau->getIdreseau()]));
     }
 
     public function getAllReseaux()

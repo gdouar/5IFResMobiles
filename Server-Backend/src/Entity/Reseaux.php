@@ -42,6 +42,13 @@ class Reseaux
      */
     private $mesures;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="IpRouteur", type="string", length=200, nullable=true)
+     */
+    private $iprouteur;
+
     public function __construct()
     {
         $this->mesures = new ArrayCollection();
@@ -101,5 +108,21 @@ class Reseaux
     public function getMesures()
     {
         return $this->mesures;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getIprouteur(): ?string
+    {
+        return $this->iprouteur;
+    }
+
+    /**
+     * @param null|string $iprouteur
+     */
+    public function setIprouteur(?string $iprouteur): void
+    {
+        $this->iprouteur = $iprouteur;
     }
 }
