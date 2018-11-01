@@ -6,6 +6,8 @@ import java.util.List;
  *
  * @author GDouar
  */
+
+//TODO un jour peut-être
 public class LinearBandwidthSimulator implements BandwidthSimulator {
 
     @Override

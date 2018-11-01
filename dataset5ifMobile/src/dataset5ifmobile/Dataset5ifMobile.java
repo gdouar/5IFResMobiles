@@ -22,16 +22,15 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Lucas
  */
 public class Dataset5ifMobile {
-/*    public static double MAX_BANWIDTH = 17.84;
+/*    
     public static double MIN_BANDWIDTH = 1.15; **/
-    public static int MAX_FORCE_SIGNAL = 5;
+   
     public static int NB_RESULTS = 450;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         
-        String[] reseaux = {"Part-dieu", "Eduroam", "INSA INVITE"} ;
         Network[] coords = initMeasures();
         String filename = "result.sql";
         File file = new File(filename);
@@ -41,10 +40,10 @@ public class Dataset5ifMobile {
             FileOutputStream fos = new FileOutputStream(filename);
             fos.write(("DELETE FROM mesures;\n" +
                         "DELETE FROM reseaux;\n").getBytes());
-            String sql = "INSERT INTO reseaux (IdReseau, SSID, Type) VALUES ";
-            for(int i=0;i<reseaux.length;i++){
-                sql += "(" + (int) (i+1) + ",'" + reseaux[i] +  "', 'wifi')";
-                if(i+1 != reseaux.length) sql += ","; else sql += ";\n\n";
+            String sql = "INSERT INTO reseaux (IdReseau, SSID, Type, IpRouteur) VALUES ";
+            for(int i=0;i<coords.length;i++){
+                sql += "(" + (int) (i+1) + ",'" + coords[i].getSsid() +  "', 'wifi', '" + coords[i].getIpRouter() + "')";
+                if(i+1 != coords.length) sql += ","; else sql += ";\n\n";
             }
             fos.write(sql.getBytes());
             Date start = new GregorianCalendar(2018, 1, 1).getTime();
@@ -52,7 +51,7 @@ public class Dataset5ifMobile {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             for(int i=0;i<NB_RESULTS;i++){
                 // select random properties
-                int j = (int)(Math.random() * (reseaux.length));
+                int j = (int)(Math.random() * (coords.length));
                 Random r = new Random();
                 Network coord = coords[j];
                 coord.index = j;
@@ -63,15 +62,15 @@ public class Dataset5ifMobile {
                 int forceSignal = (int)(Math.random() * MAX_FORCE_SIGNAL+1);  */
                 measures.add(new Measure(longitude, latitude, randomDate, coord));
             }
-            BandwidthSimulator bs = new LinearBandwidthSimulator();
+            BandwidthSimulator bs = new RandomBandwidthSimulator();
             bs.setBandwidths(measures);
             bs.setSignals(measures);
-           sql = "INSERT INTO mesures (Latitude, Longitude, DateMesure, BandePasssante, ForceSignal, idReseau) VALUES";
+           sql = "INSERT INTO mesures (Latitude, Longitude, DateMesure, BandePassante, ForceSignal, idReseau) VALUES";
            Iterator<Measure> it = measures.iterator();
            while(it.hasNext()){
                Measure m = it.next();
                 sql += "(" + m.getLatitude() + "," + m.getLongitude() + ", '" + dateFormat.format(m.getDate()) 
-                        + "'," + m.getBandePassante() + "," + m.getForceSignal() + "," + m.getNetwork().index +")";
+                        + "'," + m.getBandePassante() + "," + m.getForceSignal() + "," + (m.getNetwork().index+1) +")";
                 if(it.hasNext()) sql += ","; else sql += ";";
                 sql += "\n";
            }
@@ -84,9 +83,9 @@ public class Dataset5ifMobile {
     
     
     public static Network[] initMeasures(){
-                Network partDieu = new Network(45.762672,4.853373, 45.760168, 4.857270);
-        Network eduroam =  new Network(45.784624, 4.870588, 45.784001, 4.884025);
-        Network insainv=  new Network(45.784624, 4.870588, 45.784001, 4.884025);
+        Network partDieu = new Network(45.762672,4.853373, 45.760168, 4.857270, "1.1.1.1", "Part-dieu");
+        Network eduroam =  new Network(45.784624, 4.870588, 45.784001, 4.884025, "2.2.2.2","Eduroam");
+        Network insainv=  new Network(45.784624, 4.870588, 45.784001, 4.884025, "3.3.3.3","INSA INVITE");
   
         Router routerPartDieu = new Router(45.761815, 4.855733, 300);
         Router routerEdu1 = new Router(45.784151, 4.869078, 300);

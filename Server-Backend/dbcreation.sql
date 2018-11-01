@@ -21,3 +21,5 @@ ALTER TABLE `mesures` ADD CONSTRAINT `fk_MesureReseaux` FOREIGN KEY (`IdReseau`)
 ALTER TABLE `mesures` CHANGE `Latitude` `Latitude` DOUBLE NULL DEFAULT NULL;
 
 ALTER TABLE `mesures` CHANGE `Longitude` `Longitude` DOUBLE NULL DEFAULT NULL;
+
+ALTER TABLE reseaux ADD COLUMN IpRouteur VARCHAR(200);

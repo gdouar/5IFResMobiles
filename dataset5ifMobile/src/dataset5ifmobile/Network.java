@@ -13,6 +13,22 @@ import java.util.List;
  */
 public class Network {
 
+    public String getSsid() {
+        return ssid;
+    }
+
+    public void setSsid(String ssid) {
+        this.ssid = ssid;
+    }
+
+    public String getIpRouter() {
+        return ipRouter;
+    }
+
+    public void setIpRouter(String ipRouter) {
+        this.ipRouter = ipRouter;
+    }
+
     public List<Router> getRouters() {
         return routers;
     }
@@ -22,11 +38,16 @@ public class Network {
     public final double minLng;
     public int index;
     private List<Router> routers;
-    public Network(double lat, double lon, double minlat, double minLon) {
+    private String ipRouter;
+    private String ssid;
+    
+    public Network(double lat, double lon, double minlat, double minLon, String ipRouter, String ssid) {
         maxLat = lat;
         maxLng = lon;
         minLat = minlat;
         minLng = minLon;
+        this.ipRouter = ipRouter;
+        this.ssid = ssid;
     }
     
     public void setRouters(List<Router> routers){
