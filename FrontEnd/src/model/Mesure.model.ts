@@ -1,3 +1,6 @@
+/**
+ * Représentation interne d'une mesure
+ */
 export class Mesure {
   lat : number;
   lon : number;

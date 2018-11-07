@@ -20,7 +20,7 @@ export class MyApp {
   rootPage: any = MapPage;
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
-    this.nav.push(this.rootPage);
+   // this.nav.push(this.rootPage);
   }
   ngOnInit() {
     // Let's navigate from TabsPage to Page1
@@ -39,6 +39,7 @@ export class MyApp {
     });
   }
   navigateToParam(){
+
     this.nav.push(ParametresPage);
   }
 
