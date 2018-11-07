@@ -13,7 +13,7 @@ export class MapService {
    * @param longitude la longitude actuelle
    * @param latitude la latitude actuelle
    */
-  async getMapDatas(parameters, longitude, latitude){
+  async getMapDatas(parameters, latitude, longitude){
     var mapDatasUrl = ConfConstants.BACKEND_URL + ConfConstants.MAPDATAS_URL;
     try{
       console.log("connecting to " + mapDatasUrl);
