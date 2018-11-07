@@ -17,7 +17,7 @@ class DBScanClustering extends BaseClustering
      */
     public function cluster()
     {
-        $encodedMatrix = json_encode($this->measuresMatrix);
+     /*   $encodedMatrix = json_encode($this->measuresMatrix);
         $pythonDir = __DIR__ . "/../../python/";
         $dataFile = "data.json";
         $fullPathDataFile = $pythonDir . $dataFile;
@@ -37,6 +37,14 @@ class DBScanClustering extends BaseClustering
         } else {
             echo "Impossible de verrouiller le fichier dump !";
         }
+        $result  = json_decode($output);
+        return $result; */
+        $encodedMatrix = json_encode($this->measuresMatrix);
+        $encodedMatrix = str_replace("\"", "\\\"", $encodedMatrix);
+        // pirouette pour faire tout passer en ligne de commande
+
+        $command = CommandsUtil::getPythonShellCommand() . " " . __DIR__ . "/../../python/dbscan.py " . $encodedMatrix;
+        $output  = shell_exec($command);
         $result  = json_decode($output);
         return $result;
     }

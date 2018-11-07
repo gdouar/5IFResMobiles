@@ -72,6 +72,7 @@ class MapController extends BaseController
         }       // L'utilisation du serializer a l'air de bugguer ici
         $response = new Response(json_encode($this->reverseObjectsAssociations($allNetworks, $allMeasures)));
         $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
 
