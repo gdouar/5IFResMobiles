@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar color = "primary"><button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Map</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <button>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-input placeholder="Recherche" text-center clearInput></ion-input>
+  </ion-item>
+  <agm-map [latitude]="50" [longitude]="50">
+    <ul>
+      <li *ngFor="let point of points">
+        <agm-marker [latitude]= point.lat [longitude]=point.lon label={{point.force}} (markerClick)="details()" ></agm-marker>
+      </li>
+    </ul>
+  </agm-map>
+
+</ion-content>
