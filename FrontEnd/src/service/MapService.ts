@@ -23,8 +23,6 @@ export class MapService {
         "longitudeActuelle" : longitude,
         "latitudeActuelle" : latitude
       };
-      console.log("sending ")
-      console.log(postData)
       return await httpJsonRequest(postData, mapDatasUrl, "POST")
   }
   catch(ex){
@@ -55,8 +53,6 @@ async function httpJsonRequest(jsonData, url, endpointMethod){
       console.error('getMap failed:', error);
       reject(null);
     }
-    console.log("got data : ");
-    console.log(body);
     resolve(JSON.parse(body));
   });
   });
