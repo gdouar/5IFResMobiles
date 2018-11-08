@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {Mesure} from "../../model/Mesure.model";
 import { MapService } from '../../service/MapService';
@@ -14,8 +14,14 @@ import { FileMock } from '../../mocks/FileMock';
  * Page de la carte principale
  */
 export class MapPage {
+  map: any;
+  
   points : Array<Mesure> =new Array<Mesure>();
   mapService : MapService = new MapService();
+
+  //TODO use cordova geolocation later
+  currentLat:number = 45.784535;
+  currentLng:number = 4.882980;
 
  constructor(  public navCtrl: NavController) {
 
@@ -32,7 +38,7 @@ export class MapPage {
     };*/
     var settingsFile = new FileMock()
     var settings = await new JSONFileAccess().readFile(settingsFile);
-    var networksPoints = await this.mapService.getMapDatas(	settings, 45.785081, 4.888602);
+    var networksPoints = await this.mapService.getMapDatas(	settings,this.currentLat, this.currentLng);
     console.log(networksPoints)
     var measures = new Array<Mesure>();
     for(var network in networksPoints){
@@ -53,8 +59,17 @@ export class MapPage {
         }
       }
     }
-    console.log(measures);
     this.points = measures;
+  }
+
+  /**
+   * Chargement de la carte
+   * @param map la carte
+   */
+  mapReady(map){
+    this.map = map;
+    this.map.setCenter(new google.maps.LatLng(this.currentLat, this.currentLng));
+    this.map.setZoom(15);
   }
 
   details(){

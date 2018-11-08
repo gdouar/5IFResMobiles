@@ -14,7 +14,8 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { AgmCoreModule } from '@agm/core';
 import {File} from '@ionic-native/file';
-
+import { Geolocation } from '@ionic-native/geolocation';
+import { GeolocationMock } from '@ionic-native-mocks/geolocation';
 
 @NgModule({
 
@@ -45,7 +46,8 @@ import {File} from '@ionic-native/file';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    {provide: Geolocation, useClass: GeolocationMock }
   ]
 })
 export class AppModule {}

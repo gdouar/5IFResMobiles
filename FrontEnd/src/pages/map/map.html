@@ -9,7 +9,7 @@
 
 <ion-content>
 
-  <agm-map [latitude]="50" [longitude]="50">
+  <agm-map (mapReady)="mapReady($event)" [latitude]="50" [longitude]="50">
     <ul>
       <li *ngFor="let point of points">
         <agm-marker [iconUrl]=point.colorUrl [latitude]= point.lat [longitude]=point.lon label={{point.bandePassanteAvg}} (markerClick)="details()" ></agm-marker>
