@@ -1,10 +1,17 @@
 <ion-header>
-  <ion-navbar color = "primary">
+  <ion-navbar #mycontent color = "primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Map</ion-title>
+    <ion-title>Carte principale</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only>
+          <ion-icon name="options"></ion-icon>
+        </button>
+      </ion-buttons>
+
   </ion-navbar>
+  
 </ion-header>
 
 <ion-content>
@@ -12,7 +19,7 @@
   <agm-map (mapReady)="mapReady($event)" [latitude]="50" [longitude]="50">
     <ul>
       <li *ngFor="let point of points">
-        <agm-marker [iconUrl]=point.colorUrl [latitude]= point.lat [longitude]=point.lon label={{point.bandePassanteAvg}} (markerClick)="details()" ></agm-marker>
+        <agm-marker [iconUrl]=point.colorUrl [latitude]= point.lat [longitude]=point.lon label={{point.bandePassanteAvg}} (markerClick)="details(point.id)" ></agm-marker>
       </li>
     </ul>
   </agm-map>

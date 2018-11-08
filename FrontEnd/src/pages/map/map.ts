@@ -5,7 +5,8 @@ import { MapService } from '../../service/MapService';
 import { ColorsUtil } from '../../util/ColorsUtil';
 import { JSONFileAccess } from '../../settings/JSONFileAccess';
 import { FileMock } from '../../mocks/FileMock';
-
+import{DetailPage} from '../details/details';
+import { Reseau } from '../../model/Reseau.model';
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html',
@@ -42,6 +43,7 @@ export class MapPage {
     console.log(networksPoints)
     var measures = new Array<Mesure>();
     for(var network in networksPoints){
+      var reseau = new Reseau(network["id_reseau"], network["ssid"]);
       for (var key in networksPoints[network]["zones"] ) {
         if (networksPoints[network]["zones"].hasOwnProperty(key)) {
           var zones = networksPoints[network]["zones"];
@@ -51,7 +53,7 @@ export class MapPage {
               for(var mesureZoneIndx in zones[zone]){
                 var mesureZone = zones[zone][mesureZoneIndx];
                 let measure = new Mesure(mesureZone["idmesure"], mesureZone["latitude"], mesureZone["longitude"], 
-                              mesureZone["datemesure"]["date"], mesureZone["bandepassante"], mesureZone["forcesignal"], colorZone);
+                              mesureZone["datemesure"]["date"], mesureZone["bandepassante"], mesureZone["forcesignal"], colorZone, reseau);
                 measures.push(measure);
               }
             }
@@ -72,8 +74,13 @@ export class MapPage {
     this.map.setZoom(15);
   }
 
-  details(){
-   //this.navCtrl.push(DetailPage);
+  details(clickedMarker){
+    console.log("marker is " + clickedMarker)
+    this.navCtrl.push(DetailPage, {
+        marker:this.points.find(function(element) {
+          return element.id == clickedMarker;
+        })
+    });
   }
 
 }
