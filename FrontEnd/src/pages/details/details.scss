@@ -1,7 +1,9 @@
 page-details{
 
-
+h3, #form, ion-list{
+  font-family: 'Roboto'!important;
+}
   agm-map {
-    height: 70%;
+    height: 50%!important;
   }
 }

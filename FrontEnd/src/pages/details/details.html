@@ -9,23 +9,19 @@
 
 <ion-content padding >
 
-  <agm-map [latitude]="mesure.lat" [longitude]="mesure.lon">
-    <agm-marker [latitude]="mesure.lat" [longitude]="mesure.lon" ></agm-marker>
+  <agm-map  (mapReady)="mapReady($event)" [latitude]="mesure.lat" [longitude]="mesure.lon">
+    <agm-marker [iconUrl]=mesure.colorUrl [latitude]= mesure.lat [longitude]=mesure.lon label={{mesure.bandePassanteAvg}} (markerClick)="details(mesure.id)" ></agm-marker>
   </agm-map>
-
-  <form id="form">
-    <h3>Type du réseau:</h3>
-    <ion-item>
-      <ion-icon> {{reseau}}</ion-icon>
-    </ion-item>
+  
+  <form id="form" style="margin-top:20px;">
+    <h3>Type du réseau: {{reseau}}</h3>
     <h3>Dernière mesure:</h3>
-
     <ion-list>
       <ion-item>
-        <ion-icon name="speedometer">{{mesure.force}}Mb/s</ion-icon>
+        <ion-icon name="speedometer"> {{mesure.bandePassante}} Mb/s</ion-icon>
       </ion-item>
       <ion-item>
-        <ion-icon name="calendar">{{mesure.date}}</ion-icon>
+        <ion-icon name="calendar"> {{mesure.date | date: 'dd/MM/yyyy'}} </ion-icon>
       </ion-item>
     </ion-list>
 

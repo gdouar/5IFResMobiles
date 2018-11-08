@@ -7,16 +7,17 @@ export class Mesure {
   id:number;
   lat : number;
   lon : number;
-  date : string ;
+  date : Date ;
   bandePassante : number;
   force : number;
   colorUrl:string;
   bandePassanteAvg : number;
   reseau:Reseau;
 
-  constructor(id:number, la : number, lo : number, dat : string, bp : number, forc : number, color:string, reseau : Reseau){
+  constructor(id:number, la : number, lo : number, dat : Date, bp : number, forc : number, color:string, reseau : Reseau){
     this.id = id;
     this.bandePassante = bp;
+    
     this.date = dat;
     this.lon = lo;
     this.lat = la;

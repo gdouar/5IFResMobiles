@@ -43,7 +43,7 @@ export class MapPage {
     console.log(networksPoints)
     var measures = new Array<Mesure>();
     for(var network in networksPoints){
-      var reseau = new Reseau(network["id_reseau"], network["ssid"]);
+      var reseau = new Reseau( networksPoints[network]["id_reseau"],  networksPoints[network]["ssid"]);
       for (var key in networksPoints[network]["zones"] ) {
         if (networksPoints[network]["zones"].hasOwnProperty(key)) {
           var zones = networksPoints[network]["zones"];
@@ -53,7 +53,8 @@ export class MapPage {
               for(var mesureZoneIndx in zones[zone]){
                 var mesureZone = zones[zone][mesureZoneIndx];
                 let measure = new Mesure(mesureZone["idmesure"], mesureZone["latitude"], mesureZone["longitude"], 
-                              mesureZone["datemesure"]["date"], mesureZone["bandepassante"], mesureZone["forcesignal"], colorZone, reseau);
+                              new Date(mesureZone["datemesure"]["date"]), Math.round(mesureZone["bandepassante"]* 100) /100, 
+                              mesureZone["forcesignal"], colorZone, reseau);
                 measures.push(measure);
               }
             }
