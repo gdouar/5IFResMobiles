@@ -4,9 +4,11 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title float-start>Paramètres</ion-title>
-
-    <ion-title float-end>Valider</ion-title>
-
+    <ion-buttons end>
+      <button ion-button icon-only (click)="validateParams()" >
+          <ion-icon name="checkmark" ></ion-icon>
+      </button>
+      </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -16,12 +18,12 @@
     <ion-list>
       <ion-item>
         <ion-label>Réseaux Wifi</ion-label>
-        <ion-checkbox [(ngModel)]="wifi" name="wifi" item-end></ion-checkbox>
+        <ion-checkbox [(ngModel)]="activerWifi" name="activerWifi" item-end></ion-checkbox>
       </ion-item>
 
       <ion-item>
         <ion-label>Réseaux 4G/3G</ion-label>
-        <ion-checkbox [(ngModel)]="G" name="G" item-end></ion-checkbox>
+        <ion-checkbox [(ngModel)]="activer4G" name="activer4G" item-end></ion-checkbox>
       </ion-item>
 
       <ion-item>
@@ -35,7 +37,7 @@
 
       <ion-item>
         <ion-label>Afficher les zones</ion-label>
-        <ion-checkbox [(ngModel)]="zones" name="zones" item-end></ion-checkbox>
+        <ion-checkbox [(ngModel)]="afficherZones" name="afficherZones" item-end></ion-checkbox>
       </ion-item>
     </ion-list>
 
@@ -45,10 +47,10 @@
 
       <ion-item>
         <ion-label>Collecte automatique</ion-label>
-        <ion-checkbox [(ngModel)]="collectAuto" name="collectAuto" item-end></ion-checkbox>
+        <ion-checkbox [(ngModel)]="collecteAuto" name="collecteAuto" item-end></ion-checkbox>
       </ion-item>
 
-      <ion-list *ngIf="collectAuto" [(ngModel)]="mode" name="mode" radio-group>
+     <!----> <ion-list *ngIf="collecteAuto" [(ngModel)]="mode" name="mode" radio-group>
 
         <ion-item>
           <ion-label>Echantillonnée</ion-label>

@@ -6,7 +6,10 @@ import { ColorsUtil } from '../../util/ColorsUtil';
 import { JSONFileAccess } from '../../settings/JSONFileAccess';
 import { FileMock } from '../../mocks/FileMock';
 import{DetailPage} from '../details/details';
+import{ParametresPage} from '../parametres/parametres';
 import { Reseau } from '../../model/Reseau.model';
+import { ConfConstants } from '../../conf/ConfConstants';
+
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html',
@@ -37,8 +40,9 @@ export class MapPage {
       "bande_passante_minimale": 5,
       "rayon_recherche": 0.5
     };*/
-    var settingsFile = new FileMock()
-    var settings = await new JSONFileAccess().readFile(settingsFile);
+    var settings = await FileMock.readAsText(ConfConstants.SETTINGS_FILENAME)
+    settings = JSON.parse(settings);
+    console.log(settings)
     var networksPoints = await this.mapService.getMapDatas(	settings,this.currentLat, this.currentLng);
     console.log(networksPoints)
     var measures = new Array<Mesure>();
@@ -82,6 +86,10 @@ export class MapPage {
           return element.id == clickedMarker;
         })
     });
+  }
+
+  settings(){
+    this.navCtrl.push(ParametresPage);
   }
 
 }
