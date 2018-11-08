@@ -8,7 +8,7 @@ from sklearn import metrics
 from sklearn.preprocessing import MinMaxScaler
 import os
 
-DBSCAN_EPS = 0.5
+DBSCAN_EPS = 0.3
 DBSCAN_MINPOINTS = 2
 try:
     if len(sys.argv) >= 2:
