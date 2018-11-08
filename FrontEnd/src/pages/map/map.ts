@@ -33,26 +33,28 @@ export class MapPage {
     var settingsFile = new FileMock()
     var settings = await new JSONFileAccess().readFile(settingsFile);
     var networksPoints = await this.mapService.getMapDatas(	settings, 45.785081, 4.888602);
+    console.log(networksPoints)
     var measures = new Array<Mesure>();
     for(var network in networksPoints){
       for (var key in networksPoints[network]["zones"] ) {
         if (networksPoints[network]["zones"].hasOwnProperty(key)) {
           var zones = networksPoints[network]["zones"];
           for(var zone in zones){
-            var colorZone = ColorsUtil.getRandomColor();
-            for(var mesureZoneIndx in zones[zone]){
-              var mesureZone = zones[zone][mesureZoneIndx];
-              let measure = new Mesure(mesureZone["idmesure"], mesureZone["latitude"], mesureZone["longitude"], 
-                            mesureZone["datemesure"]["date"], mesureZone["bandePassante"], mesureZone["forcesignal"], colorZone);
-              measures.push(measure);
+            if(zone != "zone-1"){      //Suppression du bruit
+              var colorZone = ColorsUtil.getRandomColor();
+              for(var mesureZoneIndx in zones[zone]){
+                var mesureZone = zones[zone][mesureZoneIndx];
+                let measure = new Mesure(mesureZone["idmesure"], mesureZone["latitude"], mesureZone["longitude"], 
+                              mesureZone["datemesure"]["date"], mesureZone["bandepassante"], mesureZone["forcesignal"], colorZone);
+                measures.push(measure);
+              }
             }
           }
         }
       }
     }
-   // console.log(measures);
+    console.log(measures);
     this.points = measures;
-    console.log(this.points)
   }
 
   details(){

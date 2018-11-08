@@ -9,6 +9,8 @@ export class Mesure {
   bandePassante : number;
   force : number;
   colorUrl:string;
+  bandePassanteAvg : number;
+
   constructor(id:number, la : number, lo : number, dat : string, bp : number, forc : number, color:string){
     this.id = id;
     this.bandePassante = bp;
@@ -17,5 +19,6 @@ export class Mesure {
     this.lat = la;
     this.force = forc;
     this.colorUrl = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|' + color;
+    this.bandePassanteAvg = Math.round(bp);
   }
 }
