@@ -1,6 +1,9 @@
 .ios, .md {
   agm-map {
     height: 100%;
-  }
 
+  }
+  .blurrWrapperLoadingEffect{
+    filter: blur(10px);
+  }
 }

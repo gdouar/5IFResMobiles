@@ -27,6 +27,7 @@ export class MapPage {
   currentLat:number = 45.784535;
   currentLng:number = 4.882980;
 
+  mapLoadingClass:string = "";
  constructor(  public navCtrl: NavController) {
 
    // this.points.push(new Mesure(50,50,"10/10/10",10,10));
@@ -42,6 +43,7 @@ export class MapPage {
  */
   async fillMapMarkers(){
     this.points = new Array<Mesure>();
+    this.mapLoadingClass = 'blurrWrapperLoadingEffect';
     var settings = await FileMock.readAsText(ConfConstants.SETTINGS_FILENAME)
     settings = JSON.parse(settings);
     console.log(settings)
@@ -68,6 +70,7 @@ export class MapPage {
         }
       }
     }
+    this.mapLoadingClass="";
     this.points = measures;
   }
 
