@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {Mesure} from "../../model/Mesure.model";
+import { ColorsUtil } from '../../util/ColorsUtil';
 
 
 @Component({
@@ -11,7 +12,7 @@ export class DetailPage {
   reseau : string;
 
   constructor() {
-    this.mesure=new Mesure(50,50,"10/10/10",10,10);
+    this.mesure=new Mesure(1, 50,50,"10/10/10",10,10, ColorsUtil.getRandomColor());
     this.reseau="4G";
   }
 

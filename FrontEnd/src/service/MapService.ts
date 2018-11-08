@@ -2,7 +2,7 @@
  * Gestion des services de base d'accès aux données du front-end
  */
 import * as request  from "request";
-import { ConfConstants } from '../conf/ConfConstants';
+import * as conf from '../conf/ConfConstants';
 
 export class MapService {
   constructor(){}
@@ -14,10 +14,9 @@ export class MapService {
    * @param latitude la latitude actuelle
    */
   async getMapDatas(parameters, latitude, longitude){
-    var mapDatasUrl = ConfConstants.BACKEND_URL + ConfConstants.MAPDATAS_URL;
+    var mapDatasUrl = conf.ConfConstants.BACKEND_URL + conf.ConfConstants.MAPDATAS_URL;
     try{
       console.log("connecting to " + mapDatasUrl);
-      var result = null;
       var postData = {
         "parametres" : parameters,
         "longitudeActuelle" : longitude,

@@ -1,0 +1,6 @@
+{
+    "wifi" : true,
+    "mobile" : false,
+    "bande_passante_minimale": 5,
+    "rayon_recherche": 0.5
+  }

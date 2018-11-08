@@ -13,6 +13,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { AgmCoreModule } from '@agm/core';
+import {File} from '@ionic-native/file';
+
+
 @NgModule({
 
   declarations: [
