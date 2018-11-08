@@ -8,7 +8,7 @@ export class Mesure {
   date : string ;
   bandePassante : number;
   force : number;
-  color:string;
+  colorUrl:string;
   constructor(id:number, la : number, lo : number, dat : string, bp : number, forc : number, color:string){
     this.id = id;
     this.bandePassante = bp;
@@ -16,6 +16,6 @@ export class Mesure {
     this.lon = lo;
     this.lat = la;
     this.force = forc;
-    this.color = color;
+    this.colorUrl = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|' + color;
   }
 }

@@ -52,6 +52,7 @@ export class MapPage {
     }
    // console.log(measures);
     this.points = measures;
+    console.log(this.points)
   }
 
   details(){

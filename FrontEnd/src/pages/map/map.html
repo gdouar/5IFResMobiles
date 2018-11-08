@@ -12,7 +12,7 @@
   <agm-map [latitude]="50" [longitude]="50">
     <ul>
       <li *ngFor="let point of points">
-        <agm-marker [latitude]= point.lat [longitude]=point.lon label={{point.force}} (markerClick)="details()" ></agm-marker>
+        <agm-marker [iconUrl]=point.colorUrl [latitude]= point.lat [longitude]=point.lon label={{point.force}} (markerClick)="details()" ></agm-marker>
       </li>
     </ul>
   </agm-map>
