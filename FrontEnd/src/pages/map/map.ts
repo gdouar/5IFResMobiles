@@ -34,12 +34,14 @@ export class MapPage {
 
   // Appel asynchrone au chargement de la carte
   async ionViewDidLoad(){
-    /*var settings = {
-      "wifi" : true,
-      "mobile" : false,
-      "bande_passante_minimale": 5,
-      "rayon_recherche": 0.5
-    };*/
+    await this.fillMapMarkers();
+  }
+
+/**
+ * Remplissage des points de la carte
+ */
+  async fillMapMarkers(){
+    this.points = new Array<Mesure>();
     var settings = await FileMock.readAsText(ConfConstants.SETTINGS_FILENAME)
     settings = JSON.parse(settings);
     console.log(settings)
@@ -89,7 +91,9 @@ export class MapPage {
   }
 
   settings(){
-    this.navCtrl.push(ParametresPage);
+    this.navCtrl.push(ParametresPage, {
+      mapPage: this
+    });
   }
 
 }

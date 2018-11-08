@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FileMock } from '../../mocks/FileMock';
 import { ConfConstants } from '../../conf/ConfConstants';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @Component({
   selector: 'page-parametres',
@@ -18,7 +19,11 @@ export class ParametresPage {
   afficherZones:boolean=true;
   collecteAuto:boolean=true;
   mode:string="";
-  constructor() {
+
+  mapPage:any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.mapPage = (navParams.get('mapPage'));
   }
 /**
  * Chargement de l'interface
@@ -34,7 +39,6 @@ export class ParametresPage {
     this.collecteAuto = true;
     this.freqEchantillon = params["frequence"];
     this.mode = this.freqEchantillon != null ? "echantillon" : "demandeServ";
-    console.log(params)
   }
 
 /**
@@ -51,11 +55,11 @@ export class ParametresPage {
       "collecte_auto":this.collecteAuto,
       "frequence":this.freqEchantillon
     };
-    console.log(savedParams)
     let parametersString = await FileMock.writeExistingFile(ConfConstants.SETTINGS_FILENAME, "", 
         JSON.stringify(savedParams)
     );
+    this.mapPage.fillMapMarkers();
+    this.navCtrl.pop();
   }
-
 }
 
