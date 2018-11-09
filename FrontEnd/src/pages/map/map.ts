@@ -19,8 +19,10 @@ import { ConfConstants } from '../../conf/ConfConstants';
  */
 export class MapPage {
   map: any;
-  
+  /**Les points actuellement affichés par la carte */
   points : Array<Mesure> =new Array<Mesure>();
+  /** Toutes les mesures des réseaux */
+  network2Points: Map<Reseau, Array<Mesure>> = new Map<Reseau, Array<Mesure>>();
   mapService : MapService = new MapService();
 
   //TODO use cordova geolocation later
@@ -49,9 +51,9 @@ export class MapPage {
     console.log(settings)
     var networksPoints = await this.mapService.getMapDatas(	settings,this.currentLat, this.currentLng);
     console.log(networksPoints)
-    var measures = new Array<Mesure>();
     for(var network in networksPoints){
       var reseau = new Reseau( networksPoints[network]["id_reseau"],  networksPoints[network]["ssid"]);
+      var measures = new Array<Mesure>();
       for (var key in networksPoints[network]["zones"] ) {
         if (networksPoints[network]["zones"].hasOwnProperty(key)) {
           var zones = networksPoints[network]["zones"];
@@ -65,13 +67,28 @@ export class MapPage {
                               mesureZone["forcesignal"], colorZone, reseau);
                 measures.push(measure);
               }
+              this.network2Points.set(reseau, measures);
             }
           }
         }
       }
     }
     this.mapLoadingClass="";
-    this.points = measures;
+    if(this.network2Points.size > 0){
+      this.points =  Array.from(this.network2Points)[0][1];   
+      ParametresPage.selectedNetwork = Array.from(this.network2Points)[0][0];
+    }
+    else {
+      this.points = new Array<Mesure>();
+    }
+  }
+
+  setDisplayedPoints(network){
+    this.points = this.network2Points.get(network);
+  }
+
+  getNetworksMap(){
+    return this.network2Points;
   }
 
   /**

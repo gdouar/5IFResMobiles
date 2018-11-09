@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { FileMock } from '../../mocks/FileMock';
 import { ConfConstants } from '../../conf/ConfConstants';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Reseau } from '../../model/Reseau.model';
+import { Mesure } from '../../model/Mesure.model';
+import { MapPage } from '../map/map';
 
 @Component({
   selector: 'page-parametres',
@@ -19,11 +22,23 @@ export class ParametresPage {
   afficherZones:boolean=true;
   collecteAuto:boolean=true;
   mode:string="";
-
-  mapPage:any;
-
+  mapPage:MapPage;
+  networks:Array<Reseau> = new Array<Reseau>();
+  static selectedNetwork:Reseau;
+  
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.mapPage = (navParams.get('mapPage'));
+    this.networks = [];
+    this.mapPage.getNetworksMap().forEach((value: Array<Mesure>, key: Reseau) => {
+      this.networks.push(key)
+  });
+
+  if(this.networks.length > 0 && ParametresPage.selectedNetwork == null){
+    ParametresPage.selectedNetwork = this.networks[0];
+  }
+  }
+  getSelectedNetwork(){
+    return ParametresPage.selectedNetwork;
   }
 /**
  * Chargement de l'interface
@@ -40,7 +55,12 @@ export class ParametresPage {
     this.freqEchantillon = params["frequence"];
     this.mode = this.freqEchantillon != null ? "echantillon" : "demandeServ";
   }
-
+selectNewNetwork(network){
+  console.log("called")
+  console.log(network)
+  ParametresPage.selectedNetwork = network;
+  this.mapPage.setDisplayedPoints(network);
+}
 /**
  * Sauvegarde des paramètres
  */
