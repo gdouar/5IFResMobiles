@@ -31,7 +31,10 @@ class ReseauxController extends BaseController
         // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
 
-        return new Response(json_encode(['id' => $reseau->getIdreseau()]));
+        $response = new Response(json_encode(['id' => $reseau->getIdreseau()]));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     public function getAllReseaux()

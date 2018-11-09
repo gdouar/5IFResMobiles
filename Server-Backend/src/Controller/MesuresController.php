@@ -71,7 +71,10 @@ class MesuresController extends BaseController
         // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
 
-        return new Response(json_encode(['id' => $mesure->getIdmesure()]));
+        $response = new Response(json_encode(['id' => $mesure->getIdmesure()]));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     public function getAllMesures()

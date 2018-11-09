@@ -17,6 +17,10 @@ create_mesures:
     path: /createMeasure
     defaults: { _controller: App\Controller\MesuresController::createMesures }
 
-get_map: 
+get_map:
     path: /getMap
     defaults: { _controller: App\Controller\MapController::getMap }
+
+get_ip:
+    path: /ip
+    defaults: { _controller: App\Controller\NetworkController::getIp }
