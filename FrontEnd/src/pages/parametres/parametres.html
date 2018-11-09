@@ -1,8 +1,5 @@
 <ion-header>
   <ion-navbar color="primary">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title float-start>Paramètres</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="validateParams()" >
@@ -39,6 +36,13 @@
         <ion-label>Afficher les zones</ion-label>
         <ion-checkbox [(ngModel)]="afficherZones" name="afficherZones" item-end></ion-checkbox>
       </ion-item>
+      <ion-item>
+        <ion-label>Afficher le réseau : </ion-label>
+        <ion-select #networkSelect (ionChange)="selectNewNetwork(networkSelect.value)" >
+            <ion-option *ngFor="let network of networks" [value] = network [selected]="network == getSelectedNetwork()" >{{network.ssid}}</ion-option>
+        </ion-select>
+        </ion-item>
+
     </ion-list>
 
     <h3>Collecte</h3>
