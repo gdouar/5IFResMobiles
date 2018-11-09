@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Normalizer\MesuresNormalizer;
+use App\Normalizer\ReseauxNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 class BaseController extends Controller
@@ -16,7 +17,7 @@ class BaseController extends Controller
     function __construct()
     {
         $encoders         = [new XmlEncoder(), new JsonEncoder()];
-        $normalizers      = [new ObjectNormalizer()];
+        $normalizers      = [new ReseauxNormalizer(), new MesuresNormalizer()];
         $this->serializer = new Serializer($normalizers, $encoders);
     }
 
