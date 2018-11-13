@@ -14,9 +14,9 @@ import { MapPage } from '../map/map';
  * Page des paramètres
  */
 export class ParametresPage {
-  bandePassante : number = 0;
+  bandePassante : any = 0;
   freqEchantillon : number = 0;
-  distanceRecherche :number = 0;
+  distanceRecherche :any = 0;
   activerWifi:boolean = true;
   activer4G:boolean = true;
   afficherZones:boolean=true;
@@ -46,13 +46,13 @@ export class ParametresPage {
   async ionViewDidLoad() {
     let parametersString = await  FileMock.readAsText(ConfConstants.SETTINGS_FILENAME);
     let params = JSON.parse(parametersString);
-    this.bandePassante = params["bande_passante_minimale"];
-    this.distanceRecherche = params["rayon_recherche"];
+    this.bandePassante = parseFloat(params["bande_passante_minimale"]);
+    this.distanceRecherche = parseFloat(params["rayon_recherche"]);
     this.activerWifi = params["wifi"];
     this.activer4G = params["mobile"];
     this.afficherZones = params["afficher_zones"];
     this.collecteAuto = true;
-    this.freqEchantillon = params["frequence"];
+    this.freqEchantillon = parseInt(params["frequence"]);
     this.mode = this.freqEchantillon != null ? "echantillon" : "demandeServ";
   }
 selectNewNetwork(network){
@@ -69,15 +69,18 @@ selectNewNetwork(network){
     var savedParams = {
       "wifi" : this.activerWifi,
       "mobile" : this.activer4G,
-      "bande_passante_minimale": this.bandePassante,
-      "rayon_recherche": this.distanceRecherche,
+      "bande_passante_minimale": parseFloat(this.bandePassante),
+      "rayon_recherche": parseFloat(this.distanceRecherche),
       "afficher_zones" : this.afficherZones,
       "collecte_auto":this.collecteAuto,
       "frequence":this.freqEchantillon
     };
+    console.log(savedParams);
     let parametersString = await FileMock.writeExistingFile(ConfConstants.SETTINGS_FILENAME, "", 
         JSON.stringify(savedParams)
     );
+    ParametresPage.selectedNetwork = null;
+    this.networks = [];
     this.mapPage.fillMapMarkers();
     this.navCtrl.pop();
   }

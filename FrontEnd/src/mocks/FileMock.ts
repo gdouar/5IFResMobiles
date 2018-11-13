@@ -22,8 +22,6 @@ export class FileMock {
   static async writeExistingFile(path: string, fileName: string, text: string | Blob): Promise<void>{
     return new Promise<void>((resolve, reject) => {
       this.settingsMock = JSON.parse(text.toString());
-      console.log("new : ")
-      console.log(this.settingsMock)
       resolve();
     })
   }

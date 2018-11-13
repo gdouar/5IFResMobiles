@@ -16,6 +16,8 @@
     "@angular/platform-browser": "5.2.10",
     "@angular/platform-browser-dynamic": "5.2.10",
     "@angular/router": "^5.2.10",
+    "@capacitor/cli": "^1.0.0-beta.8",
+    "@capacitor/core": "^1.0.0-beta.8",
     "@ionic-native-mocks/file": "^2.0.12",
     "@ionic-native-mocks/geolocation": "^2.0.12",
     "@ionic-native/core": "^4.7.0",

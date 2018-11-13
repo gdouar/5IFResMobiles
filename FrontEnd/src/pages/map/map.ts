@@ -45,6 +45,7 @@ export class MapPage {
  */
   async fillMapMarkers(){
     this.points = new Array<Mesure>();
+    this.network2Points = new Map<Reseau, Array<Mesure>>();
     this.mapLoadingClass = 'blurrWrapperLoadingEffect';
     var settings = await FileMock.readAsText(ConfConstants.SETTINGS_FILENAME)
     settings = JSON.parse(settings);
