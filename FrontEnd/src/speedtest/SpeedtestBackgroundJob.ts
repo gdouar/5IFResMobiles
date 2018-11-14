@@ -1,3 +1,4 @@
+import { SpeedTest } from "./Speedtest";
 
 /**
  * Job exécuté en arrière plan pour récupérer les infos de speedtest
@@ -10,13 +11,12 @@ export class SpeedtestBackgroundJob {
   }
 
   /** MAJ du processus en arrière-plan */
-  updateBackgroundJob(){
+  async updateBackgroundJob(){
     var that = this;
-    setTimeout(function () {
-      // Do Something Here
-      // Then recall the parent function to
-      // create a recursive loop.
-      console.log("test !")
+    setTimeout(async function () {
+      var bandwidth = await new SpeedTest().getNetworkBandwidth();
+      console.log("bandiwdth is " + bandwidth);
+      
       that.updateBackgroundJob();
     } , (this.frequencyInMinutes * 60 * 1000));
   }

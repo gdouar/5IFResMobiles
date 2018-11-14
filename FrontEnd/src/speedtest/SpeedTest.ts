@@ -29,9 +29,9 @@ export class SpeedTest {
             }
             var duration = (endTime - startTime) / 1000;
             var bitsLoaded = downloadSize * 8;
-            let speedMBps:any = (((bitsLoaded / duration)/ 1024/ 1024).toFixed(2));
+            let speedMBps:number = parseFloat(((bitsLoaded / duration)/ 1024/ 1024).toFixed(2));
             console.log("speed is : " + speedMBps);
-            resolve();
+            resolve(speedMBps);
         });
     });
   }
