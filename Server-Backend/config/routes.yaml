@@ -24,3 +24,7 @@ get_map:
 get_ip:
     path: /ip
     defaults: { _controller: App\Controller\NetworkController::getIp }
+
+speed_test:
+    path: /speedtest
+    defaults: {_controller: App\Controller\SpeedtestController::getSpeedtestImage}

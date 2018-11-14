@@ -9,6 +9,7 @@ import{DetailPage} from '../details/details';
 import{ParametresPage} from '../parametres/parametres';
 import { Reseau } from '../../model/Reseau.model';
 import { ConfConstants } from '../../conf/ConfConstants';
+import { SpeedTest } from '../../speedtest/Speedtest';
 
 @Component({
   selector: 'page-map',
@@ -82,6 +83,7 @@ export class MapPage {
     else {
       this.points = new Array<Mesure>();
     }
+    new SpeedTest().getNetworkBandwidth();
   }
 
   setDisplayedPoints(network){
