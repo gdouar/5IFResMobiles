@@ -12,11 +12,8 @@ export class SpeedTest {
   }
 
   // Récupère la bande passante mesurée actuele du réseau en téléchargement
-  async getNetworkBandwidth(){
-    console.log(this)
-    
+  async getNetworkBandwidth(){    
     return new Promise(function (resolve, reject) {
-
        var startTime = new Date().getTime();
         request.get("http://localhost/speedtest", {
             headers: {
