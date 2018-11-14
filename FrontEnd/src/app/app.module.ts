@@ -16,6 +16,7 @@ import { AgmCoreModule } from '@agm/core';
 import {File} from '@ionic-native/file';
 import { Geolocation } from '@ionic-native/geolocation';
 import { GeolocationMock } from '@ionic-native-mocks/geolocation';
+import { Network } from '@ionic-native/network';
 
 @NgModule({
 
@@ -46,6 +47,7 @@ import { GeolocationMock } from '@ionic-native-mocks/geolocation';
   providers: [
     StatusBar,
     SplashScreen,
+    Network,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: Geolocation, useClass: GeolocationMock }
   ]
