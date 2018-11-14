@@ -24,12 +24,13 @@ class MesuresController extends BaseController
         $entityManager = $this->getDoctrine()->getManager();
 
         $mesure = new Mesures();
-
+        $test = $request->get('ssid');
+        $test2 =  $request->get('type');
         $reseaux = $entityManager->getRepository(Reseaux::class)->findBy(
             [
                 'ssid'      => $request->get('ssid'),
                 'type'      => $request->get('type'),
-                'iprouteur' => $request->getClientIp(),
+                'iprouteur' => $request->get('ip'),
             ]
         );
 
@@ -73,7 +74,7 @@ class MesuresController extends BaseController
 
         $response = new Response(json_encode(['id' => $mesure->getIdmesure()]));
         $response->headers->set('Content-Type', 'application/json');
-
+        $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
 
@@ -82,5 +83,13 @@ class MesuresController extends BaseController
         /** @var MesuresRepository $repo */
         $repo = $this->getDoctrine()->getRepository(Mesures::class);
         return $this->getObjects($repo->getAllData());
+    }
+
+    // je hais cors
+    public function sendShittyProtocolResponse(){
+        $response = new Response();
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Headers', '*');
+        return $response;
     }
 }

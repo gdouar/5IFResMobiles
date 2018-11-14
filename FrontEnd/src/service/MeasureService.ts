@@ -3,8 +3,9 @@
  */
 import * as request  from "request";
 import * as conf from '../conf/ConfConstants';
+import { Mesure } from "../model/Mesure.model";
 
-export class IPService {
+export class MeasureService {
   constructor(){}
 
   /**
@@ -13,15 +14,23 @@ export class IPService {
    * @param longitude la longitude actuelle
    * @param latitude la latitude actuelle
    */
-  async getMyIp(){
-    var mapDatasUrl = conf.ConfConstants.BACKEND_URL + conf.ConfConstants.MY_IP_URL;
+  async sendMeasure(mesure : Mesure, ssid, ip, type){
+    var measureCreateURL = conf.ConfConstants.BACKEND_URL + conf.ConfConstants.CREATE_MEASURE_URL;
     try{
-      console.log("connecting to " + mapDatasUrl);
-      var postData = {};
-      return await httpJsonRequest(postData, mapDatasUrl, "GET")
+      console.log("connecting to " + measureCreateURL);
+      var postData = {
+            'ssid' : ssid,
+            'ip' : ip, 
+            'type' : type,
+            'bande_passante' : mesure.bandePassante,
+            'force' : mesure.force,
+            'lat' : mesure.lat,
+            'lon' : mesure.lon
+      };
+      return await httpJsonRequest(postData, measureCreateURL, "POST")
   }
   catch(ex){
-    console.log("ERROR getting ip data : " + ex)
+    console.log("ERROR sending measure data : " + ex)
     return null;
   }
 }
@@ -37,7 +46,7 @@ async function httpJsonRequest(jsonData, url, endpointMethod){
   return new Promise(function (resolve, reject) {
     request.post(url, {
       method:endpointMethod,
-      form: JSON.stringify(jsonData),
+      body: JSON.stringify(jsonData),
       headers: {
           'Content-Type': 'application/json',
           'Content-Length': JSON.stringify(jsonData).length,
@@ -46,7 +55,7 @@ async function httpJsonRequest(jsonData, url, endpointMethod){
   function (error, response, body) {
     console.log("finished")
     if (error) {
-      console.error('getIP failed:', error);
+      console.error('createMeasure failed:', error);
       reject(null);
     }
     resolve(JSON.parse(body));

@@ -16,6 +16,12 @@ create_reseaux:
 create_mesures:
     path: /createMeasure
     defaults: { _controller: App\Controller\MesuresController::createMesures }
+    methods: [POST]
+
+create_mesures_opts:
+    path: /createMeasure
+    defaults: { _controller: App\Controller\MesuresController::sendShittyProtocolResponse }
+    methods: [OPTIONS]
 
 get_map:
     path: /getMap
