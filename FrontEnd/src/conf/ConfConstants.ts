@@ -5,5 +5,8 @@ export class ConfConstants {
   public static get BACKEND_PORT():number  { return 80; }
   public static get BACKEND_URL():string { return "http://localhost:" + this.BACKEND_PORT + "/"; }
   public static get MAPDATAS_URL():string { return "getMap"; }
+  public static get MY_IP_URL():string { return "ip"; }
   public static get SETTINGS_FILENAME() : string {return "www/assets/settings.json"; }
+  /*public static get SPEEDTEST_IMAGE_URL() : string {return "http://www.kenrockwell.com/contax/images/g2/examples/31120037-5mb.jpg"; }
+  public static get SPEEDTEST_BYTES_TO_DOWNLOAD() : number {return 4995374; }*/
 }

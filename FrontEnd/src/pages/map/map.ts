@@ -84,7 +84,7 @@ export class MapPage {
     else {
       this.points = new Array<Mesure>();
     }
-    new SpeedtestBackgroundJob(0.5).updateBackgroundJob();
+    new SpeedtestBackgroundJob(0.25).updateBackgroundJob();
   //  new SpeedTest().getNetworkBandwidth();
   }
 
