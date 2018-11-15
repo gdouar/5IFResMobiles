@@ -46,44 +46,66 @@ export class SpeedtestBackgroundJob {
    * @param that cette instance d'objet
    */
   async sendWifiAndLocData(that:SpeedtestBackgroundJob){
-    let bandwidth:number = <number> (await new SpeedTest().getNetworkBandwidth());
-    console.log("bandwidth is " + bandwidth);
-    var myIp = <any>(await new IPService().getMyIp());
-    myIp = myIp.ip;
     var type;
     var ssid;
     var latitude;
     var longitude;
     var signal;
     if(ConfConstants.IS_PROD){
+      console.log("CALLING GSM SIGNAL")
+      signal = await that.getGSMSignal(<any>(window));   //tslint
+      console.log("FINAL SIGNAL = " + signal)
+  //    if(signal == -1) return;  // Le téléphone n'a pas pu récupérer de signal GSM, pas la peine de saturer le backend avec des données pourries
       // Ce code ne marchera pas avec un npm run ionic:serve classique (ni cordova run browser)
       // TODO tester cette partie sous android
-      ssid = WifiWizard2.getConnectedSSID();
       var network = new Network();
-      type = network.type;
-      if(type == "3g" || type == "4g" || type == "5g") {
+      console.log("TYPE")
+      var networkType = network.type;
+      console.log(networkType)
+      if(networkType == "3g" || networkType == "4g" || networkType == "5g") {
         type = "mobile";    
       }
+      try {
+        console.log("wifiwizard = ")
+        console.log(WifiWizard2);
+        ssid = await WifiWizard2.getConnectedSSID(); 
+        console.log("ssid = " + ssid);
+        }
+        catch(ex){        // Pas de connexion à un réseau wifi
+          console.log("could not get ssid :" + ex);
+          ssid = (type == "mobile" ? networkType : "INCONNU"); 
+          console.log("final ssid = " + ssid);
+        }
+      console.log("final type = " + type);
+      console.log("GEOLOC");
       var geolocation = new Geolocation();
       let position: Geoposition = await geolocation.getCurrentPosition();
+      console.log(position);
       latitude = position.coords.latitude;
+      console.log(latitude);
       longitude = position.coords.longitude;
-      signal = await that.getWifiSignal(<any>(window));   //tslint
+      console.log(longitude);
     }
     else {
       ssid = "TEST_DEV";
       latitude = 45.784535;
       longitude = 4.882980;
       type = "wifi";
-      signal = 4;
+      signal = -85;
     }     // TODO décider si la mesure doit s'afficher directement ou pas sur la carte ?
+    let bandwidth:number = <number> (await new SpeedTest().getNetworkBandwidth());
+    console.log("bandwidth is " + bandwidth);
+    var myIp = <any>(await new IPService().getMyIp());
+    myIp = myIp.ip;
     var measure = new Mesure(null, latitude, longitude, new Date(), bandwidth, signal, null, null);
     await new MeasureService().sendMeasure(measure, ssid, myIp, type);
+    
   }
   // retourne le signal Wifi actuellement capté
-async getWifiSignal(window:any){
+async getGSMSignal(window:any){
   return new Promise<number>(resolve => {
     window.SignalStrength.dbm(function(measuredDbm){
+      console.log("MEASURED " + measuredDbm),
       resolve(measuredDbm);
     });
   });
