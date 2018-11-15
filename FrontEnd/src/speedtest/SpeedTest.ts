@@ -15,7 +15,8 @@ export class SpeedTest {
   async getNetworkBandwidth(){    
     return new Promise(function (resolve, reject) {
        var startTime = new Date().getTime();
-        request.get("http://localhost/speedtest", {
+       var speedtestUrl = ConfConstants.BACKEND_URL + ConfConstants.SPEEDTEST_URL;
+        request.get(speedtestUrl, {
             headers: {
                 "Content-Type" : "application/x-www-form-urlencoded"
             },

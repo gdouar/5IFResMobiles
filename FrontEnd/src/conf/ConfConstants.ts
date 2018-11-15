@@ -7,6 +7,7 @@ export class ConfConstants {
   public static get BACKEND_URL():string { return "http://localhost:" + this.BACKEND_PORT + "/"; }
   public static get MAPDATAS_URL():string { return "getMap"; }
   public static get MY_IP_URL():string { return "ip"; }
+  public static get SPEEDTEST_URL():string { return "speedtest"; }
   public static get CREATE_MEASURE_URL():string { return "createMeasure"; }
   public static get SETTINGS_FILENAME() : string {return "www/assets/settings.json"; }
   /*public static get SPEEDTEST_IMAGE_URL() : string {return "http://www.kenrockwell.com/contax/images/g2/examples/31120037-5mb.jpg"; }
