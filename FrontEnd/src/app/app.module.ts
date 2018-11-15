@@ -48,6 +48,7 @@ import { Network } from '@ionic-native/network';
     StatusBar,
     SplashScreen,
     Network,
+    File,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: Geolocation, useClass: GeolocationMock }
   ]

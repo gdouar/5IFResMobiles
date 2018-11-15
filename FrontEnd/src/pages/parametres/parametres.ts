@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FileMock } from '../../mocks/FileMock';
+import { FileBase } from '../../mocks/FileBase';
 import { ConfConstants } from '../../conf/ConfConstants';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Reseau } from '../../model/Reseau.model';
@@ -46,7 +46,7 @@ export class ParametresPage {
  * Chargement de l'interface
  */
   async ionViewDidLoad() {
-    let parametersString = await  FileMock.readAsText(ConfConstants.SETTINGS_FILENAME);
+    let parametersString = await  FileBase.readAsText(ConfConstants.SETTINGS_FILENAME);
     let params = JSON.parse(parametersString);
     this.bandePassante = parseFloat(params["bande_passante_minimale"]);
     this.distanceRecherche = parseFloat(params["rayon_recherche"]);
@@ -79,7 +79,7 @@ selectNewNetwork(network){
       "frequence":this.freqEchantillon
     };
     console.log(savedParams);
-    let parametersString = await FileMock.writeExistingFile(ConfConstants.SETTINGS_FILENAME, "", 
+    let parametersString = await FileBase.writeExistingFile(ConfConstants.SETTINGS_FILENAME, "", 
         JSON.stringify(savedParams)
     );
    

@@ -1,7 +1,7 @@
 /**
  * Classe de mock pour l'accès aux fichiers du téléphone
  */
-export class FileMock {
+export class FileBase {
   static settingsMock : any = {
     "wifi" : true,
     "mobile" : false,
