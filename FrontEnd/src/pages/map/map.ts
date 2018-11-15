@@ -34,7 +34,6 @@ export class MapPage {
   //TODO use cordova geolocation later
   currentLat:number = 45.784535;
   currentLng:number = 4.882980;
-
   mapLoadingClass:string = "";
  constructor(  public navCtrl: NavController) {
 
@@ -124,12 +123,15 @@ export class MapPage {
         // a doit être égal à b
         return 0;
       });
+      var percentage = Math.max(
+        Math.min(MathUtil.moyenneBandePassanteZone(map.get(key)) /ConfConstants.OPTIMAL_BANDWIDTH_MAP * 100, 100),0);
+      var colorZone = ColorsUtil.getColorForPercentage(percentage / 100);
       var polygon = new google.maps.Polygon({
         paths: pointsToDisplay,
-        strokeColor: '#FF0000',
+        strokeColor: colorZone,
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: '#FF0000',
+        fillColor: colorZone,
         fillOpacity: 0.35      
       });
       polygon.setMap(this.map);

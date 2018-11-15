@@ -10,6 +10,7 @@ export class ConfConstants {
   public static get SPEEDTEST_URL():string { return "speedtest"; }
   public static get CREATE_MEASURE_URL():string { return "createMeasure"; }
   public static get SETTINGS_FILENAME() : string {return "www/assets/settings.json"; }
+  public static get OPTIMAL_BANDWIDTH_MAP():number {return 20;}
   /*public static get SPEEDTEST_IMAGE_URL() : string {return "http://www.kenrockwell.com/contax/images/g2/examples/31120037-5mb.jpg"; }
   public static get SPEEDTEST_BYTES_TO_DOWNLOAD() : number {return 4995374; }*/
 }
