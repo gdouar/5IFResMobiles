@@ -12,13 +12,13 @@ export class AndroidConfigFile extends FileBase {
         super();
         console.log("object created");
     }
-
+ 
     /**
-     * Création du fichier de configuration s'il n'existe pas
+     *  Obtention des paramètres de l'application et création du fichier de configuration s'il n'existe pas
      */
-    async initConfig(){
+    async readAsText(){
      // var that = this;
-      return new Promise((resolve, reject) => {
+      return new Promise<string>((resolve, reject) => {
         console.log(cordova);
         var localWindow = <any> window;
         localWindow.requestFileSystem(localWindow.PERSISTENT, 0, function (fs) {
@@ -30,7 +30,7 @@ export class AndroidConfigFile extends FileBase {
               reader.onloadend = function() {
                   console.log("Successful file read: ");
                   console.log(this.result);
-                  resolve();
+                  resolve(this.result.toString());
               };
               reader.readAsText(file);
           }, function(){
@@ -46,30 +46,28 @@ export class AndroidConfigFile extends FileBase {
                     reader.onloadend = function() {
                         console.log("Successful file read: ");
                         console.log(this.result);
-                        resolve();
+                        resolve(this.result.toString());
                     };
                     reader.readAsText(file);
-                }, function(e){console.log("failed to read file : " + e); reject();});
+                }, function(e){console.log("failed to read file : " + e); reject(null);});
                 };
                 fileWriter.onerror = function (e) {
                     console.log("Failed file write: " + e.toString());
-                    reject();
+                    reject(null);
                 };
                 fileWriter.write(JSON.stringify(FileBase.settingsMock));
               });
           });
-          
        //     this.writeFile(fileEntry, null, isAppend);
-             
         }, function(err){
           console.log('getFile() failed !')
           console.log(err);
-          reject();
+          reject(null);
         });
       }, function(err) {
           console.log("error accessing file system!")
           console.log(err);
-          reject();
+          reject(null);
         });
       });
     });

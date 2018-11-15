@@ -44,7 +44,9 @@ export class MapPage {
     await this.fillMapMarkers();
     if(ConfConstants.IS_PROD){
       let fileAccess = new AndroidConfigFile(new File());
-      await fileAccess.initConfig();
+      var resultObj = JSON.parse(await fileAccess.readAsText());
+      console.log("final result : ")
+      console.log(resultObj);
     }
     var settings : any= await FileBase.readAsText(ConfConstants.SETTINGS_FILENAME)
     SpeedtestBackgroundJob.getBackgroundJobInstance(JSON.parse(settings).frequence,JSON.parse(settings).collecte_auto).updateBackgroundJob(); 
