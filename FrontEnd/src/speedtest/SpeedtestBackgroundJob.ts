@@ -15,15 +15,32 @@ declare var WifiWizard2: any;
 
 export class SpeedtestBackgroundJob {
   frequencyInMinutes :number;
+  timeout:any;
+  static instance:SpeedtestBackgroundJob;
   constructor(frequencyInMinutes){
     this.frequencyInMinutes = frequencyInMinutes;
   }
 
+  /** Obtient une nouvelle instance ou l'instance existante mise à jour */
+  static getBackgroundJobInstance(frequencyInMinutes):SpeedtestBackgroundJob{
+    if(SpeedtestBackgroundJob.instance == null){
+      SpeedtestBackgroundJob.instance = new SpeedtestBackgroundJob(frequencyInMinutes);
+    }
+    else {
+      SpeedtestBackgroundJob.instance.frequencyInMinutes = frequencyInMinutes;
+    }
+    return SpeedtestBackgroundJob.instance;
+  }
+
+  /** Annule l'exécution programmée du prochain timeout */
+  cancelBackgroundJob(){
+    clearTimeout(this.timeout);
+  }
 
   /** MAJ du processus en arrière-plan */
   async updateBackgroundJob(){
     var that = this;
-    setTimeout(async function () {
+    that.timeout = setTimeout(async function () {
       await that.sendWifiAndLocData(that);
       that.updateBackgroundJob();
     } , (this.frequencyInMinutes * 60 * 1000));

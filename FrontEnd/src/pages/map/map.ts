@@ -84,8 +84,7 @@ export class MapPage {
     else {
       this.points = new Array<Mesure>();
     }
-    new SpeedtestBackgroundJob(settings.frequence).updateBackgroundJob();
-  //  new SpeedTest().getNetworkBandwidth();
+    SpeedtestBackgroundJob.getBackgroundJobInstance(settings.frequence).updateBackgroundJob();
   }
 
   setDisplayedPoints(network){
