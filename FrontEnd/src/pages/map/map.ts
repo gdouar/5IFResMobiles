@@ -49,8 +49,8 @@ export class MapPage {
     this.points = new Array<Mesure>();
     this.network2Points = new Map<Reseau, Array<Mesure>>();
     this.mapLoadingClass = 'blurrWrapperLoadingEffect';
-    var settings = await FileMock.readAsText(ConfConstants.SETTINGS_FILENAME)
-    settings = JSON.parse(settings);
+    var settings : any= await FileMock.readAsText(ConfConstants.SETTINGS_FILENAME)
+    settings = <any> (JSON.parse(settings));
     console.log(settings)
     var networksPoints = await this.mapService.getMapDatas(	settings,this.currentLat, this.currentLng);
     console.log(networksPoints)
@@ -84,7 +84,7 @@ export class MapPage {
     else {
       this.points = new Array<Mesure>();
     }
-    new SpeedtestBackgroundJob(0.25).updateBackgroundJob();
+    new SpeedtestBackgroundJob(settings.frequence).updateBackgroundJob();
   //  new SpeedTest().getNetworkBandwidth();
   }
 

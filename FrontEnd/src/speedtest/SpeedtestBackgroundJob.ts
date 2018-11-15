@@ -38,7 +38,6 @@ export class SpeedtestBackgroundJob {
     console.log("bandwidth is " + bandwidth);
     var myIp = <any>(await new IPService().getMyIp());
     myIp = myIp.ip;
-    console.log(myIp);
     var type;
     var ssid;
     var latitude;

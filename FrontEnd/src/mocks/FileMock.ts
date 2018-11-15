@@ -9,7 +9,7 @@ export class FileMock {
     "rayon_recherche": 0.5,
     "afficher_zones" : true,
     "collecte_auto":true,
-    "frequence":10
+    "frequence":0.25
   };
   constructor(){
   }
