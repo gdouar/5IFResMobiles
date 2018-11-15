@@ -42,13 +42,7 @@ export class MapPage {
   // Appel asynchrone au chargement de la carte
   async ionViewDidLoad(){
     await this.fillMapMarkers();
-    if(ConfConstants.IS_PROD){
-      let fileAccess = new AndroidConfigFile(new File());
-      var resultObj = JSON.parse(await fileAccess.readAsText());
-      console.log("final result : ")
-      console.log(resultObj);
-    }
-    var settings : any= await FileBase.readAsText(ConfConstants.SETTINGS_FILENAME)
+    var settings : any= ConfConstants.IS_PROD ? await new AndroidConfigFile(new File()).readAsText(): await FileBase.readAsText(ConfConstants.SETTINGS_FILENAME)
     SpeedtestBackgroundJob.getBackgroundJobInstance(JSON.parse(settings).frequence,JSON.parse(settings).collecte_auto).updateBackgroundJob(); 
   }
 
@@ -59,7 +53,7 @@ export class MapPage {
     this.points = new Array<Mesure>();
     this.network2Points = new Map<Reseau, Array<Mesure>>();
     this.mapLoadingClass = 'blurrWrapperLoadingEffect';
-    var settings : any= await FileBase.readAsText(ConfConstants.SETTINGS_FILENAME)
+    var settings : any= ConfConstants.IS_PROD ? await new AndroidConfigFile(new File()).readAsText(): await FileBase.readAsText(ConfConstants.SETTINGS_FILENAME)
     settings = <any> (JSON.parse(settings));
     console.log(settings)
     var networksPoints = await this.mapService.getMapDatas(	settings,this.currentLat, this.currentLng);

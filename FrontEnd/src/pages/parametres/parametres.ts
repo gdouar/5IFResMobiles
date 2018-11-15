@@ -7,6 +7,8 @@ import { Mesure } from '../../model/Mesure.model';
 import { MapPage } from '../map/map';
 import { SpeedtestBackgroundJob } from '../../speedtest/SpeedtestBackgroundJob';
 import { ALLOW_MULTIPLE_PLATFORMS } from '@angular/core/src/application_ref';
+import { AndroidConfigFile } from '../../fs/AndroidConfigFile';
+import { File } from '@ionic-native/file';
 
 @Component({
   selector: 'page-parametres',
@@ -46,7 +48,7 @@ export class ParametresPage {
  * Chargement de l'interface
  */
   async ionViewDidLoad() {
-    let parametersString = await  FileBase.readAsText(ConfConstants.SETTINGS_FILENAME);
+    let parametersString = ConfConstants.IS_PROD ? await new AndroidConfigFile(new File()).readAsText(): await FileBase.readAsText(ConfConstants.SETTINGS_FILENAME)
     let params = JSON.parse(parametersString);
     this.bandePassante = parseFloat(params["bande_passante_minimale"]);
     this.distanceRecherche = parseFloat(params["rayon_recherche"]);
@@ -57,6 +59,7 @@ export class ParametresPage {
     this.freqEchantillon = parseFloat(params["frequence"]);
     this.mode = this.freqEchantillon != null ? "echantillon" : "demandeServ";
   }
+
 selectNewNetwork(network){
   console.log("called")
   console.log(network)
