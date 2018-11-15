@@ -82,9 +82,17 @@ selectNewNetwork(network){
       "frequence":this.freqEchantillon
     };
     console.log(savedParams);
-    let parametersString = await FileBase.writeExistingFile(ConfConstants.SETTINGS_FILENAME, "", 
+    if(ConfConstants.IS_PROD){
+      await new AndroidConfigFile(new File()).writeExistingFile(
         JSON.stringify(savedParams)
-    );
+      );
+    }
+    else {
+      await FileBase.writeExistingFile(ConfConstants.SETTINGS_FILENAME, "", 
+        JSON.stringify(savedParams)
+      );
+    }
+
    
 
   }

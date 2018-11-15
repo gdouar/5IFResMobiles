@@ -12,12 +12,42 @@ export class AndroidConfigFile extends FileBase {
         super();
         console.log("object created");
     }
- 
+    /**Ecriture dans le fichier de configuration */
+    async writeExistingFile(text: string | Blob): Promise<void>{
+      return new Promise<void>((resolve, reject) => {
+        var localWindow = <any> window;
+        localWindow.requestFileSystem(localWindow.PERSISTENT, 0, function (fs) {
+          fs.root.getFile("connectme.json", {create: false, exclusive: false}, function(fileEntry) {
+            console.log("connectme.json exists.");
+            console.log(fileEntry);
+            fileEntry.createWriter(function (fileWriter) {
+              fileWriter.onwriteend = function() {
+                console.log("Successful file write...");
+                resolve();
+              }
+              fileWriter.onerror = function (e) {
+                console.log("Failed file write: " + e.toString());
+                reject(null);
+            };
+            fileWriter.write((text));
+            });
+          }, function(err){
+            console.log('getFile() failed !')
+            console.log(err);
+            reject(null);
+          }), 
+          function(err) {
+            console.log("error accessing file system!")
+            console.log(err);
+            reject(null);
+          }});
+    });
+  }
     /**
      *  Obtention des paramètres de l'application et création du fichier de configuration s'il n'existe pas
      */
     async readAsText(){
-     // var that = this;
+      var that = this;
       return new Promise<string>((resolve, reject) => {
         console.log(cordova);
         var localWindow = <any> window;
