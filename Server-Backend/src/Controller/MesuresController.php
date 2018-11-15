@@ -49,7 +49,7 @@ class MesuresController extends BaseController
                             'json' => [
                                 'ssid' => $request->get('ssid'),
                                 'type' => $request->get('type'),
-                                'iprouteur' => $request->getClientIp(),
+                                'iprouteur' => $request->get('ip'),
                             ],
                         ]
                     )->getBody(),
