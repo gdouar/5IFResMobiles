@@ -13,6 +13,8 @@ import { SpeedTest } from '../../speedtest/Speedtest';
 import { SpeedtestBackgroundJob } from '../../speedtest/SpeedtestBackgroundJob';
 import { AndroidConfigFile } from '../../fs/AndroidConfigFile';
 import { File } from '@ionic-native/file';
+import { MathUtil } from '../../util/MathUtil';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'page-map',
@@ -28,7 +30,7 @@ export class MapPage {
   /** Toutes les mesures des réseaux */
   network2Points: Map<Reseau, Array<Mesure>> = new Map<Reseau, Array<Mesure>>();
   mapService : MapService = new MapService();
-
+  displayedPolygons : Array<google.maps.Polygon> = new Array();
   //TODO use cordova geolocation later
   currentLat:number = 45.784535;
   currentLng:number = 4.882980;
@@ -61,14 +63,13 @@ export class MapPage {
     for(var network in networksPoints){
       var reseau = new Reseau( networksPoints[network]["id_reseau"],  networksPoints[network]["ssid"]);
       var measures = new Array<Mesure>();
-      for (var key in networksPoints[network]["zones"] ) {
+      var zones = networksPoints[network]["zones"];
+      for (var key in zones ) {
         if (networksPoints[network]["zones"].hasOwnProperty(key)) {
-          var zones = networksPoints[network]["zones"];
-          for(var zone in zones){
-            if(zone != "zone-1"){      //Suppression du bruit
+            if(key != "zone-1"){      //Suppression du bruit
               var colorZone = ColorsUtil.getRandomColor();
-              for(var mesureZoneIndx in zones[zone]){
-                var mesureZone = zones[zone][mesureZoneIndx];
+              for(var mesureZoneIndx in zones[key]){
+                var mesureZone = zones[key][mesureZoneIndx];
                 let measure = new Mesure(mesureZone["idmesure"], mesureZone["latitude"], mesureZone["longitude"], 
                               new Date(mesureZone["datemesure"]["date"]), Math.round(mesureZone["bandepassante"]* 100) /100, 
                               mesureZone["forcesignal"], colorZone, reseau);
@@ -76,7 +77,6 @@ export class MapPage {
               }
               this.network2Points.set(reseau, measures);
             }
-          }
         }
       }
     }
@@ -84,15 +84,57 @@ export class MapPage {
     if(this.network2Points.size > 0){
       this.points =  Array.from(this.network2Points)[0][1];   
       ParametresPage.selectedNetwork = Array.from(this.network2Points)[0][0];
+      this.updateZones();
     }
     else {
       this.points = new Array<Mesure>();
     }
-   
   }
 
   setDisplayedPoints(network){
     this.points = this.network2Points.get(network);
+    this.updateZones();
+  }
+
+  updateZones(){
+    for(var pol in this.displayedPolygons){
+      this.displayedPolygons[pol].setMap(null);     // Supprime les anciens polygones
+    }
+    let map = new Map<String, Array<Mesure>>();
+    for(var po in this.points){       // répartition par zone
+      let mes : Mesure = this.points[po];
+      if(!map.has(mes.colorUrl)){
+        let arr = new Array<Mesure>();
+        arr.push(mes);
+        map.set(mes.colorUrl, arr);
+      } else map.get(mes.colorUrl).push(mes);
+    }
+    this.displayedPolygons = new Array();
+    var that = this;
+    map.forEach((value, key) => {
+      var polygonePoints = MathUtil.getEnveloppeConvexe(map.get(key));
+      var pointsToDisplay = polygonePoints.map(m => new google.maps.LatLng(m.lat, m.lon)).sort(function(a,b) {
+        let centerPoint : Mesure = that.points[0];
+        if (MathUtil.angleFromCoordinate(a.lat(),a.lng(), centerPoint.lat, centerPoint.lon) <
+            MathUtil.angleFromCoordinate(b.lat(),b.lng(), centerPoint.lat, centerPoint.lon))
+            return -1;
+        if (MathUtil.angleFromCoordinate(a.lat(),a.lng(), centerPoint.lat, centerPoint.lon) > 
+            MathUtil.angleFromCoordinate(b.lat(),b.lng(), centerPoint.lat, centerPoint.lon))
+            return 1;
+        // a doit être égal à b
+        return 0;
+      });
+      var polygon = new google.maps.Polygon({
+        paths: pointsToDisplay,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FF0000',
+        fillOpacity: 0.35      
+      });
+      polygon.setMap(this.map);
+      this.displayedPolygons.push(polygon)
+    });
   }
 
   getNetworksMap(){
