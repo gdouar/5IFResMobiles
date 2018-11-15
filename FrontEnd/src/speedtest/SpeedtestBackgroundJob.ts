@@ -4,7 +4,7 @@ import { IPService } from "../service/IPService";
 import { Network } from "@ionic-native/network";
 import { ConfConstants } from "../conf/ConfConstants";
 import { Geolocation } from '@ionic-native/geolocation';
-import { Geoposition } from "@ionic-native-mocks/geolocation";
+import { Geoposition } from '@ionic-native/geolocation';
 import { Reseau } from "../model/Reseau.model";
 import { MeasureService } from "../service/MeasureService";
 

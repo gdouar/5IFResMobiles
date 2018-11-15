@@ -15,7 +15,8 @@ import { AndroidConfigFile } from '../../fs/AndroidConfigFile';
 import { File } from '@ionic-native/file';
 import { MathUtil } from '../../util/MathUtil';
 import { stringify } from '@angular/compiler/src/util';
-
+import { Geolocation } from '@ionic-native/geolocation';
+import { Geoposition } from '@ionic-native/geolocation';
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html',
@@ -57,7 +58,15 @@ export class MapPage {
     var settings : any= ConfConstants.IS_PROD ? await new AndroidConfigFile(new File()).readAsText(): await FileBase.readAsText(ConfConstants.SETTINGS_FILENAME)
     settings = <any> (JSON.parse(settings));
     console.log(settings)
-    var networksPoints = await this.mapService.getMapDatas(	settings,this.currentLat, this.currentLng);
+    var networksPoints;
+    if(ConfConstants.IS_PROD){
+      var geolocation = new Geolocation();
+      let position: Geoposition = await geolocation.getCurrentPosition();
+      networksPoints = await this.mapService.getMapDatas(	settings,position.coords.latitude, position.coords.longitude);
+    }
+    else {
+      networksPoints = await this.mapService.getMapDatas(	settings,this.currentLat, this.currentLng);
+    }
     console.log(networksPoints)
     for(var network in networksPoints){
       var reseau = new Reseau( networksPoints[network]["id_reseau"],  networksPoints[network]["ssid"]);
