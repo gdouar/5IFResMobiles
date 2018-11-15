@@ -6,6 +6,7 @@ import { Reseau } from '../../model/Reseau.model';
 import { Mesure } from '../../model/Mesure.model';
 import { MapPage } from '../map/map';
 import { SpeedtestBackgroundJob } from '../../speedtest/SpeedtestBackgroundJob';
+import { ALLOW_MULTIPLE_PLATFORMS } from '@angular/core/src/application_ref';
 
 @Component({
   selector: 'page-parametres',
@@ -52,7 +53,7 @@ export class ParametresPage {
     this.activerWifi = params["wifi"];
     this.activer4G = params["mobile"];
     this.afficherZones = params["afficher_zones"];
-    this.collecteAuto = true;
+    this.collecteAuto = params["collecte_auto"];
     this.freqEchantillon = parseFloat(params["frequence"]);
     this.mode = this.freqEchantillon != null ? "echantillon" : "demandeServ";
   }
@@ -81,13 +82,29 @@ selectNewNetwork(network){
     let parametersString = await FileMock.writeExistingFile(ConfConstants.SETTINGS_FILENAME, "", 
         JSON.stringify(savedParams)
     );
-    //maj fréquence 
-    let backgroundJob : SpeedtestBackgroundJob = SpeedtestBackgroundJob.getBackgroundJobInstance(parseFloat(<any>(this.freqEchantillon)));
+   
+
+  }
+  
+ async updateMap(){
     // maj carte
     ParametresPage.selectedNetwork = null;
     this.networks = [];
     this.mapPage.fillMapMarkers();
     this.navCtrl.pop();
+ }
+ async updateDataCollect(){
+    let backgroundJob : SpeedtestBackgroundJob = 
+          SpeedtestBackgroundJob.getBackgroundJobInstance(parseFloat(<any>(this.freqEchantillon)), this.collecteAuto);
+    backgroundJob.setActive(this.collecteAuto);
+    await backgroundJob.updateBackgroundJob();
+    await this.validateParams();
   }
+
+  async updateDataFrequency(){
+    SpeedtestBackgroundJob.getBackgroundJobInstance(parseFloat(<any>(this.freqEchantillon)), this.collecteAuto);
+    await this.validateParams();
+  }
+
 }
 

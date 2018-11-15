@@ -44,6 +44,8 @@ export class MeasureService {
  */
 async function httpJsonRequest(jsonData, url, endpointMethod){
   return new Promise(function (resolve, reject) {
+    console.log("sending : ")
+    console.log(jsonData)
     request.post(url, {
       method:endpointMethod,
       body: JSON.stringify(jsonData),

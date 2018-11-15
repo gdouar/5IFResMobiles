@@ -17,28 +17,39 @@ export class SpeedtestBackgroundJob {
   frequencyInMinutes :number;
   timeout:any;
   static instance:SpeedtestBackgroundJob;
+  active:boolean;
   constructor(frequencyInMinutes){
     this.frequencyInMinutes = frequencyInMinutes;
   }
 
   /** Obtient une nouvelle instance ou l'instance existante mise à jour */
-  static getBackgroundJobInstance(frequencyInMinutes):SpeedtestBackgroundJob{
+  static getBackgroundJobInstance(frequencyInMinutes, active):SpeedtestBackgroundJob{
     if(SpeedtestBackgroundJob.instance == null){
       SpeedtestBackgroundJob.instance = new SpeedtestBackgroundJob(frequencyInMinutes);
     }
     else {
       SpeedtestBackgroundJob.instance.frequencyInMinutes = frequencyInMinutes;
     }
+    SpeedtestBackgroundJob.instance.setActive(active);
     return SpeedtestBackgroundJob.instance;
+  }
+  setActive(active){
+    this.active = active;
+  }
+  /** Annulation de la collecte */
+  clearBackgroundJob(){
+    clearTimeout(this.timeout);
   }
 
   /** MAJ du processus en arrière-plan */
   async updateBackgroundJob(){
     var that = this;
-    that.timeout = setTimeout(async function () {
-      await that.sendWifiAndLocData(that);
-      that.updateBackgroundJob();
-    } , (this.frequencyInMinutes * 60 * 1000));
+    if(this.active){
+      that.timeout = setTimeout(async function () {
+        await that.sendWifiAndLocData(that);
+        that.updateBackgroundJob();
+      } , (this.frequencyInMinutes * 60 * 1000));
+    }
   }
 
   /**

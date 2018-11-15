@@ -2,7 +2,7 @@
   <ion-navbar color="primary">
     <ion-title float-start>Paramètres</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="validateParams()" >
+      <button ion-button icon-only (click)="updateMap()" >
           <ion-icon name="checkmark" ></ion-icon>
       </button>
       </ion-buttons>
@@ -15,26 +15,26 @@
     <ion-list>
       <ion-item>
         <ion-label>Réseaux Wifi</ion-label>
-        <ion-checkbox [(ngModel)]="activerWifi" name="activerWifi" item-end></ion-checkbox>
+        <ion-checkbox [(ngModel)]="activerWifi" name="activerWifi" (ionChange)="validateParams()" item-end></ion-checkbox>
       </ion-item>
 
       <ion-item>
         <ion-label>Réseaux 4G/3G</ion-label>
-        <ion-checkbox [(ngModel)]="activer4G" name="activer4G" item-end></ion-checkbox>
+        <ion-checkbox [(ngModel)]="activer4G" name="activer4G" (ionChange)="validateParams()" item-end></ion-checkbox>
       </ion-item>
 
       <ion-item>
         <ion-label color="dark">Bande passante mini(Mb/s)</ion-label>
-        <ion-input [(ngModel)]="bandePassante" name="bandePassante" type="number" min="0"  value="{{bandePassante.value}}"></ion-input>
+        <ion-input [(ngModel)]="bandePassante" name="bandePassante" type="number" min="0"  (ionChange)="validateParams()" value="{{bandePassante.value}}"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label color="dark">distance de recherche(km)</ion-label>
-        <ion-input [(ngModel)]="distanceRecherche" name="distanceRecherche" type="number" min="0" value="{{distanceRecherche.value}}"></ion-input>
+        <ion-input [(ngModel)]="distanceRecherche" name="distanceRecherche" type="number" min="0" (ionChange)="validateParams()" value="{{distanceRecherche.value}}"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label>Afficher les zones</ion-label>
-        <ion-checkbox [(ngModel)]="afficherZones" name="afficherZones" item-end></ion-checkbox>
+        <ion-checkbox [(ngModel)]="afficherZones" name="afficherZones"  (ionChange)="validateParams()" item-end></ion-checkbox>
       </ion-item>
       <ion-item>
         <ion-label>Afficher le réseau : </ion-label>
@@ -51,7 +51,7 @@
 
       <ion-item>
         <ion-label>Collecte automatique</ion-label>
-        <ion-checkbox [(ngModel)]="collecteAuto" name="collecteAuto" item-end></ion-checkbox>
+        <ion-checkbox [(ngModel)]="collecteAuto" name="collecteAuto" (ionChange)="updateDataCollect()" item-end></ion-checkbox>
       </ion-item>
 
      <!----> <ion-list *ngIf="collecteAuto" [(ngModel)]="mode" name="mode" radio-group>
@@ -63,7 +63,7 @@
 
         <ion-item *ngIf="mode == 'echantillon'">
           <ion-label color="dark">Collecte toutes les (mn) : </ion-label>
-          <ion-input [(ngModel)]="freqEchantillon" name="freqEchantillon" type="number" min="0" value="{{freqEchantillon.value}}"></ion-input>
+          <ion-input [(ngModel)]="freqEchantillon" name="freqEchantillon" (ionChange)="updateDataFrequency()" type="number" min="0" value="{{freqEchantillon.value}}"></ion-input>
         </ion-item>
       <!--  <ion-item>
           <ion-label>Sur demande du serveur</ion-label>

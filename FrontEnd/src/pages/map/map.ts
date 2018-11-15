@@ -41,7 +41,7 @@ export class MapPage {
   async ionViewDidLoad(){
     await this.fillMapMarkers();
     var settings : any= await FileMock.readAsText(ConfConstants.SETTINGS_FILENAME)
-    SpeedtestBackgroundJob.getBackgroundJobInstance(JSON.parse(settings).frequence).updateBackgroundJob(); 
+    SpeedtestBackgroundJob.getBackgroundJobInstance(JSON.parse(settings).frequence,JSON.parse(settings).collecte_auto).updateBackgroundJob(); 
   }
 
 /**
