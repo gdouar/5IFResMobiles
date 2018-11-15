@@ -52,11 +52,11 @@ export class SpeedtestBackgroundJob {
     var longitude;
     var signal;
     if(ConfConstants.IS_PROD){
+       // Ce code ne marchera pas avec un npm run ionic:serve classique (ni cordova run browser)
       console.log("CALLING GSM SIGNAL")
       signal = await that.getGSMSignal(<any>(window));   //tslint
       console.log("FINAL SIGNAL = " + signal)
-  //    if(signal == -1) return;  // Le téléphone n'a pas pu récupérer de signal GSM, pas la peine de saturer le backend avec des données pourries
-      // Ce code ne marchera pas avec un npm run ionic:serve classique (ni cordova run browser)
+  //    if(signal == -1) return;  // TODO déterminer que faire en cas d'erreur de récupération GSM
       // TODO tester cette partie sous android
       var network = new Network();
       console.log("TYPE")
