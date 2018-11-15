@@ -32,11 +32,6 @@ export class SpeedtestBackgroundJob {
     return SpeedtestBackgroundJob.instance;
   }
 
-  /** Annule l'exécution programmée du prochain timeout */
-  cancelBackgroundJob(){
-    clearTimeout(this.timeout);
-  }
-
   /** MAJ du processus en arrière-plan */
   async updateBackgroundJob(){
     var that = this;

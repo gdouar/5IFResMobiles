@@ -40,6 +40,8 @@ export class MapPage {
   // Appel asynchrone au chargement de la carte
   async ionViewDidLoad(){
     await this.fillMapMarkers();
+    var settings : any= await FileMock.readAsText(ConfConstants.SETTINGS_FILENAME)
+    SpeedtestBackgroundJob.getBackgroundJobInstance(JSON.parse(settings).frequence).updateBackgroundJob(); 
   }
 
 /**
@@ -84,7 +86,7 @@ export class MapPage {
     else {
       this.points = new Array<Mesure>();
     }
-    SpeedtestBackgroundJob.getBackgroundJobInstance(settings.frequence).updateBackgroundJob();
+   
   }
 
   setDisplayedPoints(network){

@@ -5,6 +5,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Reseau } from '../../model/Reseau.model';
 import { Mesure } from '../../model/Mesure.model';
 import { MapPage } from '../map/map';
+import { SpeedtestBackgroundJob } from '../../speedtest/SpeedtestBackgroundJob';
 
 @Component({
   selector: 'page-parametres',
@@ -66,6 +67,7 @@ selectNewNetwork(network){
  */
   async validateParams(){
     console.log("serializing :")
+    // maj config
     var savedParams = {
       "wifi" : this.activerWifi,
       "mobile" : this.activer4G,
@@ -79,6 +81,9 @@ selectNewNetwork(network){
     let parametersString = await FileMock.writeExistingFile(ConfConstants.SETTINGS_FILENAME, "", 
         JSON.stringify(savedParams)
     );
+    //maj fréquence 
+    let backgroundJob : SpeedtestBackgroundJob = SpeedtestBackgroundJob.getBackgroundJobInstance(parseFloat(<any>(this.freqEchantillon)));
+    // maj carte
     ParametresPage.selectedNetwork = null;
     this.networks = [];
     this.mapPage.fillMapMarkers();
