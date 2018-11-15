@@ -53,7 +53,7 @@ export class ParametresPage {
     this.activer4G = params["mobile"];
     this.afficherZones = params["afficher_zones"];
     this.collecteAuto = true;
-    this.freqEchantillon = parseInt(params["frequence"]);
+    this.freqEchantillon = parseFloat(params["frequence"]);
     this.mode = this.freqEchantillon != null ? "echantillon" : "demandeServ";
   }
 selectNewNetwork(network){
