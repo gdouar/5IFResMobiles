@@ -70,7 +70,13 @@ class MapController extends BaseController
         } else {
             throw new BadRequestHttpException('ERREUR : paramètres non fournis', null, 400);
         }       // L'utilisation du serializer a l'air de bugguer ici
-        $response = new Response(json_encode($this->reverseObjectsAssociations($allNetworks, $allMeasures)));
+
+        $data = $this->reverseObjectsAssociations($allNetworks, $allMeasures);
+
+        foreach ($data as $network)
+            $network->zones = GeoUtil::cluster($network->zones, 0.01);
+
+        $response = new Response(json_encode($data));
         $response->headers->set('Content-Type', 'application/json');
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
