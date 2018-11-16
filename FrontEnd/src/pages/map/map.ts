@@ -42,9 +42,9 @@ export class MapPage {
   optionsEnabled:boolean = true;
   
  constructor(  public navCtrl: NavController) {
-
    // this.points.push(new Mesure(50,50,"10/10/10",10,10));
   }
+
 
   // Appel asynchrone au chargement de la carte
   async ionViewDidLoad(){

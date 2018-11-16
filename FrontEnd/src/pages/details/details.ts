@@ -24,21 +24,23 @@ export class DetailPage {
     console.log(this.mesure)
     this.reseau=this.mesure.reseau.ssid;
   }
-  averageDayResults(mesureProperty){
+  averageDayResults(mesureProperty, mesuresPassees){
     var measureMap = new Map();
     var that = this;
-    that.mesure.mesuresPassees.forEach(value => {
+    console.log("mesuresPassees")
+    console.log(mesuresPassees)
+    mesuresPassees.forEach(value => {
         var date = new Date(value.datemesure.date).toString()
         if(measureMap.has(date)){
             measureMap.set(date, measureMap.get(date) + value[mesureProperty]);
         }
-        else measureMap.set(date, value.bandepassante);
+        else measureMap.set(date,  value[mesureProperty]);
     })
     console.log(measureMap);
     var dataArray = new Array();
     measureMap.forEach((value, key) => {     
         var dateArr = new Date(key);
-        var findArr = that.mesure.mesuresPassees.filter(
+        var findArr = mesuresPassees.filter(
             mes => new Date(mes.datemesure.date).toString() == key);
         dataArray.push(<any>{x: dateArr, y:value / (findArr.length)});
     });
@@ -53,7 +55,7 @@ export class DetailPage {
         type: 'line',
         data: {
             datasets: [{
-                data:  that.averageDayResults("bandepassante"),
+                data:  that.averageDayResults("bandepassante", that.mesure.mesuresPassees),
                 fill: false,
                 backgroundColor: ["#000000"],
                 borderColor: "#000000"
@@ -87,7 +89,8 @@ export class DetailPage {
         type: 'line',
         data: {
             datasets: [{
-                data:  that.averageDayResults("forcesignal"),
+                data:  that.averageDayResults("forcesignal" ,                   // bruit du signal (non récupérable)
+                            that.mesure.mesuresPassees.filter(mes => mes.forcesignal != -1)),
                 fill: false,
                 backgroundColor: ["#000000"],
                 borderColor: "#000000"
