@@ -25,45 +25,85 @@ export class DetailPage {
   }
   ionViewDidLoad(){
     console.log(this.lineCanvas)
+    var that = this;
+    var dataBandwidth = that.mesure.mesuresPassees.map(mes => {
+        return {
+            x: new Date(mes.datemesure.date),
+            y: mes.bandepassante
+        };
+    })
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
         type: 'line',
-        data: [{
-            x: 10,
-            y: 20
-        }, {
-            x: 15,
-            y: 10
-        }],
+        data: {
+            datasets: [{
+                data: dataBandwidth,
+                fill: false,
+                backgroundColor: ["#000000"],
+                borderColor: "#000000"
+            }]
+        },
         options: {
+            legend: {
+                display:false
+            },
             scales: {
                 yAxes: [{
                     ticks: {
                         beginAtZero:true
+                    }
+                }],
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                    },
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 20
                     }
                 }]
             },
         }
 
     });
+    var signalBandwidth = that.mesure.mesuresPassees.map(mes => {
+        return {
+            x: new Date(mes.datemesure.date),
+            y: mes.forcesignal
+        };
+    })
     this.lineChartSignal = new Chart(this.lineCanvasSignal.nativeElement, {
         type: 'line',
-        data: [{
-            x: 10,
-            y: 20
-        }, {
-            x: 15,
-            y: 10
-        }],
+        data: {
+            datasets: [{
+                data: signalBandwidth,
+                fill: false,
+                backgroundColor: ["#000000"],
+                borderColor: "#000000"
+            }]
+        },
         options: {
+            legend: {
+                display:false
+            },
             scales: {
-                yAxes: [{
+            /*    yAxes: [{
                     ticks: {
                         beginAtZero:true
+                    }
+                }],  */
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                    },
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 20
                     }
                 }]
             },
         }
-
     });
   }
  

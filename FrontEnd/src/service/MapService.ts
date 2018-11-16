@@ -3,6 +3,7 @@
  */
 import * as request  from "request";
 import * as conf from '../conf/ConfConstants';
+import { connectableObservableDescriptor } from "rxjs/observable/ConnectableObservable";
 
 export class MapService {
   constructor(){}
@@ -52,6 +53,7 @@ async function httpJsonRequest(jsonData, url, endpointMethod){
       console.error('getMap failed:', error);
       reject(null);
     }
+    console.log("response body")
     resolve(JSON.parse(body));
   });
   });

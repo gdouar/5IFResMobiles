@@ -67,13 +67,17 @@ export class MapPage {
     console.log(settings)
     var networksPoints;
     if(ConfConstants.IS_PROD){
+      console.log("geoloc")
       var geolocation = new Geolocation();
       let position: Geoposition = await geolocation.getCurrentPosition();
+      console.log("position is ")
+      console.log(position)
       networksPoints = await this.mapService.getMapDatas(	settings,position.coords.latitude, position.coords.longitude);
     }
     else {
       networksPoints = await this.mapService.getMapDatas(	settings,this.currentLat, this.currentLng);
     }
+
     console.log(networksPoints)
     for(var network in networksPoints){
       var reseau = new Reseau( networksPoints[network]["id_reseau"],  networksPoints[network]["ssid"]);
@@ -83,11 +87,9 @@ export class MapPage {
         if (networksPoints[network]["zones"].hasOwnProperty(key)) {
             if(key != "zone-1"){      //Suppression du bruit
               var colorZone = ColorsUtil.getRandomColor();
-              let historyBandePassante = new Array();
               for(var zoneInfoIndx in zones[key]){
                 var latitude = zones[key][zoneInfoIndx].latitude;
                 var longitude = zones[key][zoneInfoIndx].longitude;
-                var arrSubMesures = new Array();
                 let msArray : Array<any> = zones[key][zoneInfoIndx].mesures;
                 let measure = new Mesure(msArray[0].idmesure, latitude, longitude, 
                               msArray[0].datemesure, Math.round(msArray[0].bandepassante* 100) /100, 
