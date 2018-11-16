@@ -25,9 +25,11 @@ import { Geoposition } from '@ionic-native/geolocation';
  * Page de la carte principale
  */
 export class MapPage {
-  map: any;
+  map: google.maps.Map;
   /**Les points actuellement affichés par la carte */
   points : Array<Mesure> =new Array<Mesure>();
+  /** Cache des points en attente d'être affichés  */
+  cachedPoints: Array<Mesure> = new Array<Mesure>();
   /** Toutes les mesures des réseaux */
   network2Points: Map<Reseau, Array<Mesure>> = new Map<Reseau, Array<Mesure>>();
   mapService : MapService = new MapService();
@@ -36,6 +38,7 @@ export class MapPage {
   currentLat:number = 45.784535;
   currentLng:number = 4.882980;
   mapLoadingClass:string = "";
+  
  constructor(  public navCtrl: NavController) {
 
    // this.points.push(new Mesure(50,50,"10/10/10",10,10));
@@ -53,6 +56,7 @@ export class MapPage {
  */
   async fillMapMarkers(){
     this.points = new Array<Mesure>();
+    this.cachedPoints = new Array<Mesure>();
     this.network2Points = new Map<Reseau, Array<Mesure>>();
     this.mapLoadingClass = 'blurrWrapperLoadingEffect';
     var settings : any= ConfConstants.IS_PROD ? await new AndroidConfigFile(new File()).readAsText(): await FileBase.readAsText(ConfConstants.SETTINGS_FILENAME)
@@ -90,27 +94,40 @@ export class MapPage {
     }
     this.mapLoadingClass="";
     if(this.network2Points.size > 0){
-      this.points =  Array.from(this.network2Points)[0][1];   
+      this.cachedPoints =  Array.from(this.network2Points)[0][1];   
       ParametresPage.selectedNetwork = Array.from(this.network2Points)[0][0];
       this.updateZones();
     }
     else {
-      this.points = new Array<Mesure>();
+      this.cachedPoints = new Array<Mesure>();
+    }
+    if(this.map.getZoom() >= ConfConstants.MAP_MIN_ZOOM_LEVEL){
+      this.points = this.cachedPoints.slice();    // copie des mesures en cache
     }
   }
-
+  
   setDisplayedPoints(network){
-    this.points = this.network2Points.get(network);
+    this.cachedPoints = this.network2Points.get(network);
     this.updateZones();
   }
 
+  clearMapIfNeeded(network){
+    if(ConfConstants.MAP_MIN_ZOOM_LEVEL >= this.map.getZoom()){
+       this.points = this.network2Points.get(network);
+    }
+    else {
+      this.points = new Array();
+    }
+  }
+
   updateZones(){
+
     for(var pol in this.displayedPolygons){
       this.displayedPolygons[pol].setMap(null);     // Supprime les anciens polygones
     }
     let map = new Map<String, Array<Mesure>>();
-    for(var po in this.points){       // répartition par zone
-      let mes : Mesure = this.points[po];
+    for(var po in this.cachedPoints){       // répartition par zone
+      let mes : Mesure = this.cachedPoints[po];
       if(!map.has(mes.colorUrl)){
         let arr = new Array<Mesure>();
         arr.push(mes);
@@ -122,14 +139,13 @@ export class MapPage {
     map.forEach((value, key) => {
       var polygonePoints = MathUtil.getEnveloppeConvexe(map.get(key));
       var pointsToDisplay = polygonePoints.map(m => new google.maps.LatLng(m.lat, m.lon)).sort(function(a,b) {
-        let centerPoint : Mesure = that.points[0];
+        let centerPoint : Mesure = that.cachedPoints[0];
         if (MathUtil.angleFromCoordinate(a.lat(),a.lng(), centerPoint.lat, centerPoint.lon) <
             MathUtil.angleFromCoordinate(b.lat(),b.lng(), centerPoint.lat, centerPoint.lon))
             return -1;
         if (MathUtil.angleFromCoordinate(a.lat(),a.lng(), centerPoint.lat, centerPoint.lon) > 
             MathUtil.angleFromCoordinate(b.lat(),b.lng(), centerPoint.lat, centerPoint.lon))
             return 1;
-        // a doit être égal à b
         return 0;
       });
       var percentage = Math.max(
@@ -160,12 +176,23 @@ export class MapPage {
     this.map = map;
     this.map.setCenter(new google.maps.LatLng(this.currentLat, this.currentLng));
     this.map.setZoom(15);
+    /* Change markers on zoom */
+    var that = this;
+    google.maps.event.addListener(that.map, 'zoom_changed', function() {
+      var zoom = map.getZoom();
+      if(zoom >= ConfConstants.MAP_MIN_ZOOM_LEVEL){
+        that.points= that.cachedPoints.slice();
+      }
+      else {
+        that.points = new Array<Mesure>();
+      }
+    });
   }
 
   details(clickedMarker){
     console.log("marker is " + clickedMarker)
     this.navCtrl.push(DetailPage, {
-        marker:this.points.find(function(element) {
+        marker:this.cachedPoints.find(function(element) {
           return element.id == clickedMarker;
         })
     });

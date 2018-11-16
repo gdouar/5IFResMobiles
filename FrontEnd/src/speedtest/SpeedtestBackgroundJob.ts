@@ -75,7 +75,7 @@ export class SpeedtestBackgroundJob {
       console.log(networkType)
       if(networkType == "3g" || networkType == "4g" || networkType == "5g") {
         type = "mobile";    
-      }
+      } else if (type==undefined) type = "wifi";       // plugin error
       try {
         console.log("wifiwizard = ")
         console.log(WifiWizard2);

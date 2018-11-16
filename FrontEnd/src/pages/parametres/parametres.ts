@@ -65,6 +65,7 @@ selectNewNetwork(network){
   console.log(network)
   ParametresPage.selectedNetwork = network;
   this.mapPage.setDisplayedPoints(network);
+  this.mapPage.clearMapIfNeeded(network);
 }
 /**
  * Sauvegarde des paramètres
