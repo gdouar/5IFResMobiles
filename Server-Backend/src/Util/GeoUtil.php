@@ -2,8 +2,6 @@
 
 namespace App\Util;
 
-use App\Entity\Mesures;
-
 class GeoUtil
 {
     /**
@@ -21,40 +19,4 @@ class GeoUtil
             ) < $nbKm;
     }
 
-    /**
-     * Regroupe les mesures dans des clusters géograhiques
-     * @param array $mesures Tableau de mesures
-     * @param int   $nbKm    Distance pour le clustering
-     * @return array Tableau groupé
-     */
-    public static function cluster($mesures, $nbKm): array
-    {
-        $out = [];
-
-        /** @var Mesures $mesure */
-        foreach ($mesures as $mesure) {
-            $cluster = -1;
-
-            foreach ($out as $key => $bag) {
-                /** @var Mesures $compare */
-                foreach ($bag as $compare) {
-                    if (self::isInRange(
-                        $mesure->getLatitude(), $mesure->getLongitude(),
-                        $compare->getLatitude(), $compare->getLongitude(),
-                        $nbKm)
-                    ) {
-                        $cluster = $key;
-                        break;
-                    }
-                }
-            }
-
-            if ($cluster >= 0)
-                $out[$cluster][] = $mesure;
-            else
-                $out[] = [$mesure];
-        }
-
-        return $out;
-    }
 }
