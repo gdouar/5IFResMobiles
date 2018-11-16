@@ -89,6 +89,6 @@
     </plugin>
     <plugin name="org.apache.cordova.signal-strength" spec="https://github.com/petervojtek/cordova-plugin-signal-strength.git" />
     <plugin name="cordova-plugin-file" spec="6.0.1" />
-    <engine name="android" spec="^7.0.0" />
     <engine name="browser" spec="5.0.4" />
+    <engine name="android" spec="7.0.0" />
 </widget>
