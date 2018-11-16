@@ -32,11 +32,11 @@
         <ion-input [(ngModel)]="distanceRecherche" name="distanceRecherche" type="number" min="0" (ionChange)="validateParams()" value="{{distanceRecherche.value}}"></ion-input>
       </ion-item>
 
-      <ion-item>
+   <!--  <ion-item>
         <ion-label>Afficher les zones</ion-label>
         <ion-checkbox [(ngModel)]="afficherZones" name="afficherZones"  (ionChange)="validateParams()" item-end></ion-checkbox>
-      </ion-item>
-      <ion-item>
+      </ion-item>--> 
+      <ion-item> 
         <ion-label>Afficher le réseau : </ion-label>
         <ion-select #networkSelect (ionChange)="selectNewNetwork(networkSelect.value)" >
             <ion-option *ngFor="let network of networks" [value] = network [selected]="network == getSelectedNetwork()" >{{network.ssid}}</ion-option>

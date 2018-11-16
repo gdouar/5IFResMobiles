@@ -13,7 +13,9 @@ export class Mesure {
   colorUrl:string;
   bandePassanteAvg : number;
   reseau:Reseau;
-
+  mesuresPassees: Array<number>;    // la bande passante historisée
+  signalPasse : Array<number>;    // l'historique du signal GSM
+  
   constructor(id:number, la : number, lo : number, dat : Date, bp : number, forc : number, color:string, reseau : Reseau){
     this.id = id;
     this.bandePassante = bp;

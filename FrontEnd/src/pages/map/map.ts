@@ -17,6 +17,7 @@ import { MathUtil } from '../../util/MathUtil';
 import { stringify } from '@angular/compiler/src/util';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Geoposition } from '@ionic-native/geolocation';
+import { isTrueProperty } from 'ionic-angular/umd/util/util';
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html',
@@ -38,6 +39,7 @@ export class MapPage {
   currentLat:number = 45.784535;
   currentLng:number = 4.882980;
   mapLoadingClass:string = "";
+  optionsEnabled:boolean = true;
   
  constructor(  public navCtrl: NavController) {
 
@@ -55,6 +57,7 @@ export class MapPage {
  * Remplissage des points de la carte
  */
   async fillMapMarkers(){
+    this.optionsEnabled = false;
     this.points = new Array<Mesure>();
     this.cachedPoints = new Array<Mesure>();
     this.network2Points = new Map<Reseau, Array<Mesure>>();
@@ -104,6 +107,7 @@ export class MapPage {
     if(this.map.getZoom() >= ConfConstants.MAP_MIN_ZOOM_LEVEL){
       this.points = this.cachedPoints.slice();    // copie des mesures en cache
     }
+    this.optionsEnabled = true;
   }
   
   setDisplayedPoints(network){
