@@ -108,7 +108,7 @@ export class SpeedtestBackgroundJob {
     console.log("bandwidth is " + bandwidth);
     var myIp = <any>(await new IPService().getMyIp());
     myIp = myIp.ip;
-    var measure = new Mesure(null, latitude, longitude, new Date(), bandwidth, signal, null, null);
+    var measure = new Mesure(null, latitude, longitude, new Date(), bandwidth, signal, null, null, new Array());
     await new MeasureService().sendMeasure(measure, ssid, myIp, type);
     
   }

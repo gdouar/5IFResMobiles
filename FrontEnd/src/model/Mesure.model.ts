@@ -13,10 +13,9 @@ export class Mesure {
   colorUrl:string;
   bandePassanteAvg : number;
   reseau:Reseau;
-  mesuresPassees: Array<number>;    // la bande passante historisée
-  signalPasse : Array<number>;    // l'historique du signal GSM
+  mesuresPassees: Array<any>;    // les mesures précédentes historisées
   
-  constructor(id:number, la : number, lo : number, dat : Date, bp : number, forc : number, color:string, reseau : Reseau){
+  constructor(id:number, la : number, lo : number, dat : Date, bp : number, forc : number, color:string, reseau : Reseau, mesuresPassees){
     this.id = id;
     this.bandePassante = bp;
     
@@ -27,5 +26,6 @@ export class Mesure {
     this.colorUrl = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|' + color;
     this.bandePassanteAvg = Math.round(bp);
     this.reseau = reseau;
+    this.mesuresPassees = mesuresPassees;
   }
 }

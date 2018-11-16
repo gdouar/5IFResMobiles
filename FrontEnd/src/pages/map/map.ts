@@ -83,11 +83,17 @@ export class MapPage {
         if (networksPoints[network]["zones"].hasOwnProperty(key)) {
             if(key != "zone-1"){      //Suppression du bruit
               var colorZone = ColorsUtil.getRandomColor();
-              for(var mesureZoneIndx in zones[key]){
-                var mesureZone = zones[key][mesureZoneIndx];
-                let measure = new Mesure(mesureZone["idmesure"], mesureZone["latitude"], mesureZone["longitude"], 
-                              new Date(mesureZone["datemesure"]["date"]), Math.round(mesureZone["bandepassante"]* 100) /100, 
-                              mesureZone["forcesignal"], colorZone, reseau);
+              let historyBandePassante = new Array();
+              console.log("zone[key]")
+              console.log( zones[key])
+              for(var zoneInfoIndx in zones[key]){
+                var latitude = zones[key][zoneInfoIndx].latitude;
+                var longitude = zones[key][zoneInfoIndx].longitude;
+                var arrSubMesures = new Array();
+                let msArray : Array<any> = zones[key][zoneInfoIndx].mesures;
+                let measure = new Mesure(msArray[0].idmesure, latitude, longitude, 
+                              msArray[0].datemesure, Math.round(msArray[0].bandepassante* 100) /100, 
+                              msArray[0].forcesignal, colorZone, reseau, msArray);
                 measures.push(measure);
               }
               this.network2Points.set(reseau, measures);
