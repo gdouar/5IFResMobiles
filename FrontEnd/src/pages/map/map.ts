@@ -84,8 +84,6 @@ export class MapPage {
             if(key != "zone-1"){      //Suppression du bruit
               var colorZone = ColorsUtil.getRandomColor();
               let historyBandePassante = new Array();
-              console.log("zone[key]")
-              console.log( zones[key])
               for(var zoneInfoIndx in zones[key]){
                 var latitude = zones[key][zoneInfoIndx].latitude;
                 var longitude = zones[key][zoneInfoIndx].longitude;
