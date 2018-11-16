@@ -55,6 +55,7 @@ class MapController extends BaseController
                 // Filtrage bande passante
                 if ($this->checkObjectAttribute($parameters, "bande_passante_minimale")) {
                     $mesuresRepo->addBandwidthFilter($parameters->bande_passante_minimale);
+                    $mesuresRepo->sort();
                 }
                 $allMeasures = $mesuresRepo->executeFilteredRequest();
                 // Filtrage géographique

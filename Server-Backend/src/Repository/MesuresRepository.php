@@ -26,4 +26,8 @@ class MesuresRepository extends DataRepository
             )
         );
     }
+
+    public function sort() {
+        return $this->getQueryBuilder()->addOrderBy('T.datemesure', 'DESC');
+    }
 }
