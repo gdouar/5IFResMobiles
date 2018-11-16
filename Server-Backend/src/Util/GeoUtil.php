@@ -19,6 +19,12 @@ class GeoUtil
             ) < $nbKm;
     }
 
+    /**
+     * Groupe les mesures proches géographiquement
+     * @param array $zones Zones en entreé, issues du clustering python
+     * @param int   $nbKm  Distance à considérer pour grouper deux mesures
+     * @return array Zones mises à jour
+     */
     public static function cluster($zones, $nbKm): array
     {
         $out = [];
