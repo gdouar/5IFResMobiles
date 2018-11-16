@@ -12,15 +12,14 @@ export class DetailPage {
   mesure : Mesure;
   reseau : string;
   detailsMap:google.maps.Map;
- 
-  @ViewChild('lineCanvas') lineCanvas;
- 
+  @ViewChild('lineCanvasBandwidth') lineCanvas;
+  @ViewChild('lineCanvasSignal') lineCanvasSignal;
   lineChart: any;
+  lineChartSignal: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     console.log("created")
     this.mesure = (navParams.get('marker'));
-    //this.mesure=new Mesure(1, 50,50,"10/10/10",10,10, ColorsUtil.getRandomColor());
     console.log(this.mesure)
     this.reseau=this.mesure.reseau.ssid;
   }
@@ -42,7 +41,27 @@ export class DetailPage {
                         beginAtZero:true
                     }
                 }]
-            }
+            },
+        }
+
+    });
+    this.lineChartSignal = new Chart(this.lineCanvasSignal.nativeElement, {
+        type: 'line',
+        data: [{
+            x: 10,
+            y: 20
+        }, {
+            x: 15,
+            y: 10
+        }],
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            },
         }
 
     });
