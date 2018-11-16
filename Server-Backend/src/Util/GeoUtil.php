@@ -24,15 +24,14 @@ class GeoUtil
         $out = [];
 
         foreach ($zones as $zone => $mesures) {
+            $out[$zone] = [];
             foreach ($mesures as $mesure) {
                 $cluster = -1;
-                foreach ($out as $out_zone => $out_mesures) {
-                    if (
-                    self::isInRange(
+                foreach ($out[$zone] as $out_zone => $out_mesures) {
+                    if (self::isInRange(
                         $mesure->latitude, $mesure->longitude,
-                        $out_mesures->latitude, $out_mesures->longitude,
-                        $nbKm)
-                    ) {
+                        $out_mesures['latitude'], $out_mesures['longitude'],
+                        $nbKm)) {
                         $cluster = $out_zone;
                         break;
                     }

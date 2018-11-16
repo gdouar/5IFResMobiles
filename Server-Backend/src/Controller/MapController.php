@@ -26,6 +26,8 @@ class MapController extends BaseController
      */
     public function getMap(Request $request)
     {
+        ini_set('memory_limit','1024M');
+
         $em = $this->getDoctrine()->getManager();
         /** @var MesuresRepository $mesuresRepo */
         $mesuresRepo = $em->getRepository(Mesures::class);
