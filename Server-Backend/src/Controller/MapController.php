@@ -61,7 +61,10 @@ class MapController extends BaseController
                         $longitude      = $requestBody->longitudeActuelle;
                         $latitude       = $requestBody->latitudeActuelle;
                         $rayonRecherche = $parameters->rayon_recherche;
-                        $allMeasures    = $this->geoFilter($allMeasures, $rayonRecherche, $latitude, $longitude);
+                        $allMeasures    = GeoUtil::cluster(
+                            $this->geoFilter($allMeasures, $rayonRecherche, $latitude, $longitude),
+                            0.01
+                        );
                     } else {
                         throw new BadRequestHttpException('ERREUR : filtre de rayon de recherche demandé sans avoir toutes les coordonnées actuelles', null, 400);
                     }
@@ -84,17 +87,19 @@ class MapController extends BaseController
         foreach ($allNetworks as $network) {
             $networkMesures = [];
 
-            /** @var Mesures $measure */
-            foreach ($allMesures as $measure) {
-                if ($measure->getReseau() === $network) {
-                    $networkMesures[] = (object)[
-                        "idmesure"      => $measure->getIdMesure(),
-                        "latitude"      => $measure->getLatitude(),
-                        "longitude"     => $measure->getLongitude(),
-                        "datemesure"    => $measure->getDateMesure(),
-                        "bandepassante" => $measure->getBandePassante(),
-                        "forcesignal"   => $measure->getForceSignal(),
-                    ];
+            foreach ($allMesures as $key => $bag) {
+                /** @var Mesures $measure */
+                foreach ($bag as $measure) {
+                    if ($measure->getReseau() === $network) {
+                        $networkMesures[$key][] = (object)[
+                            "idmesure"      => $measure->getIdMesure(),
+                            "latitude"      => $measure->getLatitude(),
+                            "longitude"     => $measure->getLongitude(),
+                            "datemesure"    => $measure->getDateMesure(),
+                            "bandepassante" => $measure->getBandePassante(),
+                            "forcesignal"   => $measure->getForceSignal(),
+                        ];
+                    }
                 }
             }
 

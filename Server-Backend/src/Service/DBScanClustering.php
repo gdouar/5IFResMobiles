@@ -18,11 +18,7 @@ class DBScanClustering extends BaseClustering
         $pythonDir        = __DIR__ . "/../../python/";
         $dataFile         = "data.json";
         $fullPathDataFile = $pythonDir . $dataFile;
-        if (!file_exists($fullPathDataFile)) {
-            $fp = fopen($fullPathDataFile, "a");
-        } else {
-            $fp = fopen($fullPathDataFile, "a");
-        }
+        $fp               = fopen($fullPathDataFile, "a");
         if (flock($fp, LOCK_EX)) { // acquière un verrou exclusif
             fwrite($fp, $encodedMatrix . "\r\n");
             fflush($fp);            // libère le contenu avant d'enlever le verrou
