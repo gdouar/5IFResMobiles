@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FileBase } from '../../mocks/FileBase';
 import { ConfConstants } from '../../conf/ConfConstants';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -18,6 +18,8 @@ import { File } from '@ionic-native/file';
  * Page des paramètres
  */
 export class ParametresPage {
+
+ 
   bandePassante : any = 0;
   freqEchantillon : number = 0;
   distanceRecherche :any = 0;
@@ -29,7 +31,8 @@ export class ParametresPage {
   mapPage:MapPage;
   networks:Array<Reseau> = new Array<Reseau>();
   static selectedNetwork:Reseau;
-  
+
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.mapPage = (navParams.get('mapPage'));
     this.networks = [];
@@ -93,9 +96,6 @@ selectNewNetwork(network){
         JSON.stringify(savedParams)
       );
     }
-
-   
-
   }
   
  async updateMap(){
