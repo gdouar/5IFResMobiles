@@ -32,6 +32,7 @@
     "async-request": "^1.2.0",
     "bcrypt": "^2.0.1",
     "bcryptjs": "^2.4.3",
+    "chart.js": "^2.7.3",
     "com.pylonproducts.wifiwizard": "https://github.com/hoerresb/WifiWizard",
     "convex-hull": "^1.0.3",
     "cordova": "^8.0.0",
@@ -76,7 +77,7 @@
     "ionic:serve": "ionic-app-scripts serve"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "3.2.0",
+    "@ionic/app-scripts": "^3.2.0",
     "@types/googlemaps": "^3.30.8",
     "typescript": "~2.6.2"
   },
