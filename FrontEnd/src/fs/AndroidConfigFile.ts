@@ -1,14 +1,11 @@
 import { FileBase } from "../mocks/FileBase";
-import {File} from '@ionic-native/file';
-import { rejects } from "assert";
-import { fsync } from "fs";
 /**
  * Classe d'accès au fichier de configuration sur le téléphone
  */
 declare var cordova: any;
 
 export class AndroidConfigFile extends FileBase {
-    constructor(private file : File){
+    constructor(){
         super();
         console.log("object created");
     }
@@ -46,7 +43,7 @@ export class AndroidConfigFile extends FileBase {
     /**
      *  Obtention des paramètres de l'application et création du fichier de configuration s'il n'existe pas
      */
-    async readAsText(){
+    async readAsText() : Promise<string>{
       var that = this;
       return new Promise<string>((resolve, reject) => {
         console.log(cordova);

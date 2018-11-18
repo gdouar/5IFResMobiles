@@ -2,7 +2,7 @@
  * Classe de mock pour l'accès aux fichiers du téléphone
  */
 export class FileBase {
-  static settingsMock : any = {
+   static settingsMock : any = {
     "wifi" : true,
     "mobile" : false,
     "bande_passante_minimale": 5,
@@ -13,15 +13,15 @@ export class FileBase {
   };
   constructor(){
   }
-  static async readAsText(fileName){
+   async readAsText() : Promise<string>{
     return new Promise<string>((resolve, reject) => {
-      resolve(JSON.stringify(this.settingsMock));
+      resolve(JSON.stringify(FileBase.settingsMock));
     })
   }
 
-  static async writeExistingFile(path: string, fileName: string, text: string | Blob): Promise<void>{
+   async writeExistingFile(text: string | Blob): Promise<void>{
     return new Promise<void>((resolve, reject) => {
-      this.settingsMock = JSON.parse(text.toString());
+      FileBase.settingsMock = JSON.parse(text.toString());
       resolve();
     })
   }

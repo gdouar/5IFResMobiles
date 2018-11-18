@@ -1,14 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
-import { FileBase } from '../../mocks/FileBase';
-import { ConfConstants } from '../../conf/ConfConstants';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Reseau } from '../../model/Reseau.model';
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 import { Mesure } from '../../model/Mesure.model';
-import { MapPage } from '../map/map';
+import { Reseau } from '../../model/Reseau.model';
+import { ServiceProvider } from '../../service/ServiceProvider';
 import { SpeedtestBackgroundJob } from '../../speedtest/SpeedtestBackgroundJob';
-import { ALLOW_MULTIPLE_PLATFORMS } from '@angular/core/src/application_ref';
-import { AndroidConfigFile } from '../../fs/AndroidConfigFile';
-import { File } from '@ionic-native/file';
+import { MapPage } from '../map/map';
 
 @Component({
   selector: 'page-parametres',
@@ -31,10 +27,11 @@ export class ParametresPage {
   mapPage:MapPage;
   networks:Array<Reseau> = new Array<Reseau>();
   static selectedNetwork:Reseau;
-
+  serviceProvider: ServiceProvider;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.mapPage = (navParams.get('mapPage'));
+    this.serviceProvider = this.mapPage.serviceProvider;
     this.networks = [];
     this.mapPage.getNetworksMap().forEach((value: Array<Mesure>, key: Reseau) => {
       this.networks.push(key)
@@ -51,7 +48,8 @@ export class ParametresPage {
  * Chargement de l'interface
  */
   async ionViewDidLoad() {
-    let parametersString = ConfConstants.IS_PROD ? await new AndroidConfigFile(new File()).readAsText(): await FileBase.readAsText(ConfConstants.SETTINGS_FILENAME)
+
+    let parametersString = await this.serviceProvider.getFileAccessObject().readAsText();
     let params = JSON.parse(parametersString);
     this.bandePassante = parseFloat(params["bande_passante_minimale"]);
     this.distanceRecherche = parseFloat(params["rayon_recherche"]);
@@ -86,16 +84,7 @@ selectNewNetwork(network){
       "frequence":this.freqEchantillon
     };
     console.log(savedParams);
-    if(ConfConstants.IS_PROD){
-      await new AndroidConfigFile(new File()).writeExistingFile(
-        JSON.stringify(savedParams)
-      );
-    }
-    else {
-      await FileBase.writeExistingFile(ConfConstants.SETTINGS_FILENAME, "", 
-        JSON.stringify(savedParams)
-      );
-    }
+    this.serviceProvider.getFileAccessObject().writeExistingFile(JSON.stringify(savedParams));
   }
   
  async updateMap(){

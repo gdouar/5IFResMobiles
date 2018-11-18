@@ -1,23 +1,17 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import {Mesure} from "../../model/Mesure.model";
-import { MapService } from '../../service/MapService';
-import { ColorsUtil } from '../../util/ColorsUtil';
-import { JSONFileAccess } from '../../settings/JSONFileAccess';
-import { FileBase } from '../../mocks/FileBase';
-import{DetailPage} from '../details/details';
-import{ParametresPage} from '../parametres/parametres';
-import { Reseau } from '../../model/Reseau.model';
 import { ConfConstants } from '../../conf/ConfConstants';
-import { SpeedTest } from '../../speedtest/Speedtest';
+import { Mesure } from "../../model/Mesure.model";
+import { Reseau } from '../../model/Reseau.model';
+import { AndroidServiceProvider } from '../../service/AndroidServiceProvider';
+import { MapService } from '../../service/MapService';
+import { MockServiceProvider } from '../../service/MockServiceProvider';
+import { ServiceProvider } from '../../service/ServiceProvider';
 import { SpeedtestBackgroundJob } from '../../speedtest/SpeedtestBackgroundJob';
-import { AndroidConfigFile } from '../../fs/AndroidConfigFile';
-import { File } from '@ionic-native/file';
+import { ColorsUtil } from '../../util/ColorsUtil';
 import { MathUtil } from '../../util/MathUtil';
-import { stringify } from '@angular/compiler/src/util';
-import { Geolocation } from '@ionic-native/geolocation';
-import { Geoposition } from '@ionic-native/geolocation';
-import { isTrueProperty } from 'ionic-angular/umd/util/util';
+import { DetailPage } from '../details/details';
+import { ParametresPage } from '../parametres/parametres';
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html',
@@ -40,17 +34,17 @@ export class MapPage {
   currentLng:number = 4.882980;
   mapLoadingClass:string = "";
   optionsEnabled:boolean = true;
-  
+  serviceProvider:ServiceProvider;
  constructor(  public navCtrl: NavController) {
-   // this.points.push(new Mesure(50,50,"10/10/10",10,10));
-  }
+   this.serviceProvider = ConfConstants.IS_PROD ? new AndroidServiceProvider() : new MockServiceProvider();
+ }
 
 
   // Appel asynchrone au chargement de la carte
   async ionViewDidLoad(){
     await this.fillMapMarkers();
-    var settings : any= ConfConstants.IS_PROD ? await new AndroidConfigFile(new File()).readAsText(): await FileBase.readAsText(ConfConstants.SETTINGS_FILENAME)
-    SpeedtestBackgroundJob.getBackgroundJobInstance(JSON.parse(settings).frequence,JSON.parse(settings).collecte_auto).updateBackgroundJob(); 
+    let settings : any= JSON.parse(await this.serviceProvider.getFileAccessObject().readAsText());
+    SpeedtestBackgroundJob.getBackgroundJobInstance((settings).frequence,(settings).collecte_auto).updateBackgroundJob(); 
   }
 
 /**
@@ -62,22 +56,15 @@ export class MapPage {
     this.cachedPoints = new Array<Mesure>();
     this.network2Points = new Map<Reseau, Array<Mesure>>();
     this.mapLoadingClass = 'blurrWrapperLoadingEffect';
-    var settings : any= ConfConstants.IS_PROD ? await new AndroidConfigFile(new File()).readAsText(): await FileBase.readAsText(ConfConstants.SETTINGS_FILENAME)
+    var settings : any = await this.serviceProvider.getFileAccessObject().readAsText();
     settings = <any> (JSON.parse(settings));
     console.log(settings)
     var networksPoints;
-    if(ConfConstants.IS_PROD){
-      console.log("geoloc")
-      var geolocation = new Geolocation();
-      let position: Geoposition = await geolocation.getCurrentPosition();
-      console.log("position is ")
-      console.log(position)
-      networksPoints = await this.mapService.getMapDatas(	settings,position.coords.latitude, position.coords.longitude);
-    }
-    else {
-      networksPoints = await this.mapService.getMapDatas(	settings,this.currentLat, this.currentLng);
-    }
-
+    console.log("geoloc")
+    let latUser :number = await this.serviceProvider.getGeolocationObject().getCurrentLatitude();
+    let longUser = await this.serviceProvider.getGeolocationObject().getCurrentLongitude();
+    console.log("position is [" + latUser + ";" + longUser + "]");
+    networksPoints = await this.mapService.getMapDatas(	settings, latUser, longUser);
     console.log(networksPoints)
     for(var network in networksPoints){
       var reseau = new Reseau( networksPoints[network]["id_reseau"],  networksPoints[network]["ssid"]);
@@ -131,7 +118,6 @@ export class MapPage {
   }
 
   updateZones(){
-
     for(var pol in this.displayedPolygons){
       this.displayedPolygons[pol].setMap(null);     // Supprime les anciens polygones
     }
@@ -184,8 +170,26 @@ export class MapPage {
    */
   mapReady(map){
     this.map = map;
+    
     this.map.setCenter(new google.maps.LatLng(this.currentLat, this.currentLng));
     this.map.setZoom(15);
+    //TODO test
+  /*  new Geolocation().watchPosition().subscribe((position) => {
+      var x = position.coords.longitude;
+      var y = position.coords.latitude;
+    
+      let latLng = new google.maps.LatLng(x, y);
+    
+      let marker = new google.maps.Marker({
+        map: this.map,
+        position: latLng
+      });
+      map.addInfoWindow(marker, "You are here !");
+    
+    }, (err) => {
+      console.log(err);
+    });*/
+    
     /* Change markers on zoom */
     var that = this;
     google.maps.event.addListener(that.map, 'zoom_changed', function() {
