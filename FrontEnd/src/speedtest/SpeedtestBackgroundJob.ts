@@ -94,8 +94,8 @@ export class SpeedtestBackgroundJob {
           }
         console.log("final type = " + type);
         console.log("GEOLOC");
-        latitude = this.serviceProvider.getGeolocationObject().getCurrentLatitude();
-        longitude = this.serviceProvider.getGeolocationObject().getCurrentLongitude();
+        latitude = await this.serviceProvider.getGeolocationObject().getCurrentLatitude();
+        longitude = await this.serviceProvider.getGeolocationObject().getCurrentLongitude();
         console.log("[" + latitude + ";" + longitude + "]");
       }
       else {

@@ -2,7 +2,7 @@
  * Gestion des constantes de configuration du front
  */
 export class ConfConstants {
-  public static get IS_PROD() : boolean { return false; }
+  public static get IS_PROD() : boolean { return true; }
 //  public static get BACKEND_PORT():number  { return 80; }
   public static get BACKEND_URL():string { return ConfConstants.IS_PROD ? "https://connectme.julien-emmanuel.com/" : "http://localhost:80/"}
   public static get MAPDATAS_URL():string { return "getMap"; }
