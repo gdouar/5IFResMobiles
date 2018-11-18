@@ -42,7 +42,7 @@ export class MapPage {
   async ionViewDidLoad(){
     await this.fillMapMarkers();
     let settings : any= JSON.parse(await this.serviceProvider.getFileAccessObject().readAsText());
-    SpeedtestBackgroundJob.getBackgroundJobInstance((settings).frequence,(settings).collecte_auto).updateBackgroundJob(); 
+    SpeedtestBackgroundJob.getBackgroundJobInstance((settings).frequence,(settings).collecte_auto, this.serviceProvider).updateBackgroundJob(); 
   }
   // chargement carte défaut
   loadMapUI(){
@@ -147,7 +147,6 @@ export class MapPage {
       } else map.get(mes.colorUrl).push(mes);
     }
     this.displayedPolygons = new Array();
-    var that = this;
     map.forEach((value) => {
       var polygonePoints = MathUtil.getEnveloppeConvexe(value);
       var centroid = MathUtil.getMeasuresPolygonCentroid(polygonePoints);
