@@ -1,13 +1,11 @@
-import { SpeedTest } from "./Speedtest";
+import { Network } from "@ionic-native/network";
+import { ToastController } from 'ionic-angular';
+import { ConfConstants } from "../conf/ConfConstants";
 import { Mesure } from "../model/Mesure.model";
 import { IPService } from "../service/IPService";
-import { Network } from "@ionic-native/network";
-import { ConfConstants } from "../conf/ConfConstants";
-import { Geolocation } from '@ionic-native/geolocation';
-import { Geoposition } from '@ionic-native/geolocation';
-import { Reseau } from "../model/Reseau.model";
 import { MeasureService } from "../service/MeasureService";
 import { ServiceProvider } from "../service/ServiceProvider";
+import { SpeedTest } from "./Speedtest";
 
 /**
  * Job exécuté en arrière plan pour récupérer les infos de speedtest
@@ -20,15 +18,18 @@ export class SpeedtestBackgroundJob {
   timeout:any;
   static instance:SpeedtestBackgroundJob;
   active:boolean;
-  constructor(frequencyInMinutes, serviceProvider : ServiceProvider){
+  toastCtrl:ToastController;
+
+  constructor(frequencyInMinutes, serviceProvider : ServiceProvider, toastCtrl : ToastController){
     this.frequencyInMinutes = frequencyInMinutes;
     this.serviceProvider = serviceProvider;
+    this.toastCtrl = toastCtrl;
   }
 
   /** Obtient une nouvelle instance ou l'instance existante mise à jour */
-  static getBackgroundJobInstance(frequencyInMinutes, active, serviceProvider):SpeedtestBackgroundJob{
+  static getBackgroundJobInstance(frequencyInMinutes, active, serviceProvider, toastCtrl : ToastController):SpeedtestBackgroundJob{
     if(SpeedtestBackgroundJob.instance == null){
-      SpeedtestBackgroundJob.instance = new SpeedtestBackgroundJob(frequencyInMinutes, serviceProvider);
+      SpeedtestBackgroundJob.instance = new SpeedtestBackgroundJob(frequencyInMinutes, serviceProvider, toastCtrl);
     }
     else {
       SpeedtestBackgroundJob.instance.frequencyInMinutes = frequencyInMinutes;
@@ -50,6 +51,7 @@ export class SpeedtestBackgroundJob {
     if(this.active){
       that.timeout = setTimeout(async function () {
         await that.sendWifiAndLocData(that);
+        
         that.updateBackgroundJob();
       } , (this.frequencyInMinutes * 60 * 1000));
     }
@@ -109,13 +111,27 @@ export class SpeedtestBackgroundJob {
       myIp = myIp.ip;
       var measure = new Mesure(null, latitude, longitude, new Date(), bandwidth, signal, null, null, new Array());
       await new MeasureService().sendMeasure(measure, ssid, myIp, type);
+      this.toastUser("Mesure : " + bandwidth + " Mb/s. Prochaine collecte dans " + this.frequencyInMinutes + " minutes");
+      
     }
     catch(ex){
+      this.toastUser("Une erreur est survenue lors de la collecte de données. Prochaine collecte dans " + this.frequencyInMinutes + " minutes.");
       console.log("Could not send location data : ");
       console.log(ex);
     }
   }
-  
+  private toastUser(message:string) {
+    let toast =  this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'bottom'
+    });
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+    toast.present(); 
+  }
+
   // retourne le signal Wifi actuellement capté
 async getGSMSignal(window:any){
   return new Promise<number>(resolve => {

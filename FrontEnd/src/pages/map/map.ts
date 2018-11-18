@@ -12,6 +12,8 @@ import { ColorsUtil } from '../../util/ColorsUtil';
 import { MathUtil } from '../../util/MathUtil';
 import { DetailPage } from '../details/details';
 import { ParametresPage } from '../parametres/parametres';
+import { ToastController } from 'ionic-angular';
+
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html',
@@ -32,8 +34,9 @@ export class MapPage {
   mapLoadingClass:string = "";
   optionsEnabled:boolean = true;
   serviceProvider:ServiceProvider;
+  currentUserMarker:google.maps.Marker;
 
- constructor(  public navCtrl: NavController) {
+ constructor(  public navCtrl: NavController,public toastCtrl: ToastController) {
    this.serviceProvider = ConfConstants.IS_PROD ? new AndroidServiceProvider() : new MockServiceProvider();
  }
 
@@ -42,7 +45,7 @@ export class MapPage {
   async ionViewDidLoad(){
     await this.fillMapMarkers();
     let settings : any= JSON.parse(await this.serviceProvider.getFileAccessObject().readAsText());
-    SpeedtestBackgroundJob.getBackgroundJobInstance((settings).frequence,(settings).collecte_auto, this.serviceProvider).updateBackgroundJob(); 
+    SpeedtestBackgroundJob.getBackgroundJobInstance((settings).frequence,(settings).collecte_auto, this.serviceProvider, this.toastCtrl).updateBackgroundJob(); 
   }
   // chargement carte défaut
   loadMapUI(){
@@ -189,23 +192,6 @@ export class MapPage {
     let usrLng:number = await  this.serviceProvider.getGeolocationObject().getCurrentLongitude();
     this.map.setCenter(new google.maps.LatLng(userLat,usrLng));
     this.map.setZoom(15);
-    //TODO test
-  /*  new Geolocation().watchPosition().subscribe((position) => {
-      var x = position.coords.longitude;
-      var y = position.coords.latitude;
-    
-      let latLng = new google.maps.LatLng(x, y);
-    
-      let marker = new google.maps.Marker({
-        map: this.map,
-        position: latLng
-      });
-      map.addInfoWindow(marker, "You are here !");
-    
-    }, (err) => {
-      console.log(err);
-    });*/
-    
     /* Change markers on zoom */
     var that = this;
     google.maps.event.addListener(that.map, 'zoom_changed', function() {
@@ -217,6 +203,7 @@ export class MapPage {
         that.points = new Array<Mesure>();
       }
     });
+    //TODO maybe later  ? this.serviceProvider.getGeolocationObject().setOnLocationChangedListener(this);
   }
 
   /**

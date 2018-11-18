@@ -96,14 +96,14 @@ selectNewNetwork(network){
  }
  async updateDataCollect(){
     let backgroundJob : SpeedtestBackgroundJob = 
-          SpeedtestBackgroundJob.getBackgroundJobInstance(parseFloat(<any>(this.freqEchantillon)), this.collecteAuto, this.serviceProvider);
+          SpeedtestBackgroundJob.getBackgroundJobInstance(parseFloat(<any>(this.freqEchantillon)), this.collecteAuto, this.serviceProvider, this.mapPage.toastCtrl);
     backgroundJob.setActive(this.collecteAuto);
     await backgroundJob.updateBackgroundJob();
     await this.validateParams();
   }
 
   async updateDataFrequency(){
-    SpeedtestBackgroundJob.getBackgroundJobInstance(parseFloat(<any>(this.freqEchantillon)), this.collecteAuto, this.serviceProvider);
+    SpeedtestBackgroundJob.getBackgroundJobInstance(parseFloat(<any>(this.freqEchantillon)), this.collecteAuto, this.serviceProvider, this.mapPage.toastCtrl);
     await this.validateParams();
   }
 
