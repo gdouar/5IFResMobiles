@@ -29,12 +29,10 @@ export class MapPage {
   network2Points: Map<Reseau, Array<Mesure>> = new Map<Reseau, Array<Mesure>>();
   mapService : MapService = new MapService();
   displayedPolygons : Array<google.maps.Polygon> = new Array();
-  //TODO use cordova geolocation later
-  currentLat:number = 45.784535;
-  currentLng:number = 4.882980;
   mapLoadingClass:string = "";
   optionsEnabled:boolean = true;
   serviceProvider:ServiceProvider;
+
  constructor(  public navCtrl: NavController) {
    this.serviceProvider = ConfConstants.IS_PROD ? new AndroidServiceProvider() : new MockServiceProvider();
  }
@@ -61,53 +59,61 @@ export class MapPage {
  */
   async fillMapMarkers(){
     this.loadMapUI();
-    this.points = new Array<Mesure>();
-    this.cachedPoints = new Array<Mesure>();
-    this.network2Points = new Map<Reseau, Array<Mesure>>();
-    var settings : any = await this.serviceProvider.getFileAccessObject().readAsText();
-    settings = <any> (JSON.parse(settings));
-    console.log(settings)
-    var networksPoints;
-    console.log("geoloc")
-    let latUser :number = await this.serviceProvider.getGeolocationObject().getCurrentLatitude();
-    let longUser = await this.serviceProvider.getGeolocationObject().getCurrentLongitude();
-    console.log("position is [" + latUser + ";" + longUser + "]");
-    networksPoints = await this.mapService.getMapDatas(	settings, latUser, longUser);
-    console.log(networksPoints)
-    for(var network in networksPoints){
-      var reseau = new Reseau( networksPoints[network]["id_reseau"],  networksPoints[network]["ssid"]);
-      var measures = new Array<Mesure>();
-      var zones = networksPoints[network]["zones"];
-      for (var key in zones ) {
-        if (networksPoints[network]["zones"].hasOwnProperty(key)) {
-            if(key != "zone-1"){      //Suppression du bruit
-              var colorZone = ColorsUtil.getRandomColor();
-              for(var zoneInfoIndx in zones[key]){
-                var latitude = zones[key][zoneInfoIndx].latitude;
-                var longitude = zones[key][zoneInfoIndx].longitude;
-                let msArray : Array<any> = zones[key][zoneInfoIndx].mesures;
-                let measure = new Mesure(msArray[0].idmesure, latitude, longitude, 
-                              msArray[0].datemesure, Math.round(msArray[0].bandepassante* 100) /100, 
-                              msArray[0].forcesignal, colorZone, reseau, msArray);
-                measures.push(measure);
+    try{
+      this.points = new Array<Mesure>();
+      this.cachedPoints = new Array<Mesure>();
+      this.network2Points = new Map<Reseau, Array<Mesure>>();
+      var settings : any = await this.serviceProvider.getFileAccessObject().readAsText();
+      settings = <any> (JSON.parse(settings));
+      console.log(settings)
+      var networksPoints;
+      console.log("geoloc")
+      let latUser :number = await this.serviceProvider.getGeolocationObject().getCurrentLatitude();
+      let longUser = await this.serviceProvider.getGeolocationObject().getCurrentLongitude();
+      console.log("position is [" + latUser + ";" + longUser + "]");
+      networksPoints = await this.mapService.getMapDatas(	settings, latUser, longUser);
+      console.log(networksPoints)
+      for(var network in networksPoints){
+        var reseau = new Reseau( networksPoints[network]["id_reseau"],  networksPoints[network]["ssid"]);
+        var measures = new Array<Mesure>();
+        var zones = networksPoints[network]["zones"];
+        for (var key in zones ) {
+          if (networksPoints[network]["zones"].hasOwnProperty(key)) {
+              if(key != "zone-1"){      //Suppression du bruit
+                var colorZone = ColorsUtil.getRandomColor();
+                for(var zoneInfoIndx in zones[key]){
+                  var latitude = zones[key][zoneInfoIndx].latitude;
+                  var longitude = zones[key][zoneInfoIndx].longitude;
+                  let msArray : Array<any> = zones[key][zoneInfoIndx].mesures;
+                  let measure = new Mesure(msArray[0].idmesure, latitude, longitude, 
+                                msArray[0].datemesure, Math.round(msArray[0].bandepassante* 100) /100, 
+                                msArray[0].forcesignal, colorZone, reseau, msArray);
+                  measures.push(measure);
+                }
+                this.network2Points.set(reseau, measures);
               }
-              this.network2Points.set(reseau, measures);
-            }
+          }
         }
       }
+      if(this.network2Points.size > 0){
+        this.cachedPoints =  Array.from(this.network2Points)[0][1];   
+        ParametresPage.selectedNetwork = Array.from(this.network2Points)[0][0];
+        this.updateZones();
+      }
+      else {
+        this.cachedPoints = new Array<Mesure>();
+      }
+      if(this.map.getZoom() >= ConfConstants.MAP_MIN_ZOOM_LEVEL){
+        this.points = this.cachedPoints.slice();    // copie des mesures en cache
+      }
     }
-    if(this.network2Points.size > 0){
-      this.cachedPoints =  Array.from(this.network2Points)[0][1];   
-      ParametresPage.selectedNetwork = Array.from(this.network2Points)[0][0];
-      this.updateZones();
+    catch(ex){
+        console.log("ERROR OCCURED IN fillMapMarkers !")
+        console.log(ex)
     }
-    else {
-      this.cachedPoints = new Array<Mesure>();
+    finally{
+      this.stopMapLoad();
     }
-    if(this.map.getZoom() >= ConfConstants.MAP_MIN_ZOOM_LEVEL){
-      this.points = this.cachedPoints.slice();    // copie des mesures en cache
-    }
-    this.stopMapLoad();
   }
   
   setDisplayedPoints(network){
@@ -124,6 +130,9 @@ export class MapPage {
     }
   }
 
+  /**
+   * Met à jour les zones de la carte (polygones)
+   */
   updateZones(){
     for(var pol in this.displayedPolygons){
       this.displayedPolygons[pol].setMap(null);     // Supprime les anciens polygones
@@ -141,13 +150,13 @@ export class MapPage {
     var that = this;
     map.forEach((value) => {
       var polygonePoints = MathUtil.getEnveloppeConvexe(value);
+      var centroid = MathUtil.getMeasuresPolygonCentroid(polygonePoints);
       var pointsToDisplay = polygonePoints.map(m => new google.maps.LatLng(m.lat, m.lon)).sort(function(a,b) {
-        let centerPoint : Mesure = that.cachedPoints[0];
-        if (MathUtil.angleFromCoordinate(a.lat(),a.lng(), centerPoint.lat, centerPoint.lon) <
-            MathUtil.angleFromCoordinate(b.lat(),b.lng(), centerPoint.lat, centerPoint.lon))
+        if (MathUtil.angleFromCoordinate(a.lat(),a.lng(), centroid.x, centroid.y) <
+            MathUtil.angleFromCoordinate(b.lat(),b.lng(), centroid.x, centroid.y))
             return -1;
-        if (MathUtil.angleFromCoordinate(a.lat(),a.lng(), centerPoint.lat, centerPoint.lon) > 
-            MathUtil.angleFromCoordinate(b.lat(),b.lng(), centerPoint.lat, centerPoint.lon))
+        if (MathUtil.angleFromCoordinate(a.lat(),a.lng(), centroid.x, centroid.y) > 
+            MathUtil.angleFromCoordinate(b.lat(),b.lng(), centroid.x, centroid.y))
             return 1;
         return 0;
       });
@@ -166,7 +175,7 @@ export class MapPage {
       this.displayedPolygons.push(polygon)
     });
   }
-
+  
   getNetworksMap(){
     return this.network2Points;
   }
@@ -175,10 +184,11 @@ export class MapPage {
    * Chargement de la carte
    * @param map la carte
    */
-  mapReady(map){
+  async mapReady(map){
     this.map = map;
-    
-    this.map.setCenter(new google.maps.LatLng(this.currentLat, this.currentLng));
+    let userLat:number = await this.serviceProvider.getGeolocationObject().getCurrentLatitude();
+    let usrLng:number = await  this.serviceProvider.getGeolocationObject().getCurrentLongitude();
+    this.map.setCenter(new google.maps.LatLng(userLat,usrLng));
     this.map.setZoom(15);
     //TODO test
   /*  new Geolocation().watchPosition().subscribe((position) => {
@@ -210,6 +220,10 @@ export class MapPage {
     });
   }
 
+  /**
+   * Ouvre une page de détails
+   * @param clickedMarker la mesure cliquée
+   */
   details(clickedMarker){
     console.log("marker is " + clickedMarker)
     this.navCtrl.push(DetailPage, {
@@ -219,6 +233,9 @@ export class MapPage {
     });
   }
 
+  /**
+   * Ouvre la page des paramètres
+   */
   settings(){
     this.navCtrl.push(ParametresPage, {
       mapPage: this

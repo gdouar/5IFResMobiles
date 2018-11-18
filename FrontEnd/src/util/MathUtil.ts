@@ -28,7 +28,6 @@ export class MathUtil{
         var boundaryPoints : Array<any> = calculateConvexHull(points);
         console.log(boundaryPoints)
         return mesures.filter( m => MathUtil.findWithAttr(boundaryPoints, 'id', m.id) != -1 );
-
     }
     private static findWithAttr(array, attr, value) {
         for(var i = 0; i < array.length; i += 1) {
@@ -39,6 +38,27 @@ export class MathUtil{
         return -1;
     }
 
+    /**
+     * Retourne le centroid d'un polygone de mesures
+     * @param mesures les mesures
+     */
+    static getMeasuresPolygonCentroid(mesures : Array<Mesure>){
+        var maxX = Math.max.apply(Math, mesures.map(function(o) { return o.lat; }));
+        var minX =  Math.min.apply(Math, mesures.map(function(o) { return o.lat; }));
+        var maxY =  Math.max.apply(Math, mesures.map(function(o) { return o.lon; }));
+        var minY =  Math.max.apply(Math, mesures.map(function(o) { return o.lon; }));
+        return {
+            x : minX + ((maxX - minX) / 2),
+            y : minY + ((maxY - minY) / 2)
+        };
+    }
+    /**
+     * Retourne l'angle entre deux points 
+     * @param lat1 
+     * @param long1 
+     * @param lat2 
+     * @param long2 
+     */
     static angleFromCoordinate( lat1,  long1,  lat2,  long2) {
         var dLon = (long2 - long1);
         var y = Math.sin(dLon) * Math.cos(lat2);
