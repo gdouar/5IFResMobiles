@@ -46,16 +46,24 @@ export class MapPage {
     let settings : any= JSON.parse(await this.serviceProvider.getFileAccessObject().readAsText());
     SpeedtestBackgroundJob.getBackgroundJobInstance((settings).frequence,(settings).collecte_auto).updateBackgroundJob(); 
   }
-
+  // chargement carte défaut
+  loadMapUI(){
+    this.optionsEnabled = false;
+    this.mapLoadingClass = 'blurrWrapperLoadingEffect';
+  }
+  // stoppe l'effet chargement de la carte
+  stopMapLoad(){
+    this.mapLoadingClass="";
+    this.optionsEnabled = true;
+  }
 /**
  * Remplissage des points de la carte
  */
   async fillMapMarkers(){
-    this.optionsEnabled = false;
+    this.loadMapUI();
     this.points = new Array<Mesure>();
     this.cachedPoints = new Array<Mesure>();
     this.network2Points = new Map<Reseau, Array<Mesure>>();
-    this.mapLoadingClass = 'blurrWrapperLoadingEffect';
     var settings : any = await this.serviceProvider.getFileAccessObject().readAsText();
     settings = <any> (JSON.parse(settings));
     console.log(settings)
@@ -88,7 +96,6 @@ export class MapPage {
         }
       }
     }
-    this.mapLoadingClass="";
     if(this.network2Points.size > 0){
       this.cachedPoints =  Array.from(this.network2Points)[0][1];   
       ParametresPage.selectedNetwork = Array.from(this.network2Points)[0][0];
@@ -100,7 +107,7 @@ export class MapPage {
     if(this.map.getZoom() >= ConfConstants.MAP_MIN_ZOOM_LEVEL){
       this.points = this.cachedPoints.slice();    // copie des mesures en cache
     }
-    this.optionsEnabled = true;
+    this.stopMapLoad();
   }
   
   setDisplayedPoints(network){
@@ -108,8 +115,8 @@ export class MapPage {
     this.updateZones();
   }
 
-  clearMapIfNeeded(network){
-    if(ConfConstants.MAP_MIN_ZOOM_LEVEL >= this.map.getZoom()){
+  showMapIfNeeded(network){
+    if(ConfConstants.MAP_MIN_ZOOM_LEVEL <= this.map.getZoom()){
        this.points = this.network2Points.get(network);
     }
     else {
@@ -132,8 +139,8 @@ export class MapPage {
     }
     this.displayedPolygons = new Array();
     var that = this;
-    map.forEach((value, key) => {
-      var polygonePoints = MathUtil.getEnveloppeConvexe(map.get(key));
+    map.forEach((value) => {
+      var polygonePoints = MathUtil.getEnveloppeConvexe(value);
       var pointsToDisplay = polygonePoints.map(m => new google.maps.LatLng(m.lat, m.lon)).sort(function(a,b) {
         let centerPoint : Mesure = that.cachedPoints[0];
         if (MathUtil.angleFromCoordinate(a.lat(),a.lng(), centerPoint.lat, centerPoint.lon) <
@@ -145,7 +152,7 @@ export class MapPage {
         return 0;
       });
       var percentage = Math.max(
-        Math.min(MathUtil.moyenneBandePassanteZone(map.get(key)) /ConfConstants.OPTIMAL_BANDWIDTH_MAP * 100, 100),0);
+        Math.min(MathUtil.moyenneBandePassanteZone(value) /ConfConstants.OPTIMAL_BANDWIDTH_MAP * 100, 100),0);
       var colorZone = ColorsUtil.getColorForPercentage(percentage / 100);
       var polygon = new google.maps.Polygon({
         paths: pointsToDisplay,
