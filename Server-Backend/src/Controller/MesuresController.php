@@ -29,7 +29,7 @@ class MesuresController extends BaseController
         $reseaux = $entityManager->getRepository(Reseaux::class)->findBy(
             [
                 'ssid'      => $request->get('ssid'),
-                'type'      => $request->get('type'),
+       //         'type'      => $request->get('type'),    il faudrait mieux enlever le type (donnée pas toujours bien récupérée par l'api du téléphone) l'ip suffit en théorie
                 'iprouteur' => $request->get('ip'),
             ]
         );
