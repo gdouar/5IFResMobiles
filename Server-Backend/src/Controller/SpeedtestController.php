@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -13,14 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SpeedtestController extends Controller
 {
-    public function getSpeedtestImage(Request $request)
+    public function getSpeedtestImage()
     {
-        $pwd =  getcwd ( );
-        $file = file_get_contents("../resources/speedtest-img.jpg");
+        $file     = file_get_contents("../resources/speedtest-img.jpg");
         $response = new Response($file);
         $response->headers->set('Content-Type', 'image/jpeg');
         $response->headers->set('Access-Control-Allow-Origin', '*');
-      //  $response->headers->set('Content-Length', (string)(filesize($file)));
+
         return $response;
     }
 }

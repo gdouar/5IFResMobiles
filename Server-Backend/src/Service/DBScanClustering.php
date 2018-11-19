@@ -18,11 +18,8 @@ class DBScanClustering extends BaseClustering
         $pythonDir        = __DIR__ . "/../../python/";
         $dataFile         = "data.json";
         $fullPathDataFile = $pythonDir . $dataFile;
-        if (!file_exists($fullPathDataFile)) {
-            $fp = fopen($fullPathDataFile, "a");
-        } else {
-            $fp = fopen($fullPathDataFile, "a");
-        }
+        $fp               = fopen($fullPathDataFile, "a");
+        $result           = [];
         if (flock($fp, LOCK_EX)) { // acquière un verrou exclusif
             fwrite($fp, $encodedMatrix . "\r\n");
             fflush($fp);            // libère le contenu avant d'enlever le verrou
@@ -30,10 +27,10 @@ class DBScanClustering extends BaseClustering
             fclose($fp);
             $command = self::getPythonShellCommand() . " " . $pythonDir . "dbscan.py " . $fullPathDataFile;
             $output  = shell_exec($command);
+            $result  = json_decode($output);
         } else {
             echo "Impossible de verrouiller le fichier dump !";
         }
-        $result = json_decode($output);
 
         return $result;
         /* $encodedMatrix = json_encode($this->measuresMatrix);

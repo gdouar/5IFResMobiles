@@ -24,13 +24,14 @@ class MesuresController extends BaseController
         $entityManager = $this->getDoctrine()->getManager();
 
         $mesure = new Mesures();
-        $test = $request->get('ssid');
-        $test2 =  $request->get('type');
+
+        $type    = $request->get('type');
         $reseaux = $entityManager->getRepository(Reseaux::class)->findBy(
-            [
+            $type == 'wifi' ? [ // Sur le réseau cellullaire l'ip change tout le temps donc on l'ignore
                 'ssid'      => $request->get('ssid'),
-       //         'type'      => $request->get('type'),    il faudrait mieux enlever le type (donnée pas toujours bien récupérée par l'api du téléphone) l'ip suffit en théorie
                 'iprouteur' => $request->get('ip'),
+            ] : [
+                'ssid' => $request->get('ssid'),
             ]
         );
 
@@ -47,8 +48,8 @@ class MesuresController extends BaseController
                         ),
                         [ // Paramètres de création
                             'json' => [
-                                'ssid' => $request->get('ssid'),
-                                'type' => $request->get('type'),
+                                'ssid'      => $request->get('ssid'),
+                                'type'      => $type,
                                 'iprouteur' => $request->get('ip'),
                             ],
                         ]
@@ -75,6 +76,7 @@ class MesuresController extends BaseController
         $response = new Response(json_encode(['id' => $mesure->getIdmesure()]));
         $response->headers->set('Content-Type', 'application/json');
         $response->headers->set('Access-Control-Allow-Origin', '*');
+
         return $response;
     }
 
@@ -86,10 +88,12 @@ class MesuresController extends BaseController
     }
 
     // je hais cors
-    public function sendShittyProtocolResponse(){
+    public function sendShittyProtocolResponse()
+    {
         $response = new Response();
         $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set('Access-Control-Allow-Headers', '*');
+
         return $response;
     }
 }

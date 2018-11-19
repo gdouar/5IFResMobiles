@@ -26,7 +26,7 @@ class MapController extends BaseController
      */
     public function getMap(Request $request)
     {
-        ini_set('memory_limit','1024M');
+        ini_set('memory_limit', '1024M');
 
         $em = $this->getDoctrine()->getManager();
         /** @var MesuresRepository $mesuresRepo */
@@ -52,12 +52,18 @@ class MapController extends BaseController
                     $networkRepo->addTypeFilter($filters);
                     $allNetworks = $networkRepo->executeFilteredRequest();
                 }
+
+                if (isset($parameters->nb_jours) && $parameters->nb_jours) {
+                    $mesuresRepo->addTimeoutFilter(filter_var($parameters->nb_jours, FILTER_VALIDATE_INT));
+                }
+
                 // Filtrage bande passante
                 if ($this->checkObjectAttribute($parameters, "bande_passante_minimale")) {
                     $mesuresRepo->addBandwidthFilter($parameters->bande_passante_minimale);
                     $mesuresRepo->sort();
                 }
                 $allMeasures = $mesuresRepo->executeFilteredRequest();
+
                 // Filtrage géographique
                 if ($this->checkObjectAttribute($parameters, "rayon_recherche") && $parameters->rayon_recherche != 0) {
                     if ($this->checkObjectAttribute($requestBody, "longitudeActuelle") && $this->checkObjectAttribute($requestBody, "latitudeActuelle")) {
