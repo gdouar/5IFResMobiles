@@ -9,7 +9,8 @@ export class FileBase {
     "rayon_recherche": 0.5,
     "afficher_zones" : true,
     "collecte_auto":true,
-    "frequence":0.25
+    "frequence":0.25,
+    "nb_jours":7
   };
   constructor(){
   }

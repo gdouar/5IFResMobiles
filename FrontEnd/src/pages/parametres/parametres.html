@@ -31,7 +31,10 @@
         <ion-label color="dark">distance de recherche(km)</ion-label>
         <ion-input [(ngModel)]="distanceRecherche" name="distanceRecherche" type="number" min="0" (ngModelChange)="validateParams()" value="{{distanceRecherche.value}}"></ion-input>
       </ion-item>
-
+      <ion-item>
+        <ion-label color="dark">Récence (nombre de jours)</ion-label>
+        <ion-input [(ngModel)]="nbJours" name="nbJours" type="number" min="0" (ngModelChange)="validateParams()" value="{{nbJours.value}}"></ion-input>
+      </ion-item>
    <!--  <ion-item>
         <ion-label>Afficher les zones</ion-label>
         <ion-checkbox [(ngModel)]="afficherZones" name="afficherZones"  (ionChange)="validateParams()" item-end></ion-checkbox>

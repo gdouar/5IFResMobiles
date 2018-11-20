@@ -19,11 +19,12 @@ export class ParametresPage {
   bandePassante : any = 0;
   freqEchantillon : number = 0;
   distanceRecherche :any = 0;
+  nbJours:number=7;
   activerWifi:boolean = true;
   activer4G:boolean = true;
   afficherZones:boolean=true;
   collecteAuto:boolean=true;
-  mode:string="";
+  mode:string="echantillon";
   mapPage:MapPage;
   networks:Array<Reseau> = new Array<Reseau>();
   static selectedNetwork:Reseau;
@@ -44,6 +45,13 @@ export class ParametresPage {
   getSelectedNetwork(){
     return ParametresPage.selectedNetwork;
   }
+  
+  getSetting(settings, property, field){
+    if(settings[property] != null){
+      return settings[property] ;
+    }
+    return this[field];
+  }
 /**
  * Chargement de l'interface
  */
@@ -51,13 +59,14 @@ export class ParametresPage {
 
     let parametersString = await this.serviceProvider.getFileAccessObject().readAsText();
     let params = JSON.parse(parametersString);
-    this.bandePassante = parseFloat(params["bande_passante_minimale"]);
-    this.distanceRecherche = parseFloat(params["rayon_recherche"]);
-    this.activerWifi = params["wifi"];
-    this.activer4G = params["mobile"];
-    this.afficherZones = params["afficher_zones"];
-    this.collecteAuto = params["collecte_auto"];
-    this.freqEchantillon = parseFloat(params["frequence"]);
+    this.bandePassante = parseFloat(this.getSetting(params, "bande_passante_minimale", "bandePassante"));
+    this.distanceRecherche = parseFloat(this.getSetting(params, "rayon_recherche", "distanceRecherche"));
+    this.activerWifi = this.getSetting(params, "wifi", "activerWifi");
+    this.activer4G = this.getSetting(params, "mobile", "activer4G");
+    this.nbJours = this.getSetting(params, "nb_jours",  "nbJours");
+    this.afficherZones = this.getSetting(params, "afficher_zones", "afficherZones");
+    this.collecteAuto = this.getSetting(params,"collecte_auto","collecteAuto");
+    this.freqEchantillon = parseFloat(this.getSetting(params, "frequence", "freqEchantillon"));
     this.mode = this.freqEchantillon != null ? "echantillon" : "demandeServ";
   }
 
@@ -81,7 +90,8 @@ selectNewNetwork(network){
       "rayon_recherche": parseFloat(this.distanceRecherche),
       "afficher_zones" : this.afficherZones,
       "collecte_auto":this.collecteAuto,
-      "frequence":this.freqEchantillon
+      "frequence":this.freqEchantillon,
+      "nb_jours":this.nbJours
     };
     console.log(savedParams);
     this.serviceProvider.getFileAccessObject().writeExistingFile(JSON.stringify(savedParams));
