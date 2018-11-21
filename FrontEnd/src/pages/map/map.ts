@@ -203,7 +203,7 @@ export class MapPage {
         that.points = new Array<Mesure>();
       }
     });
-    //TODO maybe later  ? this.serviceProvider.getGeolocationObject().setOnLocationChangedListener(this);
+     this.serviceProvider.getGeolocationObject().setOnLocationChangedListener(this);
   }
 
   /**

@@ -42,7 +42,15 @@ export class GeolocAndroid extends GeolocBase{
             let currentMarker = new google.maps.Marker({
               map: mapPage.map,
               position: latLng,
-              icon:'http://bluedot.ca/wp-content/themes/dsf-blue-dot-campaign-theme/src/images/marker-circle.png'
+              icon:{
+                url: 'http://bluedot.ca/wp-content/themes/dsf-blue-dot-campaign-theme/src/images/marker-circle.png',
+                // This marker is 20 pixels wide by 32 pixels high.
+                size: new google.maps.Size(20, 32),
+                // The origin for this image is (0, 0).
+                origin: new google.maps.Point(0, 0),
+                // The anchor for this image is the base of the flagpole at (0, 32).
+                anchor: new google.maps.Point(0, 32)
+              }
             });
             mapPage.currentUserMarker = currentMarker;
           

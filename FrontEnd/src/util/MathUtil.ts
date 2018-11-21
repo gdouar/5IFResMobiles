@@ -70,5 +70,31 @@ export class MathUtil{
         brng = 360 - brng; // count degrees counter-clockwise - remove to make clockwise
         return brng;
     }
-
+    /**
+     * Calcul de la bande passante moyenne sur le jour courant
+     * @param mesureProperty 
+     * @param mesuresPassees 
+     */
+    static averageDayResults(mesureProperty, mesuresPassees){
+        var measureMap = new Map();
+        console.log("mesuresPassees")
+        console.log(mesuresPassees)
+        mesuresPassees.forEach(value => {
+            var date = new Date(value.datemesure.date).toString()
+            if(measureMap.has(date)){
+                measureMap.set(date, measureMap.get(date) + value[mesureProperty]);
+            }
+            else measureMap.set(date,  value[mesureProperty]);
+        })
+        console.log(measureMap);
+        var dataArray = new Array();
+        measureMap.forEach((value, key) => {     
+            var dateArr = new Date(key);
+            var findArr = mesuresPassees.filter(
+                mes => new Date(mes.datemesure.date).toString() == key);
+            dataArray.push(<any>{x: dateArr, y:value / (findArr.length)});
+        });
+        console.log(dataArray); 
+        return dataArray;
+      }
 }

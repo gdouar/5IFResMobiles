@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import {Mesure} from "../../model/Mesure.model";
 import { ColorsUtil } from '../../util/ColorsUtil';
+import { MathUtil } from "../../util/MathUtil";
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {Chart} from 'chart.js';
 import { dateValueRange } from 'ionic-angular/umd/util/datetime-util';
@@ -24,29 +25,7 @@ export class DetailPage {
     console.log(this.mesure)
     this.reseau=this.mesure.reseau.ssid;
   }
-  averageDayResults(mesureProperty, mesuresPassees){
-    var measureMap = new Map();
-    var that = this;
-    console.log("mesuresPassees")
-    console.log(mesuresPassees)
-    mesuresPassees.forEach(value => {
-        var date = new Date(value.datemesure.date).toString()
-        if(measureMap.has(date)){
-            measureMap.set(date, measureMap.get(date) + value[mesureProperty]);
-        }
-        else measureMap.set(date,  value[mesureProperty]);
-    })
-    console.log(measureMap);
-    var dataArray = new Array();
-    measureMap.forEach((value, key) => {     
-        var dateArr = new Date(key);
-        var findArr = mesuresPassees.filter(
-            mes => new Date(mes.datemesure.date).toString() == key);
-        dataArray.push(<any>{x: dateArr, y:value / (findArr.length)});
-    });
-    console.log(dataArray); 
-    return dataArray;
-  }
+
   ionViewDidLoad(){
     console.log(this.lineCanvas)
     var that = this;
@@ -55,7 +34,7 @@ export class DetailPage {
         type: 'line',
         data: {
             datasets: [{
-                data:  that.averageDayResults("bandepassante", that.mesure.mesuresPassees),
+                data:  MathUtil.averageDayResults("bandepassante", that.mesure.mesuresPassees),
                 fill: false,
                 backgroundColor: ["#000000"],
                 borderColor: "#000000"
@@ -89,7 +68,7 @@ export class DetailPage {
         type: 'line',
         data: {
             datasets: [{
-                data:  that.averageDayResults("forcesignal" ,                   // bruit du signal (non récupérable)
+                data:  MathUtil.averageDayResults("forcesignal" ,                   // bruit du signal (non récupérable)
                             that.mesure.mesuresPassees.filter(mes => mes.forcesignal != -1)),
                 fill: false,
                 backgroundColor: ["#000000"],
