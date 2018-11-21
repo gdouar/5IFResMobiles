@@ -3,9 +3,14 @@
     <ion-title>Carte principale</ion-title>
 
     <ion-buttons end>
-        <button ion-button icon-only (click)="settings()" [disabled]="!optionsEnabled" >
-          <ion-icon name="options"   ></ion-icon>
-        </button>
+        <ion-row >
+          <button ion-button icon-only (click)="showLocation()" [disabled]="!optionsEnabled" >
+              <ion-icon name="md-locate"   ></ion-icon>
+            </button>
+          <button ion-button icon-only (click)="settings()" [disabled]="!optionsEnabled" >
+            <ion-icon name="options"   ></ion-icon>
+          </button>
+      </ion-row>
       </ion-buttons>
 
   </ion-navbar>

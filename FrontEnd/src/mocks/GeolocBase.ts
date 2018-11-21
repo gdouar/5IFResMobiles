@@ -18,6 +18,9 @@ export class GeolocBase {
         });
     }
 
+    async displayCurrentLocation(mapPage : MapPage, x:number, y:number){
+        // pas de géoloc
+    }
     async setOnLocationChangedListener(mapPage:MapPage){
         // pas de géoloc
     }

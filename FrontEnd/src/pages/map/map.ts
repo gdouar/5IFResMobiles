@@ -34,7 +34,7 @@ export class MapPage {
   mapLoadingClass:string = "";
   optionsEnabled:boolean = true;
   serviceProvider:ServiceProvider;
-  currentUserMarker:google.maps.Marker;
+  currentUserMarker:google.maps.InfoWindow;
 
  constructor(  public navCtrl: NavController,public toastCtrl: ToastController) {
    this.serviceProvider = ConfConstants.IS_PROD ? new AndroidServiceProvider() : new MockServiceProvider();
@@ -190,7 +190,7 @@ export class MapPage {
     this.map = map;
     let userLat:number = await this.serviceProvider.getGeolocationObject().getCurrentLatitude();
     let usrLng:number = await  this.serviceProvider.getGeolocationObject().getCurrentLongitude();
-    this.map.setCenter(new google.maps.LatLng(userLat,usrLng));
+    await this.map.setCenter(new google.maps.LatLng(userLat,usrLng));
     this.map.setZoom(15);
     /* Change markers on zoom */
     var that = this;
@@ -203,9 +203,13 @@ export class MapPage {
         that.points = new Array<Mesure>();
       }
     });
-     this.serviceProvider.getGeolocationObject().setOnLocationChangedListener(this);
+    await this.serviceProvider.getGeolocationObject().displayCurrentLocation(this, userLat, usrLng);
   }
-
+  async showLocation(){
+    let userLat:number = await this.serviceProvider.getGeolocationObject().getCurrentLatitude();
+    let usrLng:number = await  this.serviceProvider.getGeolocationObject().getCurrentLongitude();
+    await this.serviceProvider.getGeolocationObject().displayCurrentLocation(this, userLat, usrLng);
+  }
   /**
    * Ouvre une page de détails
    * @param clickedMarker la mesure cliquée
