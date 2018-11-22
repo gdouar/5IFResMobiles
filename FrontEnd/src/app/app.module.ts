@@ -34,7 +34,7 @@ import { Network } from '@ionic-native/network';
     HttpClientModule,
     IonicModule.forRoot(MyApp),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDTLkCuDTOPlSK32-u3Xo0RpuKMjKZiet0'
+      apiKey: 'AIzaSyBrMEy5NMMtpkzikLomfoh-jj8zxH-hae0'
     })
   ],
   bootstrap: [IonicApp],

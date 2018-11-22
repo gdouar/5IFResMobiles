@@ -56,6 +56,10 @@ export class MapPage {
   stopMapLoad(){
     this.mapLoadingClass="";
     this.optionsEnabled = true;
+    this.map.set('streetViewControl', true);
+    this.map.set('streetViewControlOptions', {
+      position: google.maps.ControlPosition.TOP_RIGHT
+    })
   }
 /**
  * Remplissage des points de la carte
